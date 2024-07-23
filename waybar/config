@@ -1,0 +1,168 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 24,
+    "modules-left": [
+        "hyprland/workspaces",
+        "custom/separator"
+        
+    ],
+    "modules-center": [
+        
+        
+    ],
+    "modules-right": [
+        "mpris",
+        "custom/separatorsmall",
+        "tray",
+        "custom/separatorsmall",
+        "network",
+        "custom/separatorsmall",
+        "clock",
+        "custom/separatorsmall"
+
+    ],
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "active": "",
+            "default": "",
+            "persistent": ""
+        },
+        "on-click": "activate",
+        "all-outputs": true,
+        "sort-by-number": true,
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": []
+        }
+    },
+    "clock": {
+        "format": "{:%I:%M %p}"
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    },
+    "pulseaudio": {
+        "format": "{icon}   {volume} ",
+        "format-bluetooth": "{icon}   {volume} ",
+        "format-muted": " ",
+        "format-icons": {
+            "headphone": " ",
+            "hands-free": " ",
+            "headset": " ",
+            "phone": " ",
+            "portable": "󰣲 ",
+            "car": "󰄋 ",
+            "default": [
+                "󰕾",
+                ""
+            ]
+        },
+        "on-click": "pavucontrol"
+    },
+    "network": {
+        "interface": "eno1",
+        "format": "{ifname}",
+        "format-wifi": "  {essid} ({signalStrength}%)",
+        "format-ethernet": " ",
+        "format-disconnected": " ",
+        "tooltip-format": "{ifname} via {gwaddr}  ",
+        "tooltip-format-wifi": "  {essid} ({signalStrength}%)",
+        "tooltip-format-ethernet": "{ifname} ",
+        "tooltip-format-disconnected": " ",
+        "max-length": 50
+    },
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 50,
+        "rewrite": {
+            "(.*) — Mozilla Firefox": "󰊠 $1",
+            "(.*) - fish": "> [$1]"
+        },
+        "separate-outputs": true
+    },
+    "custom/separator": {
+        "format": "    "
+    },
+    "custom/separatorsmall": {
+        "format": "  "
+    },
+    "mpris": {
+        "format": "{player_icon}   {artist} - {title}",
+        "format-paused": "{status_icon}   {artist} - {title}",
+        "player-icons": {
+            "default": "▶",
+            "mpv": "🎵",
+            "spotify": ""
+        },
+        "status-icons": {
+            "paused": "󰏤"
+        },
+        "ignored-players": [
+            "firefox"
+        ]
+    },
+    "group/hardware": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-power",
+            "transition-left-to-right": false
+        },
+        "modules": [
+            "custom/power",
+            "custom/quit",
+            "custom/lock",
+            "custom/reboot"
+        ]
+    },
+    "custom/quit": {
+        "format": "󰗼 ",
+        "tooltip": false,
+        "on-click": "swaync"
+    },
+    "custom/lock": {
+        "format": "󰍁 ",
+        "tooltip": false,
+        "on-click": "swaync"
+    },
+    "custom/reboot": {
+        "format": "󰜉 ",
+        "tooltip": false,
+        "on-click": "powerctl"
+    },
+    "custom/power": {
+        "format": " ",
+        "tooltip": false,
+        "on-click": "powerctl"
+    },
+    "pulseaudio/slider": {
+        "min": 0,
+        "max": 100,
+        "orientation": "horizontal"
+    },
+    "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 13,
+   
+    "tooltip-format": "{title}",
+    "on-click": "activate",
+    "on-click-middle": "close",
+    "active-first": true,
+    "ignore-list": [
+       "Alacritty"
+    ],
+    "app_ids-mapping": {
+      "firefoxdeveloperedition": "firefox-developer-edition"
+    },
+    "rewrite": {
+        "Firefox Web Browser": "Firefox",
+        "Foot Server": "Terminal"
+    }
+}
+}
