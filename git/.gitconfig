@@ -1,0 +1,9 @@
+[user]
+	name = samin
+	email = samintejas@gmail.com
+[core]
+	autocrlf = input
+[credential]
+	helper = store
+[includeIf "gitdir:~/sixdee/"]
+    path = ~/.gitconfig-sixdee
