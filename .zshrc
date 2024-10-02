@@ -35,7 +35,7 @@ bindkey '^[[1;5D' backward-char
 # Alias
 alias ls='exa --long --git'
 alias rm -rf='rm -i'
-
+alias grep='rg'
 
 eval "$(starship init zsh)"
 
