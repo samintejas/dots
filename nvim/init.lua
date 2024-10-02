@@ -1,4 +1,3 @@
-require("zen")
-print("Samin's neovim")
-vim.cmd("colorscheme tokyonight")
-vim.cmd([[highlight Normal guibg=#0a0a0a]])
+require("core.settings")
+require("config.lazy")
+require("config.treesitter")
