@@ -146,6 +146,26 @@ return {
                 }
             })
 
+            lspconfig.clangd.setup({
+                on_attach = on_attach,
+                cmd = {
+                    "clangd",
+                    "--background-index",
+                    "--suggest-missing-includes"
+                },
+                filetypes = { "c", "cpp", "objc", "objcpp" },
+                root_dir = lspconfig.util.root_pattern(
+                    '.clangd',
+                    '.clang-tidy',
+                    '.clang-format',
+                    'compile_commands.json',
+                    'compile_flags.txt',
+                    'configure.ac',
+                    '.git'
+                ),
+                single_file_support = true
+            })
+
             -- html setup
             lspconfig.html.setup({
                 on_attach = on_attach,
@@ -354,9 +374,9 @@ return {
             })
 
             require("neo-tree").setup({
-                close_if_last_window = true, -- Close Neo-tree when it's the last window
-                enable_git_status = true, -- Show Git status
-                enable_diagnostics = true, -- Show LSP diagnostics
+                close_if_last_window = true,    -- Close Neo-tree when it's the last window
+                enable_git_status = true,       -- Show Git status
+                enable_diagnostics = true,      -- Show LSP diagnostics
                 popup_border_style = "rounded", -- Rounded borders for a polished look
 
                 default_component_configs = {
@@ -373,11 +393,11 @@ return {
                 },
                 filesystem = {
                     follow_current_file = {
-                        enabled = true,         -- Keep Neo-tree focused on the current file
+                        enabled = true,                     -- Keep Neo-tree focused on the current file
                     },
                     hijack_netrw_behavior = "open_current", -- Replace netrw
                     filtered_items = {
-                        visible = true,         -- Show hidden files
+                        visible = true,                     -- Show hidden files
                         hide_dotfiles = false,
                         hide_gitignored = true,
                     },
@@ -395,8 +415,8 @@ return {
                                 vim.cmd("echo 'Cannot go outside the working directory'")
                             end
                         end,
-                        ["l"] = "open",            -- Open file/directory
-                        ["<C-s>"] = "split_with_window_picker", -- Split with window picker
+                        ["l"] = "open",                          -- Open file/directory
+                        ["<C-s>"] = "split_with_window_picker",  -- Split with window picker
                         ["<C-v>"] = "vsplit_with_window_picker", -- Vertical split with picker
                     },
                 },
@@ -409,6 +429,13 @@ return {
 
             -- Add keybinding to toggle Neo-tree
             vim.keymap.set("n", "<leader>e", "<cmd>Neotree toggle<cr>", { noremap = true, silent = true })
+        end
+    },
+    {
+        "m4xshen/autoclose.nvim",
+        event = "InsertEnter",
+        config = function()
+            require("autoclose").setup()
         end
     }
 }
