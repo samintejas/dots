@@ -50,3 +50,6 @@ bindings = [
     { mouse = "Right", action = "Paste" },
     { mouse = "Middle", action = "None" }
 ]
+
+[env]
+TERM = "xterm-256color"
