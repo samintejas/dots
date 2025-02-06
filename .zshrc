@@ -36,9 +36,11 @@ bindkey '^[[1;5D' backward-char
 alias ls='exa --long --git'
 alias rm -rf='rm -i'
 alias grep='rg'
+alias hx='helix'
 
 eval "$(starship init zsh)"
 
 
 
 
+export PATH=$PATH:$(go env GOPATH)/bin
