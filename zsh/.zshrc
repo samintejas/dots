@@ -40,7 +40,4 @@ alias hx='helix'
 
 eval "$(starship init zsh)"
 
-
-
-
 export PATH=$PATH:$(go env GOPATH)/bin
