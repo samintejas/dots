@@ -3,7 +3,7 @@
 	email = samintejas@gmail.com
 [core]
 	autocrlf = input
-	editor = helix
+	editor = nvim
 [credential]
 	helper = store
 [includeIf "gitdir:~/sixdee/"]
