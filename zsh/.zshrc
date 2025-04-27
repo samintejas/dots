@@ -41,3 +41,4 @@ alias hx='helix'
 eval "$(starship init zsh)"
 
 export PATH=$PATH:$(go env GOPATH)/bin
+source /usr/share/nvm/init-nvm.sh

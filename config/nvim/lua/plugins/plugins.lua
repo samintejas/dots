@@ -15,7 +15,6 @@ return {
         end,
     },
 
-    { "folke/tokyonight.nvim",     priority = 1000 },
     { "neanias/everforest-nvim",   priority = 1000 },
     { "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000 },
     {
@@ -71,38 +70,38 @@ return {
     -- no dashboard as it is unnecessary
 
     -- File Explorer
-   ---@type LazySpec
-{
-    "mikavilpas/yazi.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      -- check the installation instructions at
-      -- https://github.com/folke/snacks.nvim
-      "folke/snacks.nvim"
-    },
-    keys = {
-      {
-        "<c-up>",
-        "<cmd>Yazi toggle<cr>",
-        desc = "Resume the last yazi session",
-      },
-    },
+    ---@type LazySpec
+    {
+        "mikavilpas/yazi.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            -- check the installation instructions at
+            -- https://github.com/folke/snacks.nvim
+            "folke/snacks.nvim"
+        },
+        keys = {
+            {
+                "<c-up>",
+                "<cmd>Yazi toggle<cr>",
+                desc = "Resume the last yazi session",
+            },
+        },
 
-    ---@type YaziConfig | {}
-    opts = {
-      -- if you want to open yazi instead of netrw, see below for more info
-      open_for_directories = false,
-      keymaps = {
-        show_help = "<f1>",
-      },
+        ---@type YaziConfig | {}
+        opts = {
+            -- if you want to open yazi instead of netrw, see below for more info
+            open_for_directories = false,
+            keymaps = {
+                show_help = "<f1>",
+            },
+        },
+        -- 👇 if you use `open_for_directories=true`, this is recommended
+        init = function()
+            -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
+            -- vim.g.loaded_netrw = 1
+            vim.g.loaded_netrwPlugin = 1
+        end,
     },
-    -- 👇 if you use `open_for_directories=true`, this is recommended
-    init = function()
-      -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
-      -- vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
-    end,
-  },
 
     -- Fuzzy Finder
     {
@@ -115,16 +114,6 @@ return {
         config = function()
             local telescope = require("telescope")
             telescope.setup({
-                defaults = {
-                    path_display = { "truncate" },
-                    sorting_strategy = "ascending",
-                    layout_config = {
-                        horizontal = {
-                            prompt_position = "top",
-                            preview_width = 0.55,
-                        },
-                    },
-                },
                 extensions = {
                     fzf = {
                         fuzzy = true,
@@ -240,17 +229,12 @@ return {
         config = function()
             require("mason-lspconfig").setup({
                 ensure_installed = {
-                    -- Rust
                     "rust_analyzer",
-                    -- Go
                     "gopls",
-                    -- Web Development
-                    "ts_ls",
                     "eslint",
                     "html",
                     "cssls",
                     "tailwindcss",
-                    -- General
                     "lua_ls",
                     "jsonls",
                 },
@@ -317,14 +301,14 @@ return {
             })
 
             -- TypeScript/JavaScript (Next.js)
-            lspconfig.ts_ls.setup({
-                capabilities = capabilities,
-                init_options = {
-                    preferences = {
-                        disableSuggestions = false,
-                    },
-                },
-            })
+            -- lspconfig.ts_ls.setup({
+            --     capabilities = capabilities,
+            --     init_options = {
+            --         preferences = {
+            --             disableSuggestions = false,
+            --         },
+            --     },
+            -- })
 
             -- HTML
             lspconfig.html.setup({
@@ -513,20 +497,20 @@ return {
         "folke/which-key.nvim",
         event = "VeryLazy",
         opts = {
-          -- your configuration comes here
-          -- or leave it empty to use the default settings
-          -- refer to the configuration section below
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
         },
         keys = {
-          {
-            "<leader>?",
-            function()
-              require("which-key").show({ global = false })
-            end,
-            desc = "Buffer Local Keymaps (which-key)",
-          },
+            {
+                "<leader>?",
+                function()
+                    require("which-key").show({ global = false })
+                end,
+                desc = "Buffer Local Keymaps (which-key)",
+            },
         },
-      },
+    },
 
     -- Rust-specific plugins
     {
@@ -689,4 +673,5 @@ return {
         event = "VeryLazy",
         opts = {},
     },
+
 }
