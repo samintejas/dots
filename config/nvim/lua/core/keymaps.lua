@@ -9,6 +9,8 @@ vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Navigate to left window" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Navigate to bottom window" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Navigate to top window" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Navigate to right window" })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Centers after half page up" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Centers after half page down" })
 
 -- Window resizing
 vim.keymap.set("n", "<C-Up>", "<cmd>resize -2<CR>", { desc = "Decrease window height" })

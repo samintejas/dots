@@ -267,24 +267,6 @@ return {
                 },
             })
 
-            -- Rust
-            lspconfig.rust_analyzer.setup({
-                capabilities = capabilities,
-                settings = {
-                    ["rust-analyzer"] = {
-                        checkOnSave = {
-                            command = "clippy",
-                        },
-                        cargo = {
-                            allFeatures = true,
-                        },
-                        procMacro = {
-                            enable = true,
-                        },
-                    },
-                },
-            })
-
             -- Go
             lspconfig.gopls.setup({
                 capabilities = capabilities,
@@ -510,52 +492,6 @@ return {
                 desc = "Buffer Local Keymaps (which-key)",
             },
         },
-    },
-
-    -- Rust-specific plugins
-    {
-        "simrat39/rust-tools.nvim",
-        ft = "rust",
-        dependencies = "neovim/nvim-lspconfig",
-        opts = function()
-            return {
-                tools = {
-                    runnables = {
-                        use_telescope = true,
-                    },
-                    inlay_hints = {
-                        auto = true,
-                        show_parameter_hints = true,
-                    },
-                },
-                server = {
-                    on_attach = function(_, bufnr)
-                        -- Hover actions
-                        vim.keymap.set("n", "<C-space>", require("rust-tools").hover_actions.hover_actions,
-                            { buffer = bufnr })
-                        -- Code action groups
-                        vim.keymap.set("n", "<Leader>a", require("rust-tools").code_action_group.code_action_group,
-                            { buffer = bufnr })
-                    end,
-                    settings = {
-                        ["rust-analyzer"] = {
-                            checkOnSave = {
-                                command = "clippy",
-                            },
-                            cargo = {
-                                allFeatures = true,
-                            },
-                            procMacro = {
-                                enable = true,
-                            },
-                        },
-                    },
-                },
-            }
-        end,
-        config = function(_, opts)
-            require("rust-tools").setup(opts)
-        end,
     },
 
     -- Go-specific plugins
