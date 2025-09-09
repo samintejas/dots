@@ -1,17 +1,22 @@
 * {
-  font-family: "JetBrains Mono NF";
-  transition: 0.3s;
-  font-size: 14px;
+    font-family: "JetBrains Mono NF";
+    transition: 0.3s;
+    font-size: 14px;
 }
 
 /* Floating notification popups */
 .notification {
-    background-color: rgba(30, 30, 30, 0.6);
-    border-radius: 2px;
-    padding: 10px;
-    margin: 6px;
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 1px;
+    padding: 2px;
+    margin: 2px;
     color: #ffffff;
 }
+
+.notification-image {
+    margin-right: 8px;
+}
+
 
 /* Control Center */
 .control-center {
