@@ -231,12 +231,6 @@ return {
                 ensure_installed = {
                     "rust_analyzer",
                     "gopls",
-                    "eslint",
-                    "html",
-                    "cssls",
-                    "tailwindcss",
-                    "lua_ls",
-                    "jsonls",
                 },
                 automatic_installation = true,
             })

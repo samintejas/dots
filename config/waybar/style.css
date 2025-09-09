@@ -59,3 +59,17 @@ window#waybar {
     border-radius: 10px;
     background-color: rgb(183, 252, 23);
 }
+
+#battery {
+    color: #ffffff; /* normal color */
+}
+
+/* Warning state (below 30%) */
+#battery.warning {
+    color: orange;
+}
+
+/* Critical state (below 20%) */
+#battery.critical {
+    color: red;
+}

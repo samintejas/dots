@@ -1,16 +1,12 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 24,
+    "height": 26,
     "modules-left": [
         "hyprland/workspaces",
         "custom/separator"
-        
     ],
-    "modules-center": [
-        
-        
-    ],
+    "modules-center": [],
     "modules-right": [
         "mpris",
         "custom/separatorsmall",
@@ -18,10 +14,28 @@
         "custom/separatorsmall",
         "network",
         "custom/separatorsmall",
+        "battery",
+        "custom/separatorsmall",
         "clock",
         "custom/separatorsmall"
-
     ],
+    "battery": {
+        "bat": "BAT0",
+        "interval": 60,
+        "states": {
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} ",
+        "format-icons": [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "max-length": 25
+    },
     "hyprland/workspaces": {
         "format": "{icon}",
         "format-icons": {
@@ -47,28 +61,11 @@
         "icon-size": 18,
         "spacing": 10
     },
-    "pulseaudio": {
-        "format": "{icon}   {volume} ",
-        "format-bluetooth": "{icon}   {volume} ",
-        "format-muted": " ",
-        "format-icons": {
-            "headphone": " ",
-            "hands-free": " ",
-            "headset": " ",
-            "phone": " ",
-            "portable": "󰣲 ",
-            "car": "󰄋 ",
-            "default": [
-                "󰕾",
-                ""
-            ]
-        },
-        "on-click": "pavucontrol"
-    },
+   
     "network": {
-        "interface": "eno1",
+        "interface": "wlp0s20f3",
         "format": "{ifname}",
-        "format-wifi": "  {essid} ({signalStrength}%)",
+        "format-wifi": " ",
         "format-ethernet": " ",
         "format-disconnected": " ",
         "tooltip-format": "{ifname} via {gwaddr}  ",
@@ -104,65 +101,14 @@
             "paused": "󰏤"
         },
         "ignored-players": [
-            "firefox"
+            "zen-browser"
         ]
     },
-    "group/hardware": {
-        "orientation": "inherit",
-        "drawer": {
-            "transition-duration": 500,
-            "children-class": "not-power",
-            "transition-left-to-right": false
-        },
-        "modules": [
-            "custom/power",
-            "custom/quit",
-            "custom/lock",
-            "custom/reboot"
-        ]
-    },
-    "custom/quit": {
-        "format": "󰗼 ",
-        "tooltip": false,
-        "on-click": "swaync"
-    },
-    "custom/lock": {
-        "format": "󰍁 ",
-        "tooltip": false,
-        "on-click": "swaync"
-    },
-    "custom/reboot": {
-        "format": "󰜉 ",
-        "tooltip": false,
-        "on-click": "powerctl"
-    },
-    "custom/power": {
-        "format": " ",
-        "tooltip": false,
-        "on-click": "powerctl"
-    },
-    "pulseaudio/slider": {
-        "min": 0,
-        "max": 100,
-        "orientation": "horizontal"
-    },
-    "wlr/taskbar": {
-    "format": "{icon}",
-    "icon-size": 13,
-   
-    "tooltip-format": "{title}",
-    "on-click": "activate",
-    "on-click-middle": "close",
-    "active-first": true,
-    "ignore-list": [
-       "Alacritty"
-    ],
-    "app_ids-mapping": {
-      "firefoxdeveloperedition": "firefox-developer-edition"
-    },
-    "rewrite": {
-        "Firefox Web Browser": "Firefox",
-        "Foot Server": "Terminal"
-    }
-}
+
+"custom/notifications": {
+  "format": " ",
+  "tooltip": false,
+  "exec": "swaync-client -c",
+  "on-click": "swaync-client -t"
+},
 }
