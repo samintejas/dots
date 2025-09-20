@@ -47,6 +47,7 @@
 .notification {
     border-radius: 10px;
     padding: 0;
+    margin: 10px;
     border: 1px solid @noti-close-bg;
     background: @noti-bg-darker;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.75);

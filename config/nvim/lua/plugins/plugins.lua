@@ -67,16 +67,11 @@ return {
         },
     },
 
-    -- no dashboard as it is unnecessary
-
-    -- File Explorer
     ---@type LazySpec
     {
         "mikavilpas/yazi.nvim",
         event = "VeryLazy",
         dependencies = {
-            -- check the installation instructions at
-            -- https://github.com/folke/snacks.nvim
             "folke/snacks.nvim"
         },
         keys = {
@@ -89,16 +84,12 @@ return {
 
         ---@type YaziConfig | {}
         opts = {
-            -- if you want to open yazi instead of netrw, see below for more info
             open_for_directories = false,
             keymaps = {
                 show_help = "<f1>",
             },
         },
-        -- 👇 if you use `open_for_directories=true`, this is recommended
         init = function()
-            -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
-            -- vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
         end,
     },
@@ -236,83 +227,6 @@ return {
             })
         end,
     },
-    {
-        "neovim/nvim-lspconfig",
-        dependencies = {
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
-            "hrsh7th/cmp-nvim-lsp",
-        },
-        config = function()
-            local lspconfig = require("lspconfig")
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-            -- Configure LSP servers
-
-            -- Lua
-            lspconfig.lua_ls.setup({
-                capabilities = capabilities,
-                settings = {
-                    Lua = {
-                        diagnostics = { globals = { "vim" } },
-                        workspace = { library = vim.api.nvim_get_runtime_file("", true) },
-                        telemetry = { enable = false },
-                    },
-                },
-            })
-
-            -- Go
-            lspconfig.gopls.setup({
-                capabilities = capabilities,
-                settings = {
-                    gopls = {
-                        analyses = {
-                            unusedparams = true,
-                            shadow = true,
-                        },
-                        staticcheck = true,
-                        gofumpt = true,
-                    },
-                },
-            })
-
-            -- TypeScript/JavaScript (Next.js)
-            -- lspconfig.ts_ls.setup({
-            --     capabilities = capabilities,
-            --     init_options = {
-            --         preferences = {
-            --             disableSuggestions = false,
-            --         },
-            --     },
-            -- })
-
-            -- HTML
-            lspconfig.html.setup({
-                capabilities = capabilities,
-            })
-
-            -- CSS
-            lspconfig.cssls.setup({
-                capabilities = capabilities,
-            })
-
-            -- Tailwind CSS
-            lspconfig.tailwindcss.setup({
-                capabilities = capabilities,
-            })
-
-            -- JSON
-            lspconfig.jsonls.setup({
-                capabilities = capabilities,
-                settings = {
-                    json = {
-                        schemas = require("schemastore").json.schemas(),
-                        validate = { enable = true },
-                    },
-                },
-            })
-        end,
-    },
 
     -- Completion
     {
@@ -331,9 +245,6 @@ return {
             local cmp = require("cmp")
             local luasnip = require("luasnip")
             local lspkind = require("lspkind")
-
-            -- Load snippets
-            require("luasnip.loaders.from_vscode").lazy_load()
 
             cmp.setup({
                 snippet = {
