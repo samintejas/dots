@@ -20,7 +20,9 @@ export FZF_CTRL_R_OPTS="--height 40% "
 export FZF_CTRL_T_OPTS="--height 60% "
 export FZF_ALT_C_OPTS="--height 60% --preview 'exa --tree --icons --level=1 --color=always {}'"
 
-
+export PATH=$PATH:$(go env GOPATH)/bin
+source /usr/share/nvm/init-nvm.sh
+export EDITOR=nvim
 
 source /usr/share/fzf/key-bindings.zsh
 # source /usr/share/fzf/completion.zsh
@@ -40,7 +42,5 @@ alias hx='helix'
 
 eval "$(starship init zsh)"
 
-export PATH=$PATH:$(go env GOPATH)/bin
-source /usr/share/nvm/init-nvm.sh
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
