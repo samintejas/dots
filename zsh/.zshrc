@@ -44,4 +44,3 @@ export PATH=$PATH:$(go env GOPATH)/bin
 source /usr/share/nvm/init-nvm.sh
 
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
-alias fenv="source ~/.frappe/env/bin/activate"
