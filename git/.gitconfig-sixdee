@@ -1,5 +1,0 @@
-[http "https://gitlab.sixdee"]
-	sslCAInfo = /etc/ca-certificates/trust-source/anchors/gitlab.sixdee.crt
-[user]
-	name = samin
-	email = samin.tejas@6dtech.co.in

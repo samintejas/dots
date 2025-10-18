@@ -18,7 +18,7 @@ source /usr/share/fzf/key-bindings.zsh
 export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
 export FZF_CTRL_R_OPTS="--height 40% "
 export FZF_CTRL_T_OPTS="--height 60% "
-export FZF_ALT_C_OPTS="--height 60% --preview 'exa --tree --icons --level=1 --color=always {}'"
+export FZF_ALT_C_OPTS="--height 60% --preview 'eza --tree --icons --level=1 --color=always {}'"
 
 # Use arrow keys to navigate the menu
 zmodload -i zsh/complist
@@ -28,7 +28,7 @@ bindkey '^[[1;5C' forward-char
 bindkey '^[[1;5D' backward-char
 
 # Alias
-alias ls='exa --long --git'
+alias ls='eza --long --git'
 alias rm -rf='rm -i'
 alias grep='rg'
 

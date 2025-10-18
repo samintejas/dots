@@ -1,10 +1,13 @@
 [user]
-	name = samin
 	email = samintejas@gmail.com
+	name = samintejas
+
 [core]
-	autocrlf = input
-	editor = nvim
-[credential]
-	helper = store
-[includeIf "gitdir:~/sixdee/"]
-    path = ~/.gitconfig-sixdee
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    naviagate = true
+    dark = true
+[merge]
+    conflictStyle = zdiff3
