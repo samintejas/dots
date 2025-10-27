@@ -266,6 +266,27 @@ return {
 		end,
 	},
 
+	{
+		"mfussenegger/nvim-jdtls",
+		config = function()
+			-- only run when editing Java files
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "java",
+				callback = function()
+					local jdtls = require("jdtls")
+					local home = os.getenv("HOME")
+					local workspace = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+
+					local config = {
+						cmd = { "jdtls", "-data", workspace },
+						root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
+					}
+
+					jdtls.start_or_attach(config)
+				end,
+			})
+		end,
+	},
 	-- Completion
 	{
 		"hrsh7th/nvim-cmp",
