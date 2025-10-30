@@ -1,7 +1,27 @@
 return {
+	-- AI
+	{
+		"github/copilot.vim",
+		event = "InsertEnter",
+		config = function()
+			vim.g.copilot_no_tab_map = true
+			vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
+				expr = true,
+				replace_keycodes = false,
+			})
+			vim.g.copilot_filetypes = {
+				["*"] = false,
+				["javascript"] = true,
+				["typescript"] = true,
+				["lua"] = true,
+				["rust"] = true,
+				["go"] = true,
+				["python"] = true,
+			}
+		end,
+	},
 
-	-- Colorschemes
-
+	-- Colorscheme
 	{
 		"nyoom-engineering/oxocarbon.nvim",
 		lazy = false,
@@ -15,21 +35,6 @@ return {
 		end,
 	},
 
-	{ "neanias/everforest-nvim", priority = 1000 },
-	{ "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000 },
-	{
-		"catppuccin/nvim",
-		name = "catppuccin",
-		priority = 1000,
-		config = function()
-			require("catppuccin").setup({
-				flavour = "mocha", -- latte, frappe, macchiato, mocha
-				transparent_background = true,
-			})
-		end,
-	},
-	{ "folke/tokyonight.nvim", priority = 1000 },
-
 	-- Essential plugins
 	{ "nvim-lua/plenary.nvim" },
 	{ "nvim-tree/nvim-web-devicons" },
@@ -41,7 +46,7 @@ return {
 		config = function()
 			require("lualine").setup({
 				options = {
-					theme = "catppuccin",
+					theme = "auto",
 					component_separators = { left = "", right = "" },
 					section_separators = { left = "", right = "" },
 					globalstatus = true,
@@ -66,31 +71,29 @@ return {
 		},
 	},
 
-	---@type LazySpec
+	-- File Manager
 	{
 		"mikavilpas/yazi.nvim",
 		event = "VeryLazy",
-		dependencies = {
-			"folke/snacks.nvim",
-		},
 		keys = {
 			{
-				"<c-up>",
-				"<cmd>Yazi toggle<cr>",
-				desc = "Resume the last yazi session",
+				"<leader>e",
+				"<cmd>Yazi<cr>",
+				desc = "Open yazi",
+			},
+			{
+				"<leader>E",
+				"<cmd>Yazi cwd<cr>",
+				desc = "Open yazi in cwd",
 			},
 		},
-
-		---@type YaziConfig | {}
 		opts = {
 			open_for_directories = false,
 			keymaps = {
 				show_help = "<f1>",
 			},
+			floating_window_scaling_factor = 0.8,
 		},
-		init = function()
-			vim.g.loaded_netrwPlugin = 1
-		end,
 	},
 
 	-- Fuzzy Finder
@@ -253,23 +256,20 @@ return {
 			})
 		end,
 	},
-
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
-			local lspconfig = require("lspconfig")
-			lspconfig.gopls.setup({})
-			lspconfig.rust_analyzer.setup({})
-			lspconfig.jsonls.setup({})
-			lspconfig.pylsp.setup({})
-			lspconfig.lua_ls.setup({})
+			local servers = { "gopls", "rust_analyzer", "jsonls", "pylsp", "lua_ls" }
+
+			for _, lsp in ipairs(servers) do
+				vim.lsp.config[lsp] = {}
+			end
 		end,
 	},
-
 	{
 		"mfussenegger/nvim-jdtls",
+		ft = "java",
 		config = function()
-			-- only run when editing Java files
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "java",
 				callback = function()
@@ -287,6 +287,7 @@ return {
 			})
 		end,
 	},
+
 	-- Completion
 	{
 		"hrsh7th/nvim-cmp",
@@ -310,7 +311,8 @@ return {
 			})
 		end,
 	},
-	-- Formatting and linting
+
+	-- Formatting
 	{
 		"stevearc/conform.nvim",
 		event = { "BufWritePre" },
@@ -336,32 +338,29 @@ return {
 			},
 		},
 	},
-	-- Additional dependencies
-	{
-		"b0o/schemastore.nvim", -- JSON schemas for better JSON support
-	},
 
 	-- Essential editing plugins
 	{
-		"windwp/nvim-autopairs", -- Auto pairs for brackets, quotes, etc.
-		event = "InsertEnter",
-		opts = {
-			check_ts = true,
-		},
-	},
-	{
-		"numToStr/Comment.nvim", -- Easy code commenting
+		"numToStr/Comment.nvim",
 		opts = {},
 	},
-	{ "echasnovski/mini.nvim", version = "*" },
+	{
+		"echasnovski/mini.pairs",
+		event = "VeryLazy",
+		opts = {},
+	},
+	{
+		"kylechui/nvim-surround",
+		version = "*",
+		event = "VeryLazy",
+		opts = {},
+	},
+
+	-- Helper plugins
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
-		opts = {
-			-- your configuration comes here
-			-- or leave it empty to use the default settings
-			-- refer to the configuration section below
-		},
+		opts = {},
 		keys = {
 			{
 				"<leader>?",
@@ -404,14 +403,6 @@ return {
 			vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { desc = "Quickfix List" })
 		end,
 	},
-
-	-- Additional utility plugins
-	{
-		"kylechui/nvim-surround",
-		version = "*",
-		event = "VeryLazy",
-		opts = {},
-	},
 	{
 		"RRethy/vim-illuminate",
 		event = "BufReadPost",
@@ -426,15 +417,9 @@ return {
 		config = function(_, opts)
 			require("illuminate").configure(opts)
 
-			-- Set highlighting
 			vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Visual" })
 			vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Visual" })
 			vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Visual" })
 		end,
-	},
-	{
-		"echasnovski/mini.pairs",
-		event = "VeryLazy",
-		opts = {},
 	},
 }

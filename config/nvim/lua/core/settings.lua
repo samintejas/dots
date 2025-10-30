@@ -5,8 +5,8 @@ opt.cursorline = true
 opt.number = true
 opt.relativenumber = true
 opt.termguicolors = true
-opt.signcolumn = "yes"  -- Always show sign column for diagnostics
-opt.showmode = false    -- Mode is shown in the status line
+opt.signcolumn = "yes" -- Always show sign column for diagnostics
+opt.showmode = false -- Mode is shown in the status line
 
 -- Indentation
 opt.tabstop = 4
@@ -29,16 +29,16 @@ opt.smartcase = true
 
 -- Editor behavior
 opt.wrap = false
-opt.scrolloff = 8      -- Keep 8 lines above/below cursor when scrolling
-opt.sidescrolloff = 8  -- Keep 8 columns left/right of cursor when scrolling horizontally
-opt.updatetime = 50    -- Faster update time for better UX
+opt.scrolloff = 8 -- Keep 8 lines above/below cursor when scrolling
+opt.sidescrolloff = 8 -- Keep 8 columns left/right of cursor when scrolling horizontally
+opt.updatetime = 50 -- Faster update time for better UX
 
 -- Set leader key
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- replace ~ with the new character
-vim.opt.fillchars = {eob = "-"}
+vim.opt.fillchars = { eob = " " }
 
 -- disable netrw
 vim.g.loaded_netrw = 1
