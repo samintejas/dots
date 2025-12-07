@@ -44,7 +44,9 @@ vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, { desc = "Show diagn
 vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics<CR>", { desc = "Diagnostics list" })
 
 -- Formatting
-vim.keymap.set({ "n", "v" }, "<leader>fm", "<cmd>lua require('conform').format()<CR>", { desc = "Format code" })
+vim.keymap.set({ "n", "v" }, "<leader>fm", function()
+	require("conform").format()
+end, { desc = "Format code" })
 
 -- System clipboard
 vim.keymap.set("v", "<leader>y", '"+y', { desc = "Copy to system clipboard" })

@@ -1,25 +1,24 @@
 return {
 	-- AI
-	{
-		"github/copilot.vim",
-		event = "InsertEnter",
-		config = function()
-			vim.g.copilot_no_tab_map = true
-			vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
-				expr = true,
-				replace_keycodes = false,
-			})
-			vim.g.copilot_filetypes = {
-				["*"] = false,
-				["javascript"] = true,
-				["typescript"] = true,
-				["lua"] = true,
-				["rust"] = true,
-				["go"] = true,
-				["python"] = true,
-			}
-		end,
-	},
+	-- { "github/copilot.vim",
+	-- 	event = "InsertEnter",
+	-- 	config = function()
+	-- 		vim.g.copilot_no_tab_map = true
+	-- 		vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
+	-- 			expr = true,
+	-- 			replace_keycodes = false,
+	-- 		})
+	-- 		vim.g.copilot_filetypes = {
+	-- 			["*"] = false,
+	-- 			["javascript"] = true,
+	-- 			["typescript"] = true,
+	-- 			["lua"] = true,
+	-- 			["rust"] = true,
+	-- 			["go"] = true,
+	-- 			["python"] = true,
+	-- 		}
+	-- 	end,
+	-- },
 
 	-- Colorscheme
 	{
@@ -75,18 +74,6 @@ return {
 	{
 		"mikavilpas/yazi.nvim",
 		event = "VeryLazy",
-		keys = {
-			{
-				"<leader>e",
-				"<cmd>Yazi<cr>",
-				desc = "Open yazi",
-			},
-			{
-				"<leader>E",
-				"<cmd>Yazi cwd<cr>",
-				desc = "Open yazi in cwd",
-			},
-		},
 		opts = {
 			open_for_directories = false,
 			keymaps = {
@@ -131,30 +118,52 @@ return {
 					"vim",
 					"vimdoc",
 					"query",
-					"rust",
-					"go",
+					"javascript",
 					"typescript",
 					"tsx",
-					"javascript",
 					"html",
 					"css",
+					"scss",
 					"json",
+					"jsonc",
+					"yaml",
+					"toml",
+					"rust",
+					"go",
+					"gomod",
+					"gosum",
+					"gowork",
+					"python",
+					"dockerfile",
+					"terraform",
+					"hcl",
+					"bash",
+					"fish",
 					"markdown",
 					"markdown_inline",
+					"xml",
+					"graphql",
+					"git_config",
+					"git_rebase",
+					"gitcommit",
+					"gitignore",
+					"gitattributes",
+					"regex",
+					"sql",
 				},
-				sync_install = false,
 				auto_install = true,
 				highlight = {
 					enable = true,
-					additional_vim_regex_highlighting = false,
 				},
+
 				indent = { enable = true },
+
 				incremental_selection = {
 					enable = true,
 					keymaps = {
 						init_selection = "<C-space>",
 						node_incremental = "<C-space>",
-						scope_incremental = "<nop>",
+						scope_incremental = false,
 						node_decremental = "<bs>",
 					},
 				},
@@ -193,7 +202,6 @@ return {
 					end)
 					return "<Ignore>"
 				end, { expr = true, desc = "Next hunk" })
-
 				map("n", "[h", function()
 					if vim.wo.diff then
 						return "[h"
@@ -228,7 +236,7 @@ return {
 		},
 	},
 
-	-- LSP Configuration
+	-- Mason for installing LSP servers
 	{
 		"williamboman/mason.nvim",
 		opts = {
@@ -248,46 +256,135 @@ return {
 			require("mason-lspconfig").setup({
 				ensure_installed = {
 					"rust_analyzer",
+					"ts_ls",
 					"jsonls",
-					"pylsp",
 					"gopls",
 					"lua_ls",
+					"html",
+					"cssls",
+					"emmet_ls",
 				},
 			})
 		end,
 	},
+
+	-- Native LSP config (Neovim 0.11+)
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
-			local servers = { "gopls", "rust_analyzer", "jsonls", "pylsp", "lua_ls" }
+			config = function()
+				local lspconfig = require("lspconfig")
+				local capabilities = require("cmp_nvim_lsp").default_capabilities()
+				local on_attach = function(client, bufnr)
+					vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+				end
 
-			for _, lsp in ipairs(servers) do
-				vim.lsp.config[lsp] = {}
+				vim.lsp.config("*", {
+					capabilities = capabilities,
+					on_attach = on_attach,
+					root_markers = { ".git" },
+				})
+
+				-- Lua
+				vim.lsp.config("lua_ls", {
+					settings = {
+						Lua = {
+							runtime = { version = "LuaJIT" },
+							diagnostics = { globals = { "vim" } },
+							workspace = {
+								checkThirdParty = false,
+								library = vim.api.nvim_get_runtime_file("", true),
+							},
+							telemetry = { enable = false },
+						},
+					},
+				})
+
+				-- Rust
+				vim.lsp.config("rust_analyzer", {
+					settings = {
+						["rust-analyzer"] = {
+							checkOnSave = { command = "clippy" },
+						},
+					},
+				})
+
+				-- Go
+				vim.lsp.config("gopls", {
+					settings = {
+						gopls = {
+							analyses = { unusedparams = true },
+							staticcheck = true,
+						},
+					},
+				})
+
+				-- Python
+				vim.lsp.config("pyright", {})
+
+				vim.lsp.config("jsonls", {})
+
+				-- TypeScript / JavaScript (Next.js)
+				vim.lsp.config("ts_ls", {
+					capabilities = capabilities,
+					on_attach = on_attach,
+				})
+
+				-- HTML for Next.js pages/app dirs
+				vim.lsp.config("html", {
+					capabilities = capabilities,
+					on_attach = on_attach,
+				})
+
+				-- CSS (Tailwind works on top of this)
+				vim.lsp.config("cssls", {
+					capabilities = capabilities,
+					on_attach = on_attach,
+				})
+
+				-- Emmet for JSX autofill
+				vim.lsp.config("emmet_ls", {
+					capabilities = capabilities,
+					on_attach = on_attach,
+					filetypes = { "html", "css", "javascriptreact", "typescriptreact" },
+				})
+
+				vim.lsp.enable({
+					"lua_ls",
+					"ts_ls",
+					"html",
+					"cssls",
+					"emmet_ls",
+					"rust_analyzer",
+					"gopls",
+					"pyright",
+					"jsonls",
+				})
+
+				vim.diagnostic.config({
+					virtual_text = true,
+					underline = true,
+					update_in_insert = false,
+					severity_sort = true,
+					float = {
+						border = "rounded",
+						source = "always",
+					},
+				})
+
+				local signs = {
+					Error = "󰅚 ",
+					Warn = "󰀪 ",
+					Hint = "󰌶 ",
+					Info = "󰋽 ",
+				}
+				for type, icon in pairs(signs) do
+					local hl = "DiagnosticSign" .. type
+					vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+				end
 			end
 		end,
 	},
-	{
-		"mfussenegger/nvim-jdtls",
-		ft = "java",
-		config = function()
-			vim.api.nvim_create_autocmd("FileType", {
-				pattern = "java",
-				callback = function()
-					local jdtls = require("jdtls")
-					local home = os.getenv("HOME")
-					local workspace = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-
-					local config = {
-						cmd = { "jdtls", "-data", workspace },
-						root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
-					}
-
-					jdtls.start_or_attach(config)
-				end,
-			})
-		end,
-	},
-
 	-- Completion
 	{
 		"hrsh7th/nvim-cmp",
