@@ -4,7 +4,7 @@ app:
     sourcetype: local
     git: samin.dev
     branch: samin.dev
-    source: /home/samin/sixdee/billing-kt
+    source: /home/samin/tmp/mindmirror/
     dest: /home/samin/tmp/mindmirror/public
   styles:
     path: /home/samin/.config/mindmirror/styles
