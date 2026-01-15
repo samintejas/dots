@@ -1,24 +1,28 @@
 return {
 	-- AI
-	-- { "github/copilot.vim",
-	-- 	event = "InsertEnter",
-	-- 	config = function()
-	-- 		vim.g.copilot_no_tab_map = true
-	-- 		vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
-	-- 			expr = true,
-	-- 			replace_keycodes = false,
-	-- 		})
-	-- 		vim.g.copilot_filetypes = {
-	-- 			["*"] = false,
-	-- 			["javascript"] = true,
-	-- 			["typescript"] = true,
-	-- 			["lua"] = true,
-	-- 			["rust"] = true,
-	-- 			["go"] = true,
-	-- 			["python"] = true,
-	-- 		}
-	-- 	end,
-	-- },
+	{
+		"github/copilot.vim",
+		event = "InsertEnter",
+		config = function()
+			vim.g.copilot_no_tab_map = true
+			vim.keymap.set("i", "<C-J>", 'copilot#Accept("\\<CR>")', {
+				expr = true,
+				replace_keycodes = false,
+			})
+			vim.g.copilot_filetypes = {
+				["*"] = false,
+				["javascript"] = true,
+				["typescript"] = true,
+				["lua"] = true,
+				["rust"] = true,
+				["go"] = true,
+				["java"] = true,
+				["python"] = true,
+				["html"] = true,
+				["css"] = true,
+			}
+		end,
+	},
 
 	-- Colorscheme
 	{
@@ -169,71 +173,6 @@ return {
 				},
 			})
 		end,
-	},
-
-	-- Git Integration
-	{
-		"lewis6991/gitsigns.nvim",
-		opts = {
-			signs = {
-				add = { text = "│" },
-				change = { text = "│" },
-				delete = { text = "_" },
-				topdelete = { text = "‾" },
-				changedelete = { text = "~" },
-				untracked = { text = "┆" },
-			},
-			on_attach = function(bufnr)
-				local gs = package.loaded.gitsigns
-
-				local function map(mode, l, r, opts)
-					opts = opts or {}
-					opts.buffer = bufnr
-					vim.keymap.set(mode, l, r, opts)
-				end
-
-				-- Navigation
-				map("n", "]h", function()
-					if vim.wo.diff then
-						return "]h"
-					end
-					vim.schedule(function()
-						gs.next_hunk()
-					end)
-					return "<Ignore>"
-				end, { expr = true, desc = "Next hunk" })
-				map("n", "[h", function()
-					if vim.wo.diff then
-						return "[h"
-					end
-					vim.schedule(function()
-						gs.prev_hunk()
-					end)
-					return "<Ignore>"
-				end, { expr = true, desc = "Previous hunk" })
-
-				-- Actions
-				map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage hunk" })
-				map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset hunk" })
-				map("v", "<leader>hs", function()
-					gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end, { desc = "Stage selected hunk" })
-				map("v", "<leader>hr", function()
-					gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end, { desc = "Reset selected hunk" })
-				map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage buffer" })
-				map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo stage hunk" })
-				map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset buffer" })
-				map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
-				map("n", "<leader>hb", function()
-					gs.blame_line({ full = true })
-				end, { desc = "Blame line" })
-				map("n", "<leader>hd", gs.diffthis, { desc = "Diff This" })
-				map("n", "<leader>hD", function()
-					gs.diffthis("~")
-				end, { desc = "Diff This ~" })
-			end,
-		},
 	},
 
 	-- Mason for installing LSP servers
@@ -498,25 +437,6 @@ return {
 			)
 			vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { desc = "Location List" })
 			vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { desc = "Quickfix List" })
-		end,
-	},
-	{
-		"RRethy/vim-illuminate",
-		event = "BufReadPost",
-		opts = {
-			delay = 200,
-			filetypes_denylist = {
-				"dirbuf",
-				"dirvish",
-				"fugitive",
-			},
-		},
-		config = function(_, opts)
-			require("illuminate").configure(opts)
-
-			vim.api.nvim_set_hl(0, "IlluminatedWordText", { link = "Visual" })
-			vim.api.nvim_set_hl(0, "IlluminatedWordRead", { link = "Visual" })
-			vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { link = "Visual" })
 		end,
 	},
 }
