@@ -6,6 +6,7 @@ cursor-style = block
 cursor-style-blink = false
 shell-integration-features = no-cursor
 
+
 window-padding-x = 12
 window-padding-y = 4
 window-padding-balance = true

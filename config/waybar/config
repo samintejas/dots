@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 26,
+    "height": 30,
     "modules-left": [
         "hyprland/workspaces",
         "custom/separator"
@@ -11,6 +11,8 @@
         "mpris",
         "custom/separatorsmall",
         "tray",
+        "custom/separatorsmall",
+        "bluetooth",
         "custom/separatorsmall",
         "network",
         "custom/separatorsmall",
@@ -26,9 +28,10 @@
             "warning": 50,
             "critical": 20
         },
+        "tooltip-format": "{capacity} % \n\n{timeTo} \nHealth: {health}",
         "format": "{icon} ",
-        "format-charging": " {icon} ",
-        "format-plugged": " {icon} ", 
+        "format-charging": " ",
+        "format-plugged": "󰂸 ", 
         "format-icons": [
             "",
             "",
@@ -38,6 +41,12 @@
         ],
         "max-length": 25
     },
+"hyprland/windowcount": {
+    "format": "{}",
+    "format-empty": "󱓼 ",
+    "format-windowed": "󱓺 ",
+    "separate-outputs": true
+},
     "hyprland/workspaces": {
         "format": "{icon}",
         "format-icons": {
@@ -46,7 +55,7 @@
             "persistent": ""
         },
         "on-click": "activate",
-        "all-outputs": true,
+        "all-outputs": false,
         "sort-by-number": true,
         "persistent-workspaces": {
             "1": [],
@@ -118,4 +127,12 @@
   "exec": "swaync-client -c",
   "on-click": "swaync-client -t"
 },
+"bluetooth": {
+	"format": "󰂯 ",
+	"format-disabled": "",
+	"format-connected": " ",
+	"tooltip-format": "{controller_alias}\t{controller_address}",
+	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
+}
 }

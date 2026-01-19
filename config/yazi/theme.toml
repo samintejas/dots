@@ -1,2 +1,6 @@
 [flavor]
 dark = "flexoki-dark"
+
+[indicator]
+preview = { }
+padding = { open = "█", close = "█" }
