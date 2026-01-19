@@ -20,6 +20,7 @@ return {
 				["python"] = true,
 				["html"] = true,
 				["css"] = true,
+				["tsx"] = true,
 			}
 		end,
 	},
