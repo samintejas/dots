@@ -11,7 +11,6 @@
     "modules-right": [
         "mpris",
         "tray",
-        "custom/notifications",
         "bluetooth",
         "network",
         "battery",
@@ -67,8 +66,6 @@
         },
         "tooltip-format": "{capacity}%  ·  {timeTo}\nHealth: {health}%",
         "format": "{icon}",
-        "format-charging": "󰻂",
-        "format-plugged": "󰪥",
         "max-length": 25,
         "format-icons": [
             "󰪞",
@@ -128,17 +125,11 @@
         "max-length": 48,
         "ellipsis": "…"
     },
-    "custom/notifications": {
-        "format": "󰵛",
-        "tooltip": false,
-        "on-click": "swaync-client -t",
-        "on-click-right": "swaync-client -d"
-    },
     "bluetooth": {
         "format": "󰻃",
         "format-disabled": "󰻃",
-        "format-connected": "󰻂",
-        "format-connected-battery": "󰻂",
+        "format-connected": "󰪥",
+        "format-connected-battery": "󰪥",
         "tooltip-format": "{controller_alias}  {controller_address}",
         "tooltip-format-connected": "{controller_alias}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "  {device_alias}",

@@ -1,447 +1,357 @@
-/* ─── Design Tokens ────────────────────────────────────────── */
-@define-color cc-bg         #0a0a0a;
-@define-color noti-bg       #1e1e2e;
-@define-color noti-bg-hover #313244;
-@define-color noti-border   #313244;
-@define-color text          #cdd6f4;
-@define-color text-dim      #585b70;
-@define-color overlay0      #45475a;
+@define-color base    #0a0a0a;
+@define-color surface #111111;
+@define-color overlay #1a1a1a;
+@define-color muted   #252525;
 
-@define-color red    #ef688e;
-@define-color green  #8ada83;
-@define-color peach  #f6d488;
-@define-color blue   #649cf8;
-@define-color teal   #57c1ff;
-@define-color mauve  #cba6f7;
-@define-color pink   #ef9cd8;
-@define-color border-active #505050;
+@define-color subtle  #3a3a3a;
+@define-color faint   #505050;
 
-/* ─── Base ────────────────────────────────────────────────── */
+@define-color text    #e0e0e0;
+@define-color dim     #808080;
+@define-color ghost   #484848;
+
+@define-color accent  #7c9bdf;
+@define-color red     #d97070;
+@define-color green   #82b582;
+@define-color yellow  #d4b06a;
+
+/* — Derived semantic tokens — */
+@define-color cc-bg           @base;
+@define-color noti-bg         @surface;
+@define-color noti-bg-hover   @overlay;
+@define-color noti-border     @muted;
+@define-color border-focus    @faint;
+
 * {
-    font-family: "GeistMono Nerd Font";
-    font-size: 13px;
-    transition: none;
+  all: unset;
+  box-sizing: border-box;
 }
 
-/* ─── Blank overlay ───────────────────────────────────────── */
+label,
+entry,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WINDOW SHELL
+   ══════════════════════════════════════════════════════════════ */
+
 .blank-window {
-    background: transparent;
+  background: transparent;
 }
 
-/* ─── Control Center ──────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   CONTROL CENTER
+   ══════════════════════════════════════════════════════════════ */
+
 .control-center {
-    background: @cc-bg;
-    border: none;
-    border-left: 2px solid @border-active;
-    border-radius: 0;
-    margin: 0;
-    box-shadow: none;
-    padding: 0;
+  background: @cc-bg;
+  border-left: 2px solid @border-focus;
+  min-width: 360px;
 }
 
 .control-center-list {
-    background: transparent;
-    padding: 0;
+  background: transparent;
+  padding: 0;
 }
 
 .control-center-list-placeholder {
-    color: @text-dim;
-    opacity: 0.4;
-    padding: 24px 16px;
-    font-size: 12px;
+  color: @ghost;
+  font-size: 11px;
+  padding: 12px 16px;
 }
 
+/* Notification rows inside CC */
 .control-center .notification-row {
-    background: transparent;
-    margin: 0;
-    padding: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
 }
 
-.control-center .notification-row:hover,
-.control-center .notification-row:focus {
-    background: alpha(@mauve, 0.05);
+.control-center .notification-row:hover {
+  background: alpha(@accent, 0.04);
 }
 
-/* ─── Floating notifications ──────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   FLOATING NOTIFICATIONS
+   ══════════════════════════════════════════════════════════════ */
+
 .floating-notifications {
-    margin-bottom: 36px;
+  padding-bottom: 56px;
 }
 
 .floating-notifications .notification-row {
-    background: transparent;
-    margin: 10px 10px 0 0;
+  background: transparent;
+  margin: 6px 8px 0 0;
 }
 
 .floating-notifications .notification {
-    border-radius: 0;
-    border: none;
-    border-left: 2px solid @border-active;
-    margin: 0;
-    padding: 0;
-    background: @noti-bg;
-    box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.85);
+  background: @noti-bg;
+  border-left: 2px solid @border-focus;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.7);
 }
 
 .floating-notifications .notification.critical {
-    border-left: 2px solid @red;
+  border-left-color: @red;
 }
 
-/* ─── Notification (shared) ──────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   NOTIFICATION  (shared base)
+   ══════════════════════════════════════════════════════════════ */
+
 .notification {
-    border-radius: 0;
-    border: none;
-    border-bottom: 1px solid @noti-border;
-    margin: 0;
-    padding: 0;
-    background: @noti-bg;
-    box-shadow: none;
+  background: @noti-bg;
+  border-bottom: 1px solid @noti-border;
 }
 
+/* CC urgency accents */
 .control-center .notification {
-    border-left: 2px solid @border-active;
+  border-left: 2px solid @border-focus;
 }
-
 .control-center .notification.critical {
-    border-left: 2px solid @red;
+  border-left-color: @red;
 }
-
 .control-center .notification.low {
-    border-left: 2px solid @overlay0;
+  border-left-color: @ghost;
 }
 
-/* ─── Notification content ───────────────────────────────── */
+/* Notification content area */
 .notification-content {
-    background: transparent;
-    padding: 10px 12px;
+  padding: 8px 32px 8px 10px; /* right padding: room for close button */
 }
 
+/* ── Typography ── */
 .app-name {
-    font-size: 10px;
-    color: @text-dim;
-    margin: 0 0 2px 0;
-    letter-spacing: 0.04em;
+  font-size: 10px;
+  color: @ghost;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .summary {
-    font-size: 12px;
-    font-weight: bold;
-    background: transparent;
-    color: @text;
-    margin: 0;
+  font-size: 12px;
+  font-weight: bold;
+  color: @text;
+  margin-top: 1px;
 }
 
 .time {
-    font-size: 10px;
-    background: transparent;
-    color: @text-dim;
-    margin: 0;
+  font-size: 10px;
+  color: @dim;
 }
 
 .body {
-    font-size: 12px;
-    background: transparent;
-    color: @text-dim;
-    margin-top: 3px;
-    line-height: 1.4;
+  font-size: 12px;
+  color: @dim;
+  margin-top: 3px;
+  line-height: 1.5;
 }
 
 .image {
-    background: transparent;
-    border-radius: 0;
-    margin: 10px 0 10px 12px;
+  margin: 8px 0 8px 10px;
 }
 
-/* ─── Close button ───────────────────────────────────────── */
+/* ── Close button ── */
 .close-button {
-    background: transparent;
-    color: @overlay0;
-    padding: 0;
-    border-radius: 0;
-    margin: 10px 8px 0 0;
-    box-shadow: none;
-    border: none;
-    min-width: 18px;
-    min-height: 18px;
-    font-size: 12px;
+  background: transparent;
+  color: @ghost;
+  padding: 2px 4px;
+  margin: 4px 4px 0 0;
+  min-width: 14px;
+  min-height: 14px;
+  font-size: 10px;
 }
 
 .close-button:hover {
-    background: alpha(@red, 0.12);
-    color: @red;
+  background: alpha(@red, 0.15);
+  color: @red;
 }
 
-/* ─── Actions ────────────────────────────────────────────── */
+/* ── Action buttons ── */
 .notification-default-action,
 .notification-action {
-    padding: 5px 10px;
-    margin: 0;
-    box-shadow: none;
-    background: transparent;
-    border: none;
-    border-top: 1px solid @noti-border;
-    color: @text-dim;
-    font-size: 11px;
+  background: transparent;
+  color: @dim;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-top: 1px solid @noti-border;
 }
 
 .notification-default-action:hover,
 .notification-action:hover {
-    background: @noti-bg-hover;
-    color: @text;
-}
-
-.notification-default-action {
-    border-radius: 0;
+  background: @noti-bg-hover;
+  color: @text;
 }
 
 .notification-action:last-child {
-    border-left: 1px solid @noti-border;
+  border-left: 1px solid @noti-border;
 }
 
-/* ─── Notification groups ────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   NOTIFICATION GROUPS
+   ══════════════════════════════════════════════════════════════ */
+
 .notification-group-headers {
-    font-weight: bold;
-    font-size: 10px;
-    color: @text-dim;
-    letter-spacing: 0.06em;
-    padding: 6px 12px 4px;
+  font-size: 10px;
+  font-weight: bold;
+  color: @dim;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
 }
 
 .notification-group-icon {
-    color: @mauve;
-    margin-right: 6px;
+  color: @accent;
+  margin-right: 6px;
 }
 
 .notification-group-collapse-button,
 .notification-group-close-all-button {
-    background: transparent;
-    border: none;
-    color: @text-dim;
-    min-width: 18px;
-    min-height: 18px;
-    font-size: 12px;
+  background: transparent;
+  color: @dim;
+  min-width: 16px;
+  min-height: 16px;
+  font-size: 11px;
 }
 
 .notification-group-collapse-button:hover,
 .notification-group-close-all-button:hover {
-    color: @red;
-    background: alpha(@red, 0.08);
+  background: alpha(@red, 0.1);
+  color: @red;
 }
 
-/* ─── Inline reply ───────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   INLINE REPLY
+   ══════════════════════════════════════════════════════════════ */
+
 .inline-reply {
-    margin-top: 6px;
+  margin-top: 4px;
 }
 
 .inline-reply-entry {
-    background: @noti-bg-hover;
-    color: @text;
-    caret-color: @blue;
-    border: 1px solid @noti-border;
-    border-radius: 0;
-    font-size: 12px;
+  background: @noti-bg-hover;
+  color: @text;
+  caret-color: @accent;
+  border: 1px solid @noti-border;
+  font-size: 12px;
+  padding: 3px 6px;
 }
 
 .inline-reply-button {
-    margin-left: 4px;
-    background: @noti-bg-hover;
-    border: 1px solid @noti-border;
-    border-radius: 0;
-    color: @text-dim;
-    font-size: 12px;
+  background: @noti-bg-hover;
+  color: @dim;
+  border: 1px solid @noti-border;
+  font-size: 12px;
+  margin-left: 4px;
+  padding: 3px 8px;
 }
 
 .inline-reply-button:disabled {
-    background: transparent;
-    color: @overlay0;
-    border: 1px solid transparent;
+  background: transparent;
+  color: @ghost;
 }
 
 .inline-reply-button:hover {
-    background: alpha(@blue, 0.12);
-    color: @blue;
-    border-color: @blue;
+  background: alpha(@accent, 0.15);
+  color: @accent;
+  border-color: @accent;
 }
 
-/* ─── Widget: Title ──────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   WIDGET: TITLE
+   ══════════════════════════════════════════════════════════════ */
+
 .widget-title {
-    color: @text-dim;
-    padding: 12px 16px 8px;
-    font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 0.1em;
-    border-bottom: 1px solid @noti-border;
+  color: @dim;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-bottom: 1px solid @noti-border;
 }
 
 .widget-title > button {
-    display: none;
+  display: none;
 }
 
-/* ─── Widget: DND ────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   WIDGET: DO NOT DISTURB
+   ══════════════════════════════════════════════════════════════ */
+
 .widget-dnd {
-    color: @text;
-    padding: 8px 16px;
-    font-size: 12px;
-    border-bottom: 1px solid @noti-border;
+  color: @text;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-bottom: 1px solid @noti-border;
 }
 
 .widget-dnd > switch {
-    border-radius: 999px;
-    background: @noti-border;
-    box-shadow: none;
-    border: none;
-    padding: 2px;
-    min-width: 36px;
-    min-height: 18px;
+  background: @muted;
+  border: none;
+  padding: 2px;
+  min-width: 32px;
+  min-height: 16px;
 }
 
 .widget-dnd > switch:checked {
-    background: @blue;
+  background: @accent;
 }
 
 .widget-dnd > switch slider {
-    background: @cc-bg;
-    border-radius: 999px;
-    min-width: 14px;
-    min-height: 14px;
+  background: @dim;
+  min-width: 10px;
+  min-height: 10px;
 }
 
-/* ─── Widget: MPRIS ──────────────────────────────────────── */
+.widget-dnd > switch:checked slider {
+  background: @base;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   WIDGET: MPRIS
+   ══════════════════════════════════════════════════════════════ */
+
 .widget-mpris {
-    background: @noti-bg;
-    border-bottom: 1px solid @noti-border;
-    padding: 0;
-    margin: 0;
+  background: @noti-bg;
+  border-bottom: 1px solid @noti-border;
 }
 
 .widget-mpris-player {
-    padding: 12px 14px;
+  padding: 8px 10px;
 }
 
 .widget-mpris-album-art {
-    border-radius: 0;
-    margin-right: 12px;
-    min-width: 56px;
-    min-height: 56px;
+  margin-right: 10px;
+  min-width: 48px;
+  min-height: 48px;
 }
 
 .widget-mpris-title {
-    font-weight: 700;
-    font-size: 13px;
-    color: @text;
+  font-weight: bold;
+  font-size: 12px;
+  color: @text;
 }
 
 .widget-mpris-subtitle {
-    font-size: 11px;
-    color: @text-dim;
-    margin-top: 2px;
+  font-size: 11px;
+  color: @dim;
+  margin-top: 2px;
 }
 
 .widget-mpris button {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    color: @text-dim;
-    border-radius: 0;
-    padding: 4px 8px;
-    min-width: 28px;
-    min-height: 28px;
-    font-size: 14px;
+  background: transparent;
+  color: @dim;
+  padding: 3px 6px;
+  min-width: 22px;
+  min-height: 22px;
+  font-size: 12px;
 }
 
 .widget-mpris button:hover {
-    color: @text;
-    background: @noti-bg-hover;
-}
-
-.widget-mpris > box > button {
-    border-top: 1px solid @noti-border;
-    border-radius: 0;
-    padding: 6px;
-    color: @text-dim;
-    background: transparent;
-}
-
-.widget-mpris > box > button:hover {
-    background: @noti-bg-hover;
-    color: @text;
-}
-
-/* ─── Widget: Calendar ───────────────────────────────────── */
-.widget-calendar {
-    background: transparent;
-    border-bottom: 1px solid @noti-border;
-    padding: 4px 0 8px;
-    color: @text;
-}
-
-.widget-calendar calendar {
-    background: transparent;
-    color: @text;
-    font-size: 12px;
-    border: none;
-    padding: 0 8px;
-}
-
-/* Month/year header row */
-.widget-calendar calendar header {
-    background: transparent;
-    padding: 4px 0 6px;
-    color: @text;
-    font-weight: bold;
-    font-size: 12px;
-}
-
-/* Prev / next month arrows */
-.widget-calendar calendar header button {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    color: @text-dim;
-    border-radius: 0;
-    padding: 2px 6px;
-    min-width: 24px;
-    min-height: 24px;
-    font-size: 13px;
-}
-
-.widget-calendar calendar header button:hover {
-    background: @noti-bg-hover;
-    color: @text;
-}
-
-/* Weekday name row */
-.widget-calendar calendar .day-name,
-.widget-calendar calendar label.day-name {
-    color: @text-dim;
-    font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 0.04em;
-    padding: 4px 2px;
-}
-
-/* Individual day cells */
-.widget-calendar calendar .day {
-    color: @text;
-    font-size: 12px;
-    border-radius: 0;
-    padding: 3px 2px;
-    min-width: 28px;
-    min-height: 24px;
-}
-
-.widget-calendar calendar .day:hover {
-    background: @noti-bg-hover;
-}
-
-/* Days from adjacent months */
-.widget-calendar calendar .day.other-month {
-    color: @overlay0;
-}
-
-/* Today */
-.widget-calendar calendar .day:selected,
-.widget-calendar calendar :selected {
-    background: alpha(@blue, 0.18);
-    color: @blue;
-    font-weight: bold;
+  background: @noti-bg-hover;
+  color: @text;
 }

@@ -1,0 +1,365 @@
+/* ══════════════════════════════════════════════════════════════
+   DESIGN TOKENS  (mirrors swaync palette)
+   ══════════════════════════════════════════════════════════════ */
+
+@define-color base    #0a0a0a;
+@define-color surface #111111;
+@define-color overlay #1a1a1a;
+@define-color muted   #252525;
+@define-color subtle  #3a3a3a;
+@define-color faint   #505050;
+@define-color text    #e0e0e0;
+@define-color dim     #808080;
+@define-color ghost   #484848;
+@define-color accent  #7c9bdf;
+@define-color red     #d97070;
+@define-color green   #82b582;
+@define-color yellow  #d4b06a;
+
+/* ══════════════════════════════════════════════════════════════
+   BASE WINDOW
+   ══════════════════════════════════════════════════════════════ */
+
+window,
+.background {
+    background-color: @base;
+    color: @text;
+}
+
+/* ── Dialogs ── */
+window.dialog,
+.dialog {
+    background-color: @surface;
+    border: 1px solid @subtle;
+    border-radius: 8px;
+}
+
+.dialog-content-area,
+.message-dialog-content {
+    padding: 20px 24px 8px;
+    spacing: 12px;
+}
+
+.dialog-action-box,
+.dialog-action-area {
+    padding: 12px 16px;
+    spacing: 8px;
+    border-top: 1px solid @muted;
+}
+
+.message-dialog .titlebar,
+.dialog .titlebar {
+    border-radius: 8px 8px 0 0;
+    padding: 12px 16px;
+}
+
+/* Message/body text in dialogs */
+.message-dialog-body,
+.dialog label {
+    padding: 4px 0;
+    line-height: 1.4;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HEADER BAR
+   ══════════════════════════════════════════════════════════════ */
+
+headerbar,
+.titlebar {
+    background-color: @surface;
+    border-bottom: 1px solid @muted;
+    box-shadow: none;
+    padding: 4px 8px;
+    min-height: 36px;
+}
+
+headerbar .title,
+headerbar .subtitle {
+    color: @text;
+}
+
+headerbar button {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: @dim;
+    border-radius: 3px;
+    padding: 3px 6px;
+    min-height: 24px;
+    min-width: 24px;
+}
+
+headerbar button:hover  { background: @overlay; color: @text; }
+headerbar button:active { background: @muted;   color: @text; }
+
+/* Window controls */
+headerbar button.close  { color: @red;    }
+headerbar button.close:hover { background: alpha(@red, 0.15); }
+
+/* ══════════════════════════════════════════════════════════════
+   BUTTONS
+   ══════════════════════════════════════════════════════════════ */
+
+button {
+    background-color: @overlay;
+    border: 1px solid @subtle;
+    border-radius: 5px;
+    color: @text;
+    box-shadow: none;
+    padding: 6px 14px;
+    min-height: 30px;
+}
+
+button:hover  { background-color: @muted;  border-color: @faint; }
+button:active { background-color: @subtle; }
+button:disabled { color: @ghost; border-color: @muted; }
+
+button.suggested-action {
+    background-color: @accent;
+    border-color: @accent;
+    color: @base;
+}
+
+button.destructive-action {
+    background-color: @red;
+    border-color: @red;
+    color: @base;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   ENTRIES
+   ══════════════════════════════════════════════════════════════ */
+
+entry {
+    background-color: @surface;
+    border: 1px solid @subtle;
+    border-radius: 5px;
+    color: @text;
+    box-shadow: none;
+    padding: 6px 10px;
+    min-height: 30px;
+    caret-color: @accent;
+}
+
+entry:focus {
+    border-color: @accent;
+    box-shadow: 0 0 0 1px alpha(@accent, 0.30);
+}
+
+entry:disabled {
+    color: @ghost;
+    background-color: @base;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LISTS / ROWS
+   ══════════════════════════════════════════════════════════════ */
+
+list,
+listview {
+    background-color: @surface;
+    border: 1px solid @muted;
+}
+
+row {
+    padding: 6px 10px;
+    color: @text;
+}
+
+row:hover   { background-color: @overlay; }
+row:selected { background-color: alpha(@accent, 0.15); color: @text; }
+
+/* ══════════════════════════════════════════════════════════════
+   MENUS & POPOVERS
+   ══════════════════════════════════════════════════════════════ */
+
+menu,
+.menu,
+.context-menu {
+    background-color: @surface;
+    border: 1px solid @subtle;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+    padding: 3px;
+}
+
+menuitem {
+    border-radius: 2px;
+    padding: 4px 10px;
+    color: @text;
+}
+
+menuitem:hover   { background-color: @overlay; }
+menuitem:disabled { color: @ghost; }
+
+/* Section headers inside menus */
+menuitem.separator {
+    background-color: @base;
+    border-top: 1px solid @muted;
+    padding: 0;
+    margin: 2px 0;
+}
+
+menuitem.separator > label {
+    color: @dim;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 5px 10px 2px;
+    background-color: @base;
+}
+
+separator,
+.separator {
+    background-color: @muted;
+    min-height: 1px;
+    margin: 3px 0;
+}
+
+popover {
+    background-color: @surface;
+    border: 1px solid @subtle;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+    border-radius: 4px;
+    padding: 4px;
+}
+
+popover > contents {
+    background-color: @surface;
+}
+
+/* ── Header/menu bar (app-level menu bar) ── */
+menubar {
+    background-color: @surface;
+    border-bottom: 1px solid @muted;
+    padding: 1px 4px;
+    color: @text;
+}
+
+menubar > item {
+    padding: 3px 8px;
+    border-radius: 2px;
+    color: @text;
+}
+
+menubar > item:hover,
+menubar > item:focus {
+    background-color: @overlay;
+    color: @text;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SCROLLBARS
+   ══════════════════════════════════════════════════════════════ */
+
+scrollbar {
+    background-color: transparent;
+}
+
+scrollbar slider {
+    background-color: @subtle;
+    border-radius: 2px;
+    min-width: 4px;
+    min-height: 4px;
+    margin: 2px;
+}
+
+scrollbar slider:hover  { background-color: @faint; }
+scrollbar slider:active { background-color: @dim;   }
+
+/* ══════════════════════════════════════════════════════════════
+   NOTEBOOKS / TABS
+   ══════════════════════════════════════════════════════════════ */
+
+notebook > header {
+    background-color: @surface;
+    border-bottom: 1px solid @muted;
+}
+
+notebook > header tab {
+    background-color: transparent;
+    color: @dim;
+    padding: 4px 14px;
+    border-bottom: 2px solid transparent;
+}
+
+notebook > header tab:checked {
+    color: @text;
+    border-bottom-color: @accent;
+}
+
+notebook > header tab:hover {
+    color: @text;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   CHECK & RADIO
+   ══════════════════════════════════════════════════════════════ */
+
+checkbutton check,
+radiobutton radio {
+    background-color: @surface;
+    border: 1px solid @subtle;
+    border-radius: 2px;
+    min-width: 14px;
+    min-height: 14px;
+}
+
+checkbutton check:checked,
+radiobutton radio:checked {
+    background-color: @accent;
+    border-color: @accent;
+    color: @base;
+}
+
+radiobutton radio { border-radius: 50%; }
+
+/* ══════════════════════════════════════════════════════════════
+   PROGRESS / SCALE
+   ══════════════════════════════════════════════════════════════ */
+
+progressbar trough {
+    background-color: @muted;
+    border-radius: 2px;
+    min-height: 4px;
+}
+
+progressbar progress {
+    background-color: @accent;
+    border-radius: 2px;
+}
+
+scale trough {
+    background-color: @muted;
+    border-radius: 2px;
+    min-height: 4px;
+}
+
+scale highlight {
+    background-color: @accent;
+    border-radius: 2px;
+}
+
+scale slider {
+    background-color: @text;
+    border-radius: 50%;
+    min-width: 14px;
+    min-height: 14px;
+    border: none;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+scale slider:hover  { background-color: @accent; }
+
+/* ══════════════════════════════════════════════════════════════
+   TOOLTIP
+   ══════════════════════════════════════════════════════════════ */
+
+tooltip {
+    background-color: @overlay;
+    border: 1px solid @subtle;
+    color: @text;
+    padding: 4px 8px;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}

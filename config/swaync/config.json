@@ -1,50 +1,54 @@
 {
+  "$schema": "/etc/xdg/swaync/configSchema.json",
   "positionX": "right",
-  "positionY": "bottom",
+  "positionY": "top",
   "layer": "overlay",
+  "control-center-layer": "top",
+  "layer-shell": true,
+  "cssPriority": "user",
   "control-center-margin-top": 0,
   "control-center-margin-bottom": 0,
   "control-center-margin-right": 0,
   "control-center-margin-left": 0,
-  "notification-margin": 2,
-  "notification-padding": 15,
-  "notification-icon-size": 32,
+  "control-center-width": 380,
   "notification-window-width": 400,
+  "notification-grouping": true,
   "timeout": 15,
   "timeout-low": 3,
-  "timeout-critical": 10,
+  "timeout-critical": 0,
+  "fit-to-screen": true,
+  "relative-timestamps": true,
   "hide-on-clear": true,
   "hide-on-action": true,
   "image-visibility": "when-available",
+  "transition-time": 200,
+  "keyboard-shortcuts": true,
+  "notification-inline-replies": false,
+  "notification-2fa-action": true,
+  "script-fail-notify": false,
   "widgets": [
     "title",
     "dnd",
     "mpris",
-    "calendar",
     "notifications"
   ],
   "widget-config": {
     "title": {
-      "text": "Notifications",
-      "clear-all-button": false
+      "text": "",
+      "clear-all-button": true,
+      "button-text": ""
     },
     "dnd": {
-      "text": "Do Not Disturb"
+      "text": ""
     },
     "mpris": {
       "image-size": 56,
-      "image-radius": 0
-    },
-    "calendar": {
-      "mode": "month",
-      "show-week-numbers": false,
-      "start-on-monday": true,
-      "format": {
-        "today": "<b><u>{}</u></b>"
-      }
+      "image-radius": 4,
+      "autohide": true,
+      "loop-carousel": false
     },
     "notifications": {
-      "show-count": true
+      "vexpand": true
     }
   }
 }
