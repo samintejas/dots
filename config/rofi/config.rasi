@@ -1,6 +1,6 @@
 configuration {
     modi:                           "drun";
-	font:							"JetBrainsMono Nerd Font 12";
+	font:							"GeistMono Nerd Font 12";
     show-icons:                     true;
     display-drun: 					"󰘵";
     drun-display-format:            "{icon} {name}";
@@ -27,7 +27,7 @@ prompt {
     vertical-align:                 0.5;
 	background-color: 				@al;
 	text-color: 					@ac;
-	font:							"JetBrainsMono Nerd Font 24";
+	font:							"GeistMono Nerd Font 24";
 }
 
 entry {

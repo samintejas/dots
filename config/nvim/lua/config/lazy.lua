@@ -18,7 +18,7 @@ require("lazy").setup({
 	spec = {
 		{ import = "plugins" },
 	},
-	install = { colorscheme = { "oxycarbon" } },
+	install = { colorscheme = { "oxocarbon" } },
 	checker = { enabled = false },
 	performance = {
 		rtp = {

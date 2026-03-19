@@ -157,12 +157,8 @@ return {
 					"sql",
 				},
 				auto_install = true,
-				highlight = {
-					enable = true,
-				},
-
+				highlight = { enable = true },
 				indent = { enable = true },
-
 				incremental_selection = {
 					enable = true,
 					keymaps = {
@@ -174,6 +170,37 @@ return {
 				},
 			})
 		end,
+	},
+
+	-- Git integration
+	{
+		"lewis6991/gitsigns.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		opts = {
+			signs = {
+				add = { text = "▎" },
+				change = { text = "▎" },
+				delete = { text = "" },
+				topdelete = { text = "" },
+				changedelete = { text = "▎" },
+				untracked = { text = "▎" },
+			},
+			on_attach = function(bufnr)
+				local gs = package.loaded.gitsigns
+				local map = function(mode, l, r, desc)
+					vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
+				end
+				map("n", "]h", gs.next_hunk, "Next hunk")
+				map("n", "[h", gs.prev_hunk, "Prev hunk")
+				map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
+				map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
+				map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
+				map("n", "<leader>hb", function()
+					gs.blame_line({ full = true })
+				end, "Blame line")
+				map("n", "<leader>hd", gs.diffthis, "Diff this")
+			end,
+		},
 	},
 
 	-- Mason for installing LSP servers
@@ -203,6 +230,7 @@ return {
 					"html",
 					"cssls",
 					"emmet_ls",
+					"pyright",
 				},
 			})
 		end,
@@ -211,120 +239,117 @@ return {
 	-- Native LSP config (Neovim 0.11+)
 	{
 		"neovim/nvim-lspconfig",
+		dependencies = { "hrsh7th/cmp-nvim-lsp" },
 		config = function()
-			config = function()
-				local lspconfig = require("lspconfig")
-				local capabilities = require("cmp_nvim_lsp").default_capabilities()
-				local on_attach = function(client, bufnr)
-					vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-				end
+			local capabilities = require("cmp_nvim_lsp").default_capabilities()
+			local on_attach = function(client, bufnr)
+				vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+			end
 
-				vim.lsp.config("*", {
-					capabilities = capabilities,
-					on_attach = on_attach,
-					root_markers = { ".git" },
-				})
+			vim.lsp.config("*", {
+				capabilities = capabilities,
+				on_attach = on_attach,
+				root_markers = { ".git" },
+			})
 
-				-- Lua
-				vim.lsp.config("lua_ls", {
-					settings = {
-						Lua = {
-							runtime = { version = "LuaJIT" },
-							diagnostics = { globals = { "vim" } },
-							workspace = {
-								checkThirdParty = false,
-								library = vim.api.nvim_get_runtime_file("", true),
-							},
-							telemetry = { enable = false },
+			-- Lua
+			vim.lsp.config("lua_ls", {
+				settings = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						diagnostics = { globals = { "vim" } },
+						workspace = {
+							checkThirdParty = false,
+							library = vim.api.nvim_get_runtime_file("", true),
 						},
+						telemetry = { enable = false },
 					},
-				})
+				},
+			})
 
-				-- Rust
-				vim.lsp.config("rust_analyzer", {
-					settings = {
-						["rust-analyzer"] = {
-							checkOnSave = { command = "clippy" },
-						},
+			-- Rust
+			vim.lsp.config("rust_analyzer", {
+				settings = {
+					["rust-analyzer"] = {
+						checkOnSave = { command = "clippy" },
 					},
-				})
+				},
+			})
 
-				-- Go
-				vim.lsp.config("gopls", {
-					settings = {
-						gopls = {
-							analyses = { unusedparams = true },
-							staticcheck = true,
-						},
+			-- Go
+			vim.lsp.config("gopls", {
+				settings = {
+					gopls = {
+						analyses = { unusedparams = true },
+						staticcheck = true,
 					},
-				})
+				},
+			})
 
-				-- Python
-				vim.lsp.config("pyright", {})
+			vim.lsp.config("pyright", {})
+			vim.lsp.config("jsonls", {})
 
-				vim.lsp.config("jsonls", {})
+			-- TypeScript / JavaScript
+			vim.lsp.config("ts_ls", {
+				capabilities = capabilities,
+				on_attach = on_attach,
+			})
 
-				-- TypeScript / JavaScript (Next.js)
-				vim.lsp.config("ts_ls", {
-					capabilities = capabilities,
-					on_attach = on_attach,
-				})
+			-- HTML
+			vim.lsp.config("html", {
+				capabilities = capabilities,
+				on_attach = on_attach,
+			})
 
-				-- HTML for Next.js pages/app dirs
-				vim.lsp.config("html", {
-					capabilities = capabilities,
-					on_attach = on_attach,
-				})
+			-- CSS
+			vim.lsp.config("cssls", {
+				capabilities = capabilities,
+				on_attach = on_attach,
+			})
 
-				-- CSS (Tailwind works on top of this)
-				vim.lsp.config("cssls", {
-					capabilities = capabilities,
-					on_attach = on_attach,
-				})
+			-- Emmet for JSX autofill
+			vim.lsp.config("emmet_ls", {
+				capabilities = capabilities,
+				on_attach = on_attach,
+				filetypes = { "html", "css", "javascriptreact", "typescriptreact" },
+			})
 
-				-- Emmet for JSX autofill
-				vim.lsp.config("emmet_ls", {
-					capabilities = capabilities,
-					on_attach = on_attach,
-					filetypes = { "html", "css", "javascriptreact", "typescriptreact" },
-				})
+			vim.lsp.enable({
+				"lua_ls",
+				"ts_ls",
+				"html",
+				"cssls",
+				"emmet_ls",
+				"rust_analyzer",
+				"gopls",
+				"pyright",
+				"jsonls",
+			})
 
-				vim.lsp.enable({
-					"lua_ls",
-					"ts_ls",
-					"html",
-					"cssls",
-					"emmet_ls",
-					"rust_analyzer",
-					"gopls",
-					"pyright",
-					"jsonls",
-				})
+			vim.diagnostic.config({
+				virtual_text = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = true,
+				float = {
+					border = "rounded",
+					source = "always",
+				},
+			})
 
-				vim.diagnostic.config({
-					virtual_text = true,
-					underline = true,
-					update_in_insert = false,
-					severity_sort = true,
-					float = {
-						border = "rounded",
-						source = "always",
-					},
-				})
-
-				local signs = {
-					Error = "󰅚 ",
-					Warn = "󰀪 ",
-					Hint = "󰌶 ",
-					Info = "󰋽 ",
-				}
-				for type, icon in pairs(signs) do
-					local hl = "DiagnosticSign" .. type
-					vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-				end
+			local signs = {
+				Error = "󰅚 ",
+				Warn = "󰀪 ",
+				Hint = "󰌶 ",
+				Info = "󰋽 ",
+			}
+			for type, icon in pairs(signs) do
+				local hl = "DiagnosticSign" .. type
+				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 			end
 		end,
 	},
+
 	-- Completion
 	{
 		"hrsh7th/nvim-cmp",
@@ -418,26 +443,13 @@ return {
 	{
 		"folke/trouble.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {
-			use_diagnostic_signs = true,
+		opts = {},
+		keys = {
+			{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics" },
+			{ "<leader>xw", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics" },
+			{ "<leader>xd", "<cmd>Trouble lsp toggle<cr>", desc = "LSP References / Definitions" },
+			{ "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List" },
+			{ "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List" },
 		},
-		config = function(_, opts)
-			require("trouble").setup(opts)
-			vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { desc = "Toggle Trouble" })
-			vim.keymap.set(
-				"n",
-				"<leader>xw",
-				"<cmd>TroubleToggle workspace_diagnostics<cr>",
-				{ desc = "Workspace Diagnostics" }
-			)
-			vim.keymap.set(
-				"n",
-				"<leader>xd",
-				"<cmd>TroubleToggle document_diagnostics<cr>",
-				{ desc = "Document Diagnostics" }
-			)
-			vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", { desc = "Location List" })
-			vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { desc = "Quickfix List" })
-		end,
 	},
 }

@@ -1,4 +1,3 @@
-
 {
   "positionX": "right",
   "positionY": "bottom",
@@ -20,14 +19,29 @@
   "widgets": [
     "title",
     "dnd",
+    "mpris",
+    "calendar",
     "notifications"
   ],
   "widget-config": {
     "title": {
-      "text": "Notifications"
+      "text": "Notifications",
+      "clear-all-button": false
     },
     "dnd": {
       "text": "Do Not Disturb"
+    },
+    "mpris": {
+      "image-size": 56,
+      "image-radius": 0
+    },
+    "calendar": {
+      "mode": "month",
+      "show-week-numbers": false,
+      "start-on-monday": true,
+      "format": {
+        "today": "<b><u>{}</u></b>"
+      }
     },
     "notifications": {
       "show-count": true

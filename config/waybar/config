@@ -1,138 +1,148 @@
 {
     "layer": "top",
     "position": "top",
-    "height": 30,
+    "height": 26,
+    "spacing": 0,
     "modules-left": [
         "hyprland/workspaces",
-        "custom/separator"
+        "hyprland/window"
     ],
     "modules-center": [],
     "modules-right": [
         "mpris",
-        "custom/separatorsmall",
         "tray",
-        "custom/separatorsmall",
+        "custom/notifications",
         "bluetooth",
-        "custom/separatorsmall",
         "network",
-        "custom/separatorsmall",
         "battery",
-        "custom/separatorsmall",
-        "clock",
-        "custom/separatorsmall"
+        "clock"
     ],
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "active": "",
+            "default": "",
+            "urgent": ""
+        },
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "all-outputs": false,
+        "sort-by-number": true,
+        "persistent-workspaces": {
+            "eDP-1": [
+                1,
+                2,
+                3,
+                4,
+                5
+            ],
+            "HDMI-A-1": [
+                6,
+                7,
+                8,
+                9,
+                10
+            ]
+        }
+    },
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 60,
+        "separate-outputs": true,
+        "rewrite": {
+            "(.+) — Zen Browser": "$1",
+            "(.+) - fish": "$1",
+            "(.+) - nvim": "$1",
+            "(.+) - zsh": "$1",
+            "Ghostty": "ghostty"
+        }
+    },
     "battery": {
         "bat": "BAT0",
-        "interval": 60,
+        "interval": 30,
         "states": {
             "warning": 50,
             "critical": 20
         },
-        "tooltip-format": "{capacity} % \n\n{timeTo} \nHealth: {health}",
-        "format": "{icon} ",
-        "format-charging": " ",
-        "format-plugged": "󰂸 ", 
-        "format-icons": [
-            "",
-            "",
-            "",
-            "",
-            ""
-        ],
-        "max-length": 25
-    },
-"hyprland/windowcount": {
-    "format": "{}",
-    "format-empty": "󱓼 ",
-    "format-windowed": "󱓺 ",
-    "separate-outputs": true
-},
-    "hyprland/workspaces": {
+        "tooltip-format": "{capacity}%  ·  {timeTo}\nHealth: {health}%",
         "format": "{icon}",
-        "format-icons": {
-            "active": "",
-            "default": "",
-            "persistent": ""
-        },
-        "on-click": "activate",
-        "all-outputs": false,
-        "sort-by-number": true,
-        "persistent-workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [],
-            "6": [],
-            "7": [],
-            "8": [],
-            "9": [],
-            "10": []
-        }
-    },
-    "clock": {
-        "format": "{:%I:%M %p}"
-    },
-    "tray": {
-        "icon-size": 18,
-        "spacing": 10
-    },
-   
-    "network": {
-        "interface": "wlp0s20f3",
-        "format": "{ifname}",
-        "format-wifi": " ",
-        "format-ethernet": " ",
-        "format-disconnected": " ",
-        "tooltip-format": "{ifname} via {gwaddr}  ",
-        "tooltip-format-wifi": "  {essid} ({signalStrength}%)",
-        "tooltip-format-ethernet": "{ifname} ",
-        "tooltip-format-disconnected": " ",
-        "max-length": 50
-    },
-    "hyprland/window": {
-        "format": "{}",
-        "max-length": 50,
-        "rewrite": {
-            "(.*) — Mozilla Firefox": "󰊠 $1",
-            "(.*) - fish": "> [$1]"
-        },
-        "separate-outputs": true
-    },
-    "custom/separator": {
-        "format": "    "
-    },
-    "custom/separatorsmall": {
-        "format": "  "
-    },
-    "mpris": {
-        "format": "{player_icon}   {artist} - {title}",
-        "format-paused": "{status_icon}   {artist} - {title}",
-        "player-icons": {
-            "default": "▶",
-            "mpv": "🎵",
-            "spotify": ""
-        },
-        "status-icons": {
-            "paused": "󰏤"
-        },
-        "ignored-players": [
-            "zen-browser"
+        "format-charging": "󰻂",
+        "format-plugged": "󰪥",
+        "max-length": 25,
+        "format-icons": [
+            "󰪞",
+            "󰪟",
+            "󰪠",
+            "󰪡",
+            "󰪢",
+            "󰪣",
+            "󰪤",
+            "󰪥"
         ]
     },
-
-"custom/notifications": {
-  "format": " ",
-  "tooltip": false,
-  "exec": "swaync-client -c",
-  "on-click": "swaync-client -t"
-},
-"bluetooth": {
-	"format": "󰂯 ",
-	"format-disabled": "",
-	"format-connected": " ",
-	"tooltip-format": "{controller_alias}\t{controller_address}",
-	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
-	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
-}
+    "clock": {
+        "format": "{:%I:%M %p}",
+        "format-alt": "{:%a %b %d  %I:%M %p}",
+        "tooltip-format": "{:%B %Y}",
+        "on-click": "swaync-client -t"
+    },
+    "tray": {
+        "icon-size": 16,
+        "spacing": 6
+    },
+    "network": {
+        "interface": "wlp0s20f3",
+        "format-wifi": "{icon}",
+        "format-ethernet": "󰪥",
+        "format-disconnected": "󱃓",
+        "tooltip-format-wifi": "{essid}  {signalStrength}%\n{gwaddr}",
+        "tooltip-format-ethernet": "{ifname}  {gwaddr}",
+        "tooltip-format-disconnected": "Disconnected",
+        "max-length": 20,
+        "format-icons": [
+            "󰪞",
+            "󰪠",
+            "󰪡",
+            "󰪣",
+            "󰪥"
+        ]
+    },
+    "mpris": {
+        "format": "{status_icon}  {artist} – {title}",
+        "format-paused": "{status_icon}  {artist} – {title}",
+        "format-stopped": "",
+        "status-icons": {
+            "playing": "▶",
+            "paused": "⏸",
+            "stopped": ""
+        },
+        "on-click": "playerctl play-pause",
+        "on-click-right": "playerctl next",
+        "on-click-middle": "playerctl previous",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous",
+        "ignored-players": [
+            "zen-browser"
+        ],
+        "max-length": 48,
+        "ellipsis": "…"
+    },
+    "custom/notifications": {
+        "format": "󰵛",
+        "tooltip": false,
+        "on-click": "swaync-client -t",
+        "on-click-right": "swaync-client -d"
+    },
+    "bluetooth": {
+        "format": "󰻃",
+        "format-disabled": "󰻃",
+        "format-connected": "󰻂",
+        "format-connected-battery": "󰻂",
+        "tooltip-format": "{controller_alias}  {controller_address}",
+        "tooltip-format-connected": "{controller_alias}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "  {device_alias}",
+        "max-length": 24,
+        "on-click": "ghostty -e bluetoothctl"
+    }
 }

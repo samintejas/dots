@@ -1,9 +1,12 @@
 # -------------------------
 # History
 # -------------------------
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=10000
+SAVEHIST=10000
 HISTFILE=~/.zsh_history
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt SHARE_HISTORY
 
 # -------------------------
 # Autocompletion
@@ -12,7 +15,6 @@ fpath+=~/.zfunc
 autoload -Uz compinit
 compinit
 
-# Menu select for completions
 zstyle ':completion:*' menu select
 
 # -------------------------
@@ -21,23 +23,23 @@ zstyle ':completion:*' menu select
 export PATH="$PATH:/home/samin/.local/bin"
 export GOPATH="$HOME/lib/go"
 export PATH="$PATH:$GOPATH/bin"
-export PATH=$PATH:$(go env GOPATH)/bin
 
 export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
-export FZF_CTRL_R_OPTS="--height 40% "
-export FZF_CTRL_T_OPTS="--height 60% "
+export FZF_CTRL_R_OPTS="--height 40%"
+export FZF_CTRL_T_OPTS="--height 60%"
 export FZF_ALT_C_OPTS="--height 60% --preview 'exa --tree --icons --level=1 --color=always {}'"
 
 export EDITOR=nvim
 
 # -------------------------
-# Lazy-load NVM (speedup)
+# Lazy-load NVM
 # -------------------------
 export NVM_DIR="$HOME/.nvm"
 
-slapnvm() {
+nvm_load() {
     if [ -s "$NVM_DIR/nvm.sh" ]; then
         source "$NVM_DIR/nvm.sh"
+        source "$NVM_DIR/bash_completion" 2>/dev/null
         echo "NVM loaded"
     else
         echo "NVM not found in $NVM_DIR"
@@ -47,8 +49,8 @@ slapnvm() {
 # -------------------------
 # FZF
 # -------------------------
-source /usr/share/fzf/key-bindings.zsh
-# source /usr/share/fzf/completion.zsh
+[[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
+[[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
 
 # -------------------------
 # Key bindings
@@ -63,9 +65,8 @@ bindkey '^[[1;5D' backward-char
 # Aliases
 # -------------------------
 alias ls='exa --long --git'
-alias rm-rf='rm -i'
+alias rm='rm -i'
 alias grep='rg'
-alias hx='helix'
 
 # -------------------------
 # Starship prompt

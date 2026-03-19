@@ -1,0 +1,154 @@
+;; --- Polls ---------------------------------------------------
+
+(defpoll clock_time :interval "1s"
+  `date +"%H:%M"`)
+
+(defpoll clock_date :interval "30s"
+  `date +"%A · %B %d"`)
+
+(defpoll calendar_body :interval "60s"
+  `~/.config/eww/scripts/calendar.sh`)
+
+(defpoll weather_desc :interval "30m"
+  `~/.config/eww/scripts/weather.sh --desc`)
+
+(defpoll weather_temp :interval "30m"
+  `~/.config/eww/scripts/weather.sh --temp`)
+
+(defpoll weather_icon :interval "30m"
+  `~/.config/eww/scripts/weather.sh --icon`)
+
+(defpoll weather_feels :interval "30m"
+  `~/.config/eww/scripts/weather.sh --feels`)
+
+(defpoll net_icon :interval "5s"
+  `~/.config/eww/scripts/network.sh --icon`)
+
+(defpoll net_status :interval "5s"
+  `~/.config/eww/scripts/network.sh --status`)
+
+(defpoll bt_icon :interval "3s"
+  `~/.config/eww/scripts/bluetooth.sh --icon`)
+
+(defpoll bt_status :interval "3s"
+  `~/.config/eww/scripts/bluetooth.sh --status`)
+
+(defpoll brightness_val :interval "1s"
+  `~/.config/eww/scripts/brightness.sh`)
+
+(defpoll volume_val :interval "1s"
+  `~/.config/eww/scripts/volume.sh`)
+
+(defpoll volume_icon :interval "1s"
+  `~/.config/eww/scripts/volume.sh --icon`)
+
+;; --- Window --------------------------------------------------
+
+(defwindow dashboard
+  :monitor 0
+  :geometry (geometry
+    :x "0px"
+    :y "26px"
+    :width "260px"
+    :anchor "top right")
+  :stacking "overlay"
+  :exclusive false
+  :focusable true
+  (dashboard-body))
+
+;; --- Root ----------------------------------------------------
+
+(defwidget dashboard-body []
+  (eventbox :onkeypress "if [[ '{}' == 'Escape' ]]; then eww close dashboard; fi"
+    (box :class "dashboard"
+         :orientation "v"
+         :space-evenly false
+      (controls-section)
+      (sep)
+      (datetime-section)
+      (sep)
+      (weather-section)
+      (sep)
+      (calendar-section))))
+
+(defwidget sep []
+  (box :class "sep"))
+
+;; --- Controls ------------------------------------------------
+
+(defwidget controls-section []
+  (box :class "section"
+       :orientation "v"
+       :space-evenly false
+       :spacing 10
+    ;; wifi + bluetooth row
+    (box :orientation "h" :space-evenly true
+      (box :orientation "h" :space-evenly false :spacing 6 :hexpand true
+        (label :class "ctrl-icon net-icon" :text net_icon)
+        (label :class "ctrl-label" :text net_status :limit-width 10))
+      (box :orientation "h" :space-evenly false :spacing 6 :hexpand true :halign "end"
+        (label :class "ctrl-icon bt-icon" :text bt_icon)
+        (label :class "ctrl-label" :text bt_status :limit-width 10)))
+    ;; brightness
+    (box :orientation "h" :space-evenly false :spacing 8 :hexpand true
+      (label :class "ctrl-icon" :text "󰃠")
+      (scale :class "ctrl-scale"
+             :min 0 :max 101
+             :active true
+             :hexpand true
+             :value brightness_val
+             :onchange "brightnessctl set {}% -q")
+      (label :class "ctrl-val" :text "${brightness_val}%"))
+    ;; volume
+    (box :orientation "h" :space-evenly false :spacing 8 :hexpand true
+      (label :class "ctrl-icon" :text volume_icon)
+      (scale :class "ctrl-scale"
+             :min 0 :max 101
+             :active true
+             :hexpand true
+             :value volume_val
+             :onchange "pactl set-sink-volume @DEFAULT_SINK@ {}%")
+      (label :class "ctrl-val" :text "${volume_val}%"))))
+
+;; --- Date / Time ---------------------------------------------
+
+(defwidget datetime-section []
+  (box :class "section"
+       :orientation "v"
+       :space-evenly false
+       :spacing 2
+    (label :class "big-time" :text clock_time :halign "start")
+    (label :class "big-date" :text clock_date :halign "start")))
+
+;; --- Weather -------------------------------------------------
+
+(defwidget weather-section []
+  (box :class "section"
+       :orientation "h"
+       :space-evenly false
+       :spacing 0
+    (box :orientation "v"
+         :space-evenly false
+         :spacing 4
+         :hexpand true
+         :valign "center"
+      (label :class "section-label" :text "WEATHER" :halign "start")
+      (label :class "weather-desc"  :text weather_desc :halign "start" :limit-width 16)
+      (label :class "weather-temp"  :text weather_temp :halign "start")
+      (label :class "weather-feels" :text weather_feels :halign "start"))
+    (label :class "weather-icon" :text weather_icon :valign "center" :halign "end")))
+
+;; --- Calendar ------------------------------------------------
+
+(defwidget calendar-section []
+  (box :class "section"
+       :orientation "v"
+       :space-evenly false
+       :spacing 8
+    (label :class "section-label" :text "CALENDAR" :halign "start")
+    (label :class "cal-body"
+           :markup true
+           :wrap true
+           :text calendar_body
+           :halign "start"
+           :valign "start")))

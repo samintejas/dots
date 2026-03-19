@@ -63,7 +63,7 @@ t = slideshow +1
 
 #samin
 #
-<Shift+X> = exec rm "$imv_current_file"; close
+<Shift+X> = exec rm -i "$imv_current_file"; close
 <Shift+W> = exec swww img $imv_current_file
 <Shift+M> = exec cp $imv_current_file $HOME/repo/zen/wallpapers
 

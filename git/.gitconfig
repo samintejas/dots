@@ -2,12 +2,29 @@
 	email = samintejas@gmail.com
 	name = samintejas
 
+[init]
+	defaultBranch = main
+
 [core]
-    pager = delta
+	pager = delta
+
 [interactive]
-    diffFilter = delta --color-only
+	diffFilter = delta --color-only
+
 [delta]
-    naviagate = true
-    dark = true
+	navigate = true
+	dark = true
+	line-numbers = true
+	side-by-side = false
+
 [merge]
-    conflictStyle = zdiff3
+	conflictStyle = zdiff3
+
+[pull]
+	rebase = false
+
+[push]
+	default = simple
+
+[fetch]
+	prune = true
