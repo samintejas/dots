@@ -1,7 +1,7 @@
 {
   "$schema": "/etc/xdg/swaync/configSchema.json",
   "positionX": "right",
-  "positionY": "top",
+  "positionY": "bottom",
   "layer": "overlay",
   "control-center-layer": "top",
   "layer-shell": true,
@@ -26,12 +26,7 @@
   "notification-inline-replies": false,
   "notification-2fa-action": true,
   "script-fail-notify": false,
-  "widgets": [
-    "title",
-    "dnd",
-    "mpris",
-    "notifications"
-  ],
+  "widgets": ["title", "dnd", "mpris", "notifications"],
   "widget-config": {
     "title": {
       "text": "",
@@ -42,8 +37,6 @@
       "text": ""
     },
     "mpris": {
-      "image-size": 56,
-      "image-radius": 4,
       "autohide": true,
       "loop-carousel": false
     },
