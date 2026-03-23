@@ -11,5 +11,7 @@
         "repo": "anthropics/claude-code"
       }
     }
-  }
+  },
+  "syntaxHighlightingDisabled": false,
+  "model": "opus[1m]"
 }

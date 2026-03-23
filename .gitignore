@@ -1,0 +1,24 @@
+# Ignore everything
+home/*
+home/.config/*
+
+# Keep specific home dotfiles
+!home/.claude/
+!home/.zshrc
+
+# Ignore claude internals except commands and settings
+home/.claude/*
+!home/.claude/commands/
+!home/.claude/settings.json
+
+# Keep specific configs
+!home/.config/hypr/
+!home/.config/nvim/
+!home/.config/quickshell/
+!home/.config/waybar/
+!home/.config/rofi/
+!home/.config/swaync/
+!home/.config/ghostty/
+!home/.config/yazi/
+!home/.config/imv/
+!home/.config/mindmirror/

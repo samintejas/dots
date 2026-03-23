@@ -220,8 +220,10 @@ button {
 .image {
   margin: 10px 0 10px 12px;
   border-radius: 4px;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 48px;
+  min-height: 48px;
+  max-width: 48px;
+  max-height: 48px;
 }
 
 /* ── Typography ── */
