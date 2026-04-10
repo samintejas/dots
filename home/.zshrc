@@ -64,11 +64,24 @@ bindkey '^[[1;5D' backward-char
 # -------------------------
 # Aliases
 # -------------------------
-alias ls='exa --long --git'
+alias ls='eza --long --git'
 alias rm='rm -i'
 alias grep='rg'
+alias chrome='google-chrome-unstable'
+
+# -------------------------
+# Plugins
+# -------------------------
+[[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # -------------------------
 # Starship prompt
 # -------------------------
 eval "$(starship init zsh)"
+
+export CHROME_REMOTE_DEBUGGING_URL="http://localhost:9222"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# opencode
+export PATH=/home/samin/.opencode/bin:$PATH

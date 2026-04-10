@@ -1,8 +1,21 @@
 * {
-  al:  #00000000;
-  bg:  #0a0a0a;
-  se:  #111111;
-  fg:  #e0e0e0;
-  ac:  #7c9bdf;
-  st:  #d4b06a;
+  al:       #00000000;
+  base:     #0a0a0a;
+  surface0: #1e1e2e;
+  surface1: #313244;
+  overlay0: #45475a;
+  overlay1: #585b70;
+  subtext:  #a6adc8;
+  text:     #cdd6f4;
+
+  blue:     #649cf8;
+  pink:     #ef9cd8;
+  red:      #ef688e;
+
+  bg:       @base;
+  fg:       @text;
+  muted:    @overlay0;
+  border:   @surface1;
+  accent:   @blue;
+  selected: @pink;
 }
