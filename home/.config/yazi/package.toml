@@ -3,10 +3,10 @@ deps = []
 
 [[flavor.deps]]
 use = "dangooddd/kanagawa"
-rev = "b32f205"
-hash = ""
+rev = "04985d1"
+hash = "c69a63981e254a3a06a11c2bf0e6af1d"
 
 [[flavor.deps]]
 use = "gosxrgxx/flexoki-dark"
-rev = "3e8cfba"
-hash = "56a96293138f09da7fae25ee405a4393"
+rev = "25d28ce"
+hash = "8e6dd7e42a127173e4535993d3e0e393"
