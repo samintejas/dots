@@ -3,13 +3,10 @@ home/*
 home/.config/*
 
 # Keep specific home dotfiles
-!home/.claude/
 !home/.zshrc
 
 # Ignore claude internals except commands and settings
 home/.claude/*
-!home/.claude/commands/
-!home/.claude/settings.json
 
 # Keep specific configs
 !home/.config/hypr/

@@ -84,3 +84,5 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # opencode
 export PATH=/home/samin/.opencode/bin:$PATH
+
+

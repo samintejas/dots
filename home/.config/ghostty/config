@@ -1,3 +1,4 @@
+copy-on-select = false
 font-family = GeistMono Nerd Font
 font-size = 12
 mouse-hide-while-typing = true
@@ -5,15 +6,13 @@ adjust-cursor-height = -10%
 
 cursor-style = block
 cursor-style-blink = false
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor,ssh-env,ssh-terminfo
 
 
 window-padding-x = 12
 window-padding-y = 4
 window-padding-balance = true
 
-copy-on-select = true
-# keybind = mouse-right = clipboard_paste
 
 # Colors
 foreground = "#cdd6f4"
@@ -42,5 +41,3 @@ palette = 15=#f4f4f5
 cursor-color = #f5e0dc
 selection-background = #585b70
 selection-foreground = #cdd6f4
-
-resize-overlay = never
