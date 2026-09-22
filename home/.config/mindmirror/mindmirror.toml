@@ -1,0 +1,12 @@
+port = 8080
+
+[output]
+dest = "/home/samin/.cache/mindmirror/public"
+
+[styles]
+page_stylesheet = ""
+
+[scripts]
+
+[defaults]
+layout = "default"

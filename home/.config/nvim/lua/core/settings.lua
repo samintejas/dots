@@ -7,6 +7,7 @@ opt.relativenumber = true
 opt.termguicolors = true
 opt.signcolumn = "yes" -- Always show sign column for diagnostics
 opt.showmode = false -- Mode is shown in the status line
+opt.winborder = "rounded" -- Global float border (0.11+); replaces per-plugin border opts
 
 -- Indentation
 opt.tabstop = 4

@@ -1,0 +1,5 @@
+module notifications
+singleton NotificationDrawerState 1.0 NotificationDrawerState.qml
+NotificationItem 1.0 NotificationItem.qml
+NotificationPopup 1.0 NotificationPopup.qml
+NotificationDrawer 1.0 NotificationDrawer.qml

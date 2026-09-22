@@ -1,5 +1,6 @@
 # Ignore everything
 home/*
+!home/.config/
 home/.config/*
 
 # Keep specific home dotfiles
@@ -19,3 +20,46 @@ home/.claude/*
 !home/.config/yazi/
 !home/.config/imv/
 !home/.config/mindmirror/
+
+# -----------------------------------------------------------------------------
+# Explicit excludes — app state, caches, credentials and generated config.
+# Listed last so they win over any whitelist rule above.
+# -----------------------------------------------------------------------------
+home/.config/btop/
+home/.config/bruno/
+home/.config/caveman/
+home/.config/composer/
+home/.config/create-next-app-nodejs/
+home/.config/dconf/
+home/.config/Element/
+home/.config/figma-linux/
+home/.config/git/
+home/.config/github-copilot/
+home/.config/go/
+home/.config/google*/
+home/.config/helix/
+home/.config/herdr/
+home/.config/JetBrains/
+home/.config/nextjs-nodejs/
+home/.config/opencode/
+home/.config/pritunl/
+home/.config/pulse/
+home/.config/qBittorrent/
+home/.config/rclone/
+home/.config/slack/
+home/.config/snyk/
+home/.config/spotify/
+home/.config/stripe/
+home/.config/systemd/
+home/.config/transmission*/
+home/.config/turborepo/
+home/.config/xdg-desktop-portal/
+home/.config/xsett*/
+home/.config/zen/
+home/.config/mimeapps.list
+
+# Editor/tooling backup droppings
+*-[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
+
+# lazy.nvim lockfile — plugin versions resolve per-machine
+home/.config/nvim/lazy-lock.json

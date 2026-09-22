@@ -1,131 +1,190 @@
 # Design Tokens
 
-Base: custom dark background (#0a0a0a instead of #1e1e2e)
+Audited against the configs on 2026-09-22. This describes what the configs
+**actually do**, not an aspiration — where a value disagrees with the system it
+is called out under [Known inconsistencies](#known-inconsistencies).
+
+There are two colour layers, and conflating them is what caused the previous
+drift:
+
+1. **A neutral grey ramp** — all shell chrome (bar, drawers, menus, surfaces,
+   body text). No hue. Roughly `#0a0a0a → #ffffff`.
+2. **A small semantic accent set** — state only (urgent, ok, warning, active,
+   info). Borrowed from Catppuccin Mocha.
+
+Rule of thumb: **shape and grey communicate structure, accent communicates
+state.** If a colour isn't signalling a state, it should come from the grey ramp.
 
 ---
 
-## Palette
+## Layer 1 — Neutral ramp
 
-### Base
+| Token       | Hex       | Used for                                        |
+| ----------- | --------- | ----------------------------------------------- |
+| `base`      | `#0a0a0a` | Root background: bar, drawers, wallpaper fallback, terminal, lock screen |
+| `surface`   | `#111111` | Raised cards: notification card, drawer panel, tray menu |
+| `hover`     | `#1a1a1a` | Hover fill on cards and menu rows                |
+| `empty`     | `#222222` | Empty workspace dot                              |
+| `border`    | `#252525` | Card and menu borders                            |
+| `occupied`  | `#3a3a3a` | Occupied workspace dot                           |
+| `ghost`     | `#484848` | Disabled text, low-urgency accent bar, separators |
+| `line`      | `#505050` | Drawer dividers; Hyprland active window border   |
+| `dim`       | `#555555` | Inactive glyph (network/bluetooth off), dot hover |
+| `muted`     | `#606060` | Paused media text, secondary menu text           |
+| `subtle`    | `#686868` | Notification timestamp and body-muted text       |
+| `text-dim`  | `#9a9a9a` | Window title, playing media text                 |
+| `text`      | `#b0b0b0` | Clock                                            |
+| `text-hi`   | `#e0e0e0` | Notification body, tray menu text                |
+| `text-max`  | `#ffffff` | Battery/network nominal state                    |
 
-| Token      | Hex       | Usage                     |
-| ---------- | --------- | ------------------------- |
-| `base`     | `#0a0a0a` | Terminal/bar background   |
-| `surface0` | `#1e1e2e` | Elevated surfaces         |
-| `surface1` | `#313244` | Borders, separators       |
-| `overlay0` | `#45475a` | Disabled, muted           |
-| `overlay1` | `#585b70` | Subtle text, inactive     |
-| `subtext`  | `#a6adc8` | Secondary text            |
-| `text`     | `#cdd6f4` | Primary text / foreground |
+Two ramp values sit outside the greys and are used as neutrals anyway:
 
-### Accent
-
-| Token          | Hex       | Usage                        |
-| -------------- | --------- | ---------------------------- |
-| `red`          | `#ef688e` | Errors, critical             |
-| `red-bright`   | `#f38ba8` | Urgent, critical states      |
-| `peach`        | `#f6d488` | Warnings                     |
-| `peach-bright` | `#f9e2af` | Warning states               |
-| `green`        | `#8ada83` | Success, battery ok          |
-| `green-bright` | `#a6e3a1` | Charging, connected          |
-| `teal`         | `#57c1ff` | Network, links               |
-| `teal-bright`  | `#7dcfff` | Active network               |
-| `blue`         | `#649cf8` | Primary accent               |
-| `blue-bright`  | `#89b4fa` | Bluetooth, info              |
-| `mauve`        | `#cba6f7` | Misc accent                  |
-| `pink`         | `#ef9cd8` | Active workspace, highlights |
-| `pink-bright`  | `#f5c2e7` | Cursor, selection            |
-| `flamingo`     | `#f2cdcd` | Gentle accent                |
-
-### Border / Window Manager
-
-| Token             | Hex       | Usage                    |
-| ----------------- | --------- | ------------------------ |
-| `border-active`   | `#505050` | Hyprland active border   |
-| `border-inactive` | `#24262a` | Hyprland inactive border |
+| Token      | Hex       | Used for                                    |
+| ---------- | --------- | ------------------------------------------- |
+| `overlay1` | `#585b70` | Wallpaper drawer placeholder; terminal selection bg |
+| `fg`       | `#cdd6f4` | Terminal foreground; wallpaper drawer text  |
 
 ---
 
-## Semantic Mappings
+## Layer 2 — Semantic accents
 
-| Role                   | Token          | Hex       |
-| ---------------------- | -------------- | --------- |
-| Background             | `base`         | `#0a0a0a` |
-| Foreground / text      | `text`         | `#cdd6f4` |
-| Muted text             | `overlay1`     | `#585b70` |
-| Dim text               | `overlay0`     | `#45475a` |
-| Primary accent         | `blue`         | `#649cf8` |
-| Active / selected      | `pink`         | `#ef9cd8` |
-| Success / ok           | `green`        | `#8ada83` |
-| Warning                | `peach`        | `#f6d488` |
-| Error / critical       | `red`          | `#ef688e` |
-| Network (connected)    | `text`         | `#cdd6f4` |
-| Network (disconnected) | `overlay0`     | `#45475a` |
-| Bluetooth (connected)  | `blue-bright`  | `#89b4fa` |
-| Bluetooth (off/idle)   | `overlay0`     | `#45475a` |
-| Battery ok             | `green`        | `#8ada83` |
-| Battery charging       | `green-bright` | `#a6e3a1` |
-| Battery warning        | `peach`        | `#f6d488` |
-| Battery critical       | `red-bright`   | `#f38ba8` |
+| Role                 | Token     | Hex       | Used in                                        |
+| -------------------- | --------- | --------- | ---------------------------------------------- |
+| Urgent / critical    | `red`     | `#f38ba8` | Battery ≤20%, wifi signal <40, urgent workspace, critical notification |
+| Warning              | `peach`   | `#fab387` | Battery ≤50%, wifi signal 40–69                |
+| Warning (notif)      | `yellow`  | `#f9e2af` | Notification "disconnected/failed" accent bar  |
+| Success / connected  | `green`   | `#a6e3a1` | Battery charging, notification "connected" accent bar |
+| Info / active        | `blue`    | `#89b4fa` | Bluetooth connected, notification default accent, active workspace on `HDMI-A-1` |
+| Active (primary)     | `pink`    | `#ef9cd8` | Active workspace on `eDP-1`, wallpaper drawer selection, rofi selection |
+
+The two active-workspace colours are deliberate: **pink marks the laptop panel,
+blue marks the external monitor**, so the bar tells you which screen has focus.
 
 ---
 
-## Per-Config Reference
+## Terminal / launcher palette
 
-### Ghostty (`config/ghostty/config`)
+Ghostty's ANSI palette and Rofi's theme share a separate Catppuccin-derived set.
+These are *not* used by the shell chrome.
 
-Background overridden to `#0a0a0a`.
+| Slot | Normal    | Bright    |
+| ---- | --------- | --------- |
+| 0/8  | `#45475a` | `#585b70` |
+| 1/9  | `#ef688e` | `#f38ba8` |
+| 2/10 | `#8ada83` | `#a6e3a1` |
+| 3/11 | `#f6d488` | `#f9e2af` |
+| 4/12 | `#649cf8` | `#89b4fa` |
+| 5/13 | `#ef9cd8` | `#f5c2e7` |
+| 6/14 | `#57c1ff` | `#7dcfff` |
+| 7/15 | `#e4e4e7` | `#f4f4f5` |
 
-### Waybar (`config/waybar/style.css`)
+Ghostty also sets `foreground #cdd6f4`, `background #0a0a0a`,
+`cursor-color #f5e0dc`, `selection-background #585b70`.
 
-Should use semantic mappings above.
-
-### Hyprland (`config/hypr/hyprland.conf`)
-
-- `col.active_border`: `border-active` (`#505050`)
-- `col.inactive_border`: `border-inactive` (`#24262a`)
-
-### Hyprlock (`config/hypr/hyprlock.conf`)
-
-- `$color1`: `border-active` (`rgba(80, 106, 150, 1.0)`)
-- `$foreground`: `text` (`rgba(205, 214, 244, 1.0)`)
-- `$background`: `base` transparent
-
-### Rofi (`config/rofi/colors.rasi`)
-
-Currently uses Ayu Mirage — should be updated to match this palette.
+Rofi (`rofi/colors.rasi`) maps: `bg=#0a0a0a`, `fg=#cdd6f4`, `muted=#45475a`,
+`border=#313244`, `accent=#649cf8`, `selected=#ef9cd8`.
 
 ---
 
-## Font
+## Typography
 
-- **Primary**: GeistMono Nerd Font, 12pt (terminal) / 13px (bar)
-- **Size scale**: terminal 12pt → bar 13px → window title 11px
+**One family everywhere: `GeistMono Nerd Font`.** No exceptions.
+
+| Surface                | Size   |
+| ---------------------- | ------ |
+| Ghostty                | 12 pt  |
+| Rofi list              | 12     |
+| Rofi prompt            | 14     |
+| Bar — clock, title, media | 13 px |
+| Bar — status glyphs    | 16 px  |
+| Drawers / notifications | 10–14 px |
+| Hyprlock clock         | 96     |
+| Hyprlock date          | 13     |
 
 ---
 
-## Icon System (Waybar)
+## Per-component reference
 
-All right-side modules use a single fixed icon — no variable-icon arrays.
+### Ghostty (`ghostty/config`)
+Background `base`, foreground `fg`, palette above. Padding 12×4, balanced.
 
-All right-side icons use `nf-md` (Material Design Nerd Font) exclusively — same grid, same stroke weight, consistent optical alignment.
+### Rofi (`rofi/config.rasi`, `rofi/colors.rasi`)
+480 px centred, 1 px `#313244` border, 4 px radius, 5 rows. Selection uses `pink`.
 
-| Module                  | Icon                   | Codepoint | Note                          |
-| ----------------------- | ---------------------- | --------- | ----------------------------- |
-| Battery 12.5%           | `󰪞` circle_slice_1    | U+F0A9E   | pie fills as level rises      |
-| Battery 25%             | `󰪟` circle_slice_2    | U+F0A9F   |                               |
-| Battery 37.5%           | `󰪠` circle_slice_3    | U+F0AA0   |                               |
-| Battery 50%             | `󰪡` circle_slice_4    | U+F0AA1   |                               |
-| Battery 62.5%           | `󰪢` circle_slice_5    | U+F0AA2   |                               |
-| Battery 75%             | `󰪣` circle_slice_6    | U+F0AA3   |                               |
-| Battery 87.5%           | `󰪤` circle_slice_7    | U+F0AA4   |                               |
-| Battery 100% / plugged  | `󰪥` circle_slice_8    | U+F0AA5   |                               |
-| Battery charging        | `󰻂` record_circle     | U+F0EC2   | pulse animation               |
-| WiFi (signal-based)     | `󰪞…󰪥` slices 1,3,4,6,8| U+F0A9E…  | dim→bright by signal          |
-| WiFi disconnected       | `󱃓` circle_off_outline | U+F10D3   | circle with slash             |
-| WiFi ethernet           | `󰪥` circle_slice_8    | U+F0AA5   | full = stable                 |
-| Bluetooth idle          | `󰧟` circle_small      | U+F09DF   | tiny dot = quiet              |
-| Bluetooth connected     | `󰻂` record_circle     | U+F0EC2   | dot-in-circle = paired device |
-| Notifications           | `󰵛` bell_circle_outline| U+F0D5B  | circle with bell              |
+### Quickshell bar (`quickshell/bar/`)
+32 px tall, `base` background, `Top` layer, exclusive zone 32.
+Left: workspaces, window title. Right: media, tray, bluetooth, network, battery, clock.
 
-**Rule**: All icons from `nf-md` family only. Shape communicates type, CSS color communicates state. Charging battery uses pulse animation. No percentage text.
+### Quickshell notifications (`quickshell/notifications/`)
+`NotificationItem.qml` is the only file with **named** colour properties —
+`bgColor`, `borderColor`, `textColor`, `mutedColor`, `ghostColor`, `accentColor`,
+`urgentColor`, `successColor`, `warnColor`, `hoverColor`. Every other QML file
+uses inline literals. Popups are bottom-right, 360 px wide.
+
+### Quickshell wallpaper (`quickshell/wallpaper/`)
+`Background` layer, `base` fallback. Drawer uses `pink` selection, `fg` text.
+
+### Hyprland (`hypr/hyprland.lua`)
+`col.active_border = rgb(505050)` (`line`), `col.inactive_border = rgb(24262A)`.
+Gaps 0, rounding 0, border 2, blur size 3 / vibrancy 0.2.
+
+### Hyprlock (`hypr/hyprlock.conf`)
+`$base = rgba(10,10,10,1.0)`, `$foreground = rgba(255,255,255,1.0)`,
+`$muted = rgba(88,91,112,1.0)` (= `overlay1`), `$background = rgba(0,0,0,0)`.
+Clock colon blinks at 1 Hz via `scripts/lock-clock.sh` as a liveness signal.
+
+### Neovim
+`oxocarbon` colorscheme with transparent `Normal`/`NormalFloat`/`NormalNC`/`FloatBorder`.
+Independent of the above — it inherits the terminal palette for ANSI only.
+
+---
+
+## Icons
+
+All status glyphs come from the `nf-md` (Material Design) Nerd Font range, so
+they share a grid and stroke weight.
+
+| Module    | State        | Glyph | Codepoint |
+| --------- | ------------ | ----- | --------- |
+| Battery   | any          | `󰪥`   | U+F0AA5   |
+| Network   | connected    | `󰪥`   | U+F0AA5   |
+| Network   | disconnected | `○`   | U+25CB    |
+| Bluetooth | connected    | `󰪥`   | U+F0AA5   |
+| Bluetooth | idle         | `○`   | U+25CB    |
+
+**Colour carries all state; the glyph never changes** (beyond present/absent).
+Battery pulses at 0.3↔1.0 opacity over 800 ms while charging — and only while
+charging, not when full.
+
+Workspace dots are `Rectangle`s, not glyphs: active 18×6 pill (r3), occupied
+8×8 (r4), empty 6×6 (r1.5), animated over 150 ms `OutQuint`.
+
+---
+
+## Known inconsistencies
+
+Real divergences, left as-is pending a decision:
+
+1. **Two warning oranges.** The bar uses `#fab387` (Catppuccin peach) for
+   battery ≤50% and mid wifi signal; notifications use `#f9e2af`; the terminal
+   palette uses `#f6d488`/`#f9e2af`. Three warm tones for one concept.
+2. **`#ffffff` for nominal battery/network.** Pure white is brighter than every
+   other bar element (clock is `#b0b0b0`), so idle status glyphs are the loudest
+   thing on the bar. `text` or `text-hi` would sit better.
+3. **Colours are inline literals** in every QML file except `NotificationItem.qml`.
+   There is no shared token singleton, which is the mechanical reason this
+   document drifted from the code in the first place. A `Theme.qml` singleton
+   imported by the bar, drawers and notifications would make drift impossible.
+4. **The grey ramp is finely subdivided** — `#484848`, `#505050`, `#555555`,
+   `#606060`, `#686868` are five steps within ~15% lightness, used across
+   different files for broadly similar jobs. Probably collapsible to three.
+
+---
+
+## Removed from this document
+
+Prior versions described a **Waybar** icon system with 8-step `circle_slice`
+battery pies and signal-scaled wifi glyphs. Waybar was replaced by Quickshell and
+none of that was ever implemented — the code has always used single fixed glyphs.
+It also carried a note that Rofi "should be updated" from Ayu Mirage; that was
+done, and `rofi/colors.rasi` now matches the palette.

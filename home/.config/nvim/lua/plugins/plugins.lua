@@ -1,6 +1,40 @@
 return {
     -- AI
     {
+        "nickjvandyke/opencode.nvim",
+        version = "*", -- Latest stable release
+        config = function()
+            ---@type opencode.Opts
+            vim.g.opencode_opts = {
+                -- Keep the integrated server in a split while preserving the editing window.
+                server = {
+                    start = function()
+                        vim.cmd("botright vsplit term://opencode --port | wincmd p")
+                    end,
+                },
+            }
+
+            local opencode = require("opencode")
+            local map = function(mode, lhs, rhs, desc)
+                vim.keymap.set(mode, lhs, rhs, { desc = desc })
+            end
+
+            -- Keep Ctrl-a/Ctrl-x available for native Vim motions and use one discoverable prefix.
+            map({ "n", "x" }, "<leader>oa", function() opencode.ask("@this: ") end, "Ask about current context")
+            map({ "n", "x" }, "<leader>os", opencode.select, "Select OpenCode action")
+            map("n", "<leader>on", function() opencode.command("session.new") end, "New OpenCode session")
+            map("n", "<leader>oi", function() opencode.command("session.interrupt") end, "Interrupt OpenCode")
+            map("n", "<leader>oc", function() opencode.command("session.compact") end, "Compact OpenCode session")
+            map("n", "<leader>ou", function() opencode.command("session.half.page.up") end, "Scroll OpenCode up")
+            map("n", "<leader>od", function() opencode.command("session.half.page.down") end, "Scroll OpenCode down")
+
+            vim.keymap.set({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end,
+                { desc = "Append range to OpenCode", expr = true })
+            vim.keymap.set("n", "goo", function() return opencode.operator("@this ") .. "_" end,
+                { desc = "Append line to OpenCode", expr = true })
+        end,
+    },
+    {
         "github/copilot.vim",
         event = "InsertEnter",
         config = function()
@@ -59,7 +93,7 @@ return {
                     lualine_a = { "mode" },
                     lualine_b = { "branch", "diff", "diagnostics" },
                     lualine_c = { { "filename", path = 1 } },
-                    lualine_x = { "encoding", "fileformat", "filetype" },
+                    lualine_x = { require("opencode").statusline, "encoding", "fileformat", "filetype" },
                     lualine_y = { "progress" },
                     lualine_z = { "location" },
                 },
@@ -88,31 +122,22 @@ return {
         },
     },
 
-    -- Fuzzy Finder
+    -- Fuzzy Finder.
+    -- Replaces telescope + telescope-fzf-native: pure Lua, no `make` step, and
+    -- it shells out to the real fzf binary rather than sorting in Lua.
     {
-        "nvim-telescope/telescope.nvim",
-        branch = "0.1.x",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+        "ibhagwan/fzf-lua",
+        cmd = "FzfLua",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {
+            "border-fused",
+            winopts = { height = 0.85, width = 0.85, preview = { scrollbar = false } },
+            files = { formatter = "path.filename_first" },
         },
-        config = function()
-            local telescope = require("telescope")
-            telescope.setup({
-                extensions = {
-                    fzf = {
-                        fuzzy = true,
-                        override_generic_sorter = true,
-                        override_file_sorter = true,
-                        case_mode = "smart_case",
-                    },
-                },
-            })
-            telescope.load_extension("fzf")
-        end,
     },
 
-    -- Treesitter for syntax highlighting (main branch — Neovim 0.11+)
+    -- Treesitter for syntax highlighting (main branch — Neovim 0.11+).
+    -- The main branch does not support lazy-loading, hence lazy = false.
     {
         "nvim-treesitter/nvim-treesitter",
         branch = "main",
@@ -129,22 +154,15 @@ return {
             }
             require("nvim-treesitter").install(ensure)
 
-            local ft_to_lang = {
-                markdown = "markdown",
-            }
             vim.api.nvim_create_autocmd("FileType", {
                 callback = function(args)
                     local ft = vim.bo[args.buf].filetype
-                    local lang = ft_to_lang[ft] or vim.treesitter.language.get_lang(ft) or ft
+                    local lang = vim.treesitter.language.get_lang(ft) or ft
                     if pcall(vim.treesitter.start, args.buf, lang) then
                         vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                     end
                 end,
             })
-
-            vim.keymap.set("n", "<C-space>", function()
-                vim.cmd("normal! grn")
-            end, { desc = "Treesitter incremental selection (use grn/grm/grc)" })
         end,
     },
 
@@ -166,8 +184,8 @@ return {
                 local map = function(mode, l, r, desc)
                     vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
                 end
-                map("n", "]h", gs.next_hunk, "Next hunk")
-                map("n", "[h", gs.prev_hunk, "Prev hunk")
+                map("n", "]h", function() gs.nav_hunk("next") end, "Next hunk")
+                map("n", "[h", function() gs.nav_hunk("prev") end, "Prev hunk")
                 map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
                 map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
                 map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
@@ -179,12 +197,12 @@ return {
         },
     },
 
-    -- Mason for installing LSP servers
+    -- Mason. Note the org: williamboman/* transferred to mason-org/* and the
+    -- old paths only resolve through a GitHub redirect.
     {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         opts = {
             ui = {
-                border = "rounded",
                 icons = {
                     package_installed = "✓",
                     package_pending = "➜",
@@ -194,46 +212,48 @@ return {
         },
     },
     {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "williamboman/mason.nvim" },
-        config = function()
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "rust_analyzer",
-                    "ts_ls",
-                    "jsonls",
-                    "gopls",
-                    "lua_ls",
-                    "html",
-                    "cssls",
-                    "emmet_ls",
-                    "pyright",
-                },
-            })
-        end,
+        "mason-org/mason-lspconfig.nvim",
+        dependencies = { "mason-org/mason.nvim" },
+        opts = {
+            ensure_installed = {
+                "rust_analyzer",
+                "ts_ls",
+                "jsonls",
+                "gopls",
+                "lua_ls",
+                "html",
+                "cssls",
+                "emmet_ls",
+                "pyright",
+            },
+            -- v2 enables every installed server on its own. Left off so the
+            -- explicit vim.lsp.enable() below stays the single source of truth
+            -- and servers are not enabled twice.
+            automatic_enable = false,
+        },
     },
 
-    -- Native LSP config (Neovim 0.11+)
+    -- LSP. Neovim 0.11+ configures servers natively via vim.lsp.config /
+    -- vim.lsp.enable; nvim-lspconfig is kept only for the server definitions
+    -- it ships under lsp/.
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
+            "saghen/blink.cmp",
+            "mason-org/mason.nvim",
+            "mason-org/mason-lspconfig.nvim",
         },
         config = function()
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            local on_attach = function(client, bufnr)
-                vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
-            end
+            local servers = {
+                "lua_ls", "ts_ls", "html", "cssls", "emmet_ls",
+                "rust_analyzer", "gopls", "pyright", "jsonls",
+            }
 
             vim.lsp.config("*", {
-                capabilities = capabilities,
-                on_attach = on_attach,
+                capabilities = require("blink.cmp").get_lsp_capabilities(),
                 root_markers = { ".git" },
             })
 
-            -- Lua
             vim.lsp.config("lua_ls", {
                 settings = {
                     Lua = {
@@ -248,7 +268,6 @@ return {
                 },
             })
 
-            -- Rust
             vim.lsp.config("rust_analyzer", {
                 settings = {
                     ["rust-analyzer"] = {
@@ -258,7 +277,6 @@ return {
                 },
             })
 
-            -- Go
             vim.lsp.config("gopls", {
                 settings = {
                     gopls = {
@@ -268,37 +286,18 @@ return {
                 },
             })
 
-            vim.lsp.config("pyright", {})
-            vim.lsp.config("jsonls", {})
-
-            vim.lsp.config("ts_ls", {})
-            vim.lsp.config("html", {})
-            vim.lsp.config("cssls", {})
             vim.lsp.config("emmet_ls", {
                 filetypes = { "html", "css", "javascriptreact", "typescriptreact" },
             })
 
-            vim.lsp.enable({
-                "lua_ls",
-                "ts_ls",
-                "html",
-                "cssls",
-                "emmet_ls",
-                "rust_analyzer",
-                "gopls",
-                "pyright",
-                "jsonls",
-            })
+            vim.lsp.enable(servers)
 
             vim.diagnostic.config({
                 virtual_text = true,
                 underline = true,
                 update_in_insert = false,
                 severity_sort = true,
-                float = {
-                    border = "rounded",
-                    source = true,
-                },
+                float = { source = true },
                 signs = {
                     text = {
                         [vim.diagnostic.severity.ERROR] = "󰅚 ",
@@ -311,28 +310,26 @@ return {
         end,
     },
 
-    -- Completion
+    -- Completion.
+    -- Replaces nvim-cmp and its three source plugins: lsp/path/snippets/buffer
+    -- are built in, and matching runs on every keystroke instead of debounced.
     {
-        "hrsh7th/nvim-cmp",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
+        "saghen/blink.cmp",
+        version = "1.*",
+        event = "InsertEnter",
+        dependencies = { "rafamadriz/friendly-snippets" },
+        opts = {
+            -- `enter` keeps <CR> as accept, matching the previous nvim-cmp setup.
+            keymap = { preset = "enter" },
+            appearance = { nerd_font_variant = "mono" },
+            completion = {
+                documentation = { auto_show = true, auto_show_delay_ms = 200 },
+            },
+            sources = { default = { "lsp", "path", "snippets", "buffer" } },
+            signature = { enabled = true },
+            fuzzy = { implementation = "prefer_rust_with_warning" },
         },
-        config = function()
-            local cmp = require("cmp")
-            cmp.setup({
-                mapping = cmp.mapping.preset.insert({
-                    ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<CR>"] = cmp.mapping.confirm({ select = false }),
-                }),
-                sources = cmp.config.sources({
-                    { name = "nvim_lsp" },
-                    { name = "buffer" },
-                    { name = "path" },
-                }),
-            })
-        end,
+        opts_extend = { "sources.default" },
     },
 
     -- Formatting
@@ -355,18 +352,17 @@ return {
                 css = { "prettier" },
                 markdown = { "prettier" },
             },
+            -- lsp_fallback was renamed to lsp_format.
             format_on_save = {
                 timeout_ms = 500,
-                lsp_fallback = true,
+                lsp_format = "fallback",
             },
         },
     },
 
-    -- Essential editing plugins
-    {
-        "numToStr/Comment.nvim",
-        opts = {},
-    },
+    -- Essential editing plugins.
+    -- Comment.nvim was dropped: unmaintained since Aug 2024, and Neovim has
+    -- shipped native `gc`/`gcc` commenting since 0.10.
     {
         "echasnovski/mini.pairs",
         event = "VeryLazy",

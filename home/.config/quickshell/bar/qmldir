@@ -1,0 +1,10 @@
+Bar 1.0 Bar.qml
+Workspaces 1.0 Workspaces.qml
+WindowTitle 1.0 WindowTitle.qml
+Clock 1.0 Clock.qml
+Battery 1.0 Battery.qml
+Network 1.0 Network.qml
+Bluetooth 1.0 Bluetooth.qml
+Mpris 1.0 Mpris.qml
+Tray 1.0 Tray.qml
+TrayMenu 1.0 TrayMenu.qml
