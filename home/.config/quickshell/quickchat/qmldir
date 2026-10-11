@@ -1,0 +1,3 @@
+module quickchat
+singleton QuickChatState 1.0 QuickChatState.qml
+QuickChatPanel 1.0 QuickChatPanel.qml

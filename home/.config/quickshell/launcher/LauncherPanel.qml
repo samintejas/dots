@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Hyprland
+import Quickshell.Io
 import Quickshell.Wayland
 import "../theme"
 
@@ -17,8 +18,41 @@ PanelWindow {
     readonly property bool active: LauncherState.visible && Hyprland.focusedMonitor === Hyprland.monitorFor(modelData)
 
     property string query: ""
+    readonly property bool windowsMode: LauncherState.mode === "windows"
 
-    // 3 = prefix, 2 = word start / substring, 1 = fuzzy subsequence, 0 = no match
+    // ---- usage history (frecency): ~/.local/state/quickshell/launcher.json ----
+    property var usage: ({})
+
+    FileView {
+        id: usageFile
+        path: Quickshell.env("HOME") + "/.local/state/quickshell/launcher.json"
+        onLoaded: {
+            try { root.usage = JSON.parse(text()) } catch (e) { root.usage = ({}) }
+        }
+    }
+
+    Process {
+        id: mkdir
+        command: ["mkdir", "-p", Quickshell.env("HOME") + "/.local/state/quickshell"]
+    }
+
+    function bump(name) {
+        const u = Object.assign({}, usage)
+        const e = u[name] || { n: 0, t: 0 }
+        u[name] = { n: e.n + 1, t: Date.now() }
+        usage = u
+        mkdir.running = true
+        usageFile.setText(JSON.stringify(u))
+    }
+
+    // recency-weighted use count: halves roughly every week
+    function frecency(name) {
+        const e = usage[name]
+        if (!e) return 0
+        return e.n * Math.pow(0.5, (Date.now() - e.t) / (7 * 24 * 3600 * 1000))
+    }
+
+    // 4 = prefix, 3 = word start, 2 = substring, 1.5 = generic name / keyword, 1 = fuzzy subsequence, 0 = none
     function score(entry, q) {
         const name = entry.name.toLowerCase();
         if (name.indexOf(q) === 0) return 4;
@@ -33,25 +67,82 @@ PanelWindow {
         return i === q.length ? 1 : 0;
     }
 
-    readonly property var shown: {
-        const apps = DesktopEntries.applications.values.filter(e => !e.noDisplay);
-        const q = query.trim().toLowerCase();
-        if (q === "")
-            return apps.slice().sort((a, b) => a.name.localeCompare(b.name));
-        const scored = [];
-        for (let i = 0; i < apps.length; i++) {
-            const s = score(apps[i], q);
-            if (s > 0) scored.push({ e: apps[i], s: s });
+    // a safe arithmetic expression: digits, operators, brackets, spaces
+    function calc(q) {
+        const t = q.trim().replace(/^=\s*/, "");
+        if (t === "" || !/^[0-9+\-*\/().%^\s,]+$/.test(t) || !/[0-9]/.test(t) || !/[+\-*\/%^]/.test(t.replace(/^-/, "")))
+            return null;
+        try {
+            const v = Function('"use strict"; return (' + t.replace(/,/g, "").replace(/\^/g, "**") + ")")();
+            if (typeof v !== "number" || !isFinite(v)) return null;
+            return String(Math.round(v * 1e10) / 1e10);
+        } catch (e) {
+            return null;
         }
-        scored.sort((a, b) => (b.s - a.s) || a.e.name.localeCompare(b.e.name));
-        return scored.map(x => x.e);
+    }
+
+    function appItems(q) {
+        const apps = DesktopEntries.applications.values.filter(e => !e.noDisplay && !/^Avahi /.test(e.name));
+        let list;
+        if (q === "") {
+            list = apps.map(e => ({ e: e, s: frecency(e.name) }))
+                       .sort((a, b) => (b.s - a.s) || a.e.name.localeCompare(b.e.name));
+        } else {
+            list = [];
+            for (let i = 0; i < apps.length; i++) {
+                const s = score(apps[i], q);
+                if (s > 0) list.push({ e: apps[i], s: s + Math.min(frecency(apps[i].name), 5) * 0.2 });
+            }
+            list.sort((a, b) => (b.s - a.s) || a.e.name.localeCompare(b.e.name));
+        }
+        return list.map(x => ({ kind: "app", name: x.e.name, sub: "", icon: x.e.icon, entry: x.e }));
+    }
+
+    function windowItems(q) {
+        const ws = Hyprland.toplevels.values;
+        const out = [];
+        for (let i = 0; i < ws.length; i++) {
+            const w = ws[i];
+            const obj = w.lastIpcObject || {};
+            const title = w.title || obj.title || "";
+            const cls = obj.class || "";
+            const hay = (title + " " + cls).toLowerCase();
+            if (q !== "" && hay.indexOf(q) < 0) continue;
+            out.push({ kind: "window", name: title !== "" ? title : cls, sub: cls + (w.workspace ? "  ·  " + w.workspace.name : ""),
+                       icon: cls.toLowerCase(), address: w.address });
+        }
+        return out;
+    }
+
+    readonly property var shown: {
+        const raw = query.trim();
+        if (windowsMode)
+            return windowItems(raw.toLowerCase());
+        if (raw.charAt(0) === ">") {
+            const cmd = raw.substring(1).trim();
+            return cmd === "" ? [] : [{ kind: "cmd", name: cmd, sub: "run in a shell", icon: "utilities-terminal", cmd: cmd }];
+        }
+        const out = [];
+        const c = calc(raw);
+        if (c !== null)
+            out.push({ kind: "calc", name: "= " + c, sub: "enter copies the result", icon: "accessories-calculator", value: c });
+        return out.concat(appItems(raw.toLowerCase()));
     }
 
     function launch() {
-        const e = shown[listView.currentIndex];
-        if (!e) return;
+        const it = shown[listView.currentIndex];
+        if (!it) return;
         LauncherState.visible = false;
-        e.execute();
+        if (it.kind === "app") {
+            bump(it.name);
+            it.entry.execute();
+        } else if (it.kind === "window") {
+            Hyprland.dispatch("hl.dsp.focus({ window = \"address:" + it.address + "\" })");
+        } else if (it.kind === "calc") {
+            Quickshell.execDetached(["wl-copy", it.value]);
+        } else if (it.kind === "cmd") {
+            Quickshell.execDetached(["sh", "-c", it.cmd]);
+        }
     }
 
     onActiveChanged: {
@@ -145,7 +236,7 @@ PanelWindow {
                 Text {
                     visible: input.text === "" && !input.preeditText
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "search apps"
+                    text: root.windowsMode ? "switch window" : "search apps  ·  = math  ·  > command"
                     font: input.font
                     color: Theme.subtle
                 }
@@ -226,7 +317,19 @@ PanelWindow {
                 }
 
                 Text {
-                    anchors { left: icon.right; right: parent.right; verticalCenter: parent.verticalCenter; leftMargin: 12; rightMargin: 8 }
+                    id: subLabel
+                    anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 12 }
+                    width: Math.min(implicitWidth, 180)
+                    text: row.modelData.sub
+                    font.family: Theme.font
+                    font.pixelSize: 11
+                    color: Theme.subtle
+                    elide: Text.ElideRight
+                    horizontalAlignment: Text.AlignRight
+                }
+
+                Text {
+                    anchors { left: icon.right; right: subLabel.left; verticalCenter: parent.verticalCenter; leftMargin: 12; rightMargin: 8 }
                     text: row.modelData.name
                     font.family: Theme.font
                     font.pixelSize: 12
@@ -249,7 +352,7 @@ PanelWindow {
             Text {
                 visible: root.shown.length === 0
                 anchors.centerIn: parent
-                text: "no matches"
+                text: root.windowsMode ? "no windows" : "no matches"
                 font.family: Theme.font
                 font.pixelSize: 12
                 color: Theme.subtle
@@ -271,7 +374,7 @@ PanelWindow {
 
             Text {
                 anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 12 }
-                text: "↵ launch   ↑↓ move   esc close"
+                text: root.windowsMode ? "↵ focus   ↑↓ move   esc close" : "↵ launch   ↑↓ move   esc close"
                 font.family: Theme.font
                 font.pixelSize: 11
                 color: Theme.subtle

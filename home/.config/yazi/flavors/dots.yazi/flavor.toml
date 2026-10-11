@@ -1,10 +1,10 @@
 # Dots — generated from the Dots design system tokens (grey structure, pink = current/selected).
 # Сolor palette: https://stephango.com/flexoki
 # ---
-# black       "#0b0b0b" bg
-# base-950    "#121212" bg-2
-# base-900    "#262626" ui
-# base-850    "#262626" ui-2
+# black       "#060606" bg
+# base-950    "#0a0a0a" bg-2
+# base-900    "#232323" ui
+# base-850    "#232323" ui-2
 # base-800    "#383838" ui-3
 # base-700    "#6a6a6a" tx-3
 # base-500    "#9c9c9c" tx-2
@@ -17,13 +17,13 @@
 # cyan-400    "#ef9cd8" cy
 # cyan-600    "#ef9cd8" cy-2
 # cyan-700    "#4e4e4e" cy-700
-# cyan-900    "#212121" cy-900
+# cyan-900    "#1c1c1c" cy-900
 # blue-400    "#89b4fa" bl
 # purple-400  "#b4befe" pu
 # magenta-400 "#ef9cd8" ma
 
 [app]
-overall = { bg = "#0b0b0b" } # bg
+overall = { bg = "#060606" } # bg
 
 [mgr]
 cwd = { fg = "#e2e2e2", bold = true } # tx
@@ -45,32 +45,32 @@ count_selected = { fg = "#ef9cd8", bold = true, reversed = true } # cy
 
 # Border
 border_symbol = "│"
-border_style = { fg = "#262626" } # ui
+border_style = { fg = "#232323" } # ui
 
 [indicator]
 parent = { underline = true }
-current = { fg = "#e2e2e2", bg = "#262626" } # tx, ui
+current = { fg = "#e2e2e2", bg = "#232323" } # tx, ui
 preview = { underline = true }
 padding = { open = "█", close = "█" }
 
 [tabs]
 active = { fg = "#e2e2e2", bg = "#383838", bold = true } # tx, ui-3
-inactive = { fg = "#9c9c9c", bg = "#262626" } # tx-2, ui
+inactive = { fg = "#9c9c9c", bg = "#232323" } # tx-2, ui
 sep_inner = { open = "", close = "" }
 sep_outer = { open = "", close = "" }
 
 [mode]
 # Normal mode
 normal_main = { fg = "#e2e2e2", bg = "#383838", bold = true } # tx, ui-3
-normal_alt = { fg = "#9c9c9c", bg = "#262626" } # tx-2, ui
+normal_alt = { fg = "#9c9c9c", bg = "#232323" } # tx-2, ui
 
 # Select mode
-select_main = { fg = "#0b0b0b", bg = "#ef9cd8", bold = true } # bg, cy
-select_alt = { fg = "#ef9cd8", bg = "#212121" } # cy, cy-900
+select_main = { fg = "#060606", bg = "#ef9cd8", bold = true } # bg, cy
+select_alt = { fg = "#ef9cd8", bg = "#1c1c1c" } # cy, cy-900
 
 # Unset mode
-unset_main = { fg = "#0b0b0b", bg = "#ef9cd8", bold = true } # bg, cy
-unset_alt = { fg = "#ef9cd8", bg = "#212121" } # cy, cy-900
+unset_main = { fg = "#060606", bg = "#ef9cd8", bold = true } # bg, cy
+unset_alt = { fg = "#ef9cd8", bg = "#1c1c1c" } # cy, cy-900
 
 [status]
 overall = { fg = "#e2e2e2" } # tx
@@ -83,13 +83,13 @@ perm_exec = { fg = "#a6e3a1" } # gr
 perm_sep = { fg = "#9c9c9c" } # tx-2
 
 # Progress
-progress_label = { fg = "#0b0b0b" } # bg
+progress_label = { fg = "#060606" } # bg
 progress_normal = { fg = "#ef9cd8", bg = "#4e4e4e" } # cy, cy-700
 progress_error = { bg = "#f38ba8" } # re
 
 [which]
 cols = 3
-mask = { bg = "#121212" } # bg-2
+mask = { bg = "#0a0a0a" } # bg-2
 cand = { fg = "#ef9cd8", bold = true } # cy
 rest = { fg = "#ef9cd8" } # cy
 desc = { fg = "#6a6a6a" } # tx-3
@@ -102,13 +102,13 @@ title = { fg = "#6a6a6a", bold = true } # tx-3
 body = { fg = "#e2e2e2", bold = true } # tx
 list = { fg = "#e2e2e2" } # tx
 btn_yes = { fg = "#e2e2e2", bg = "#383838", bold = true } # tx, ui-3
-btn_no = { fg = "#9c9c9c", bg = "#262626" } # tx-2, ui
+btn_no = { fg = "#9c9c9c", bg = "#232323" } # tx-2, ui
 
 [spot]
 border = { fg = "#383838" } # ui-3
 title = { fg = "#6a6a6a", bold = true } # tx-3
 tbl_col = { fg = "#9c9c9c" } # tx-2
-tbl_cell = { fg = "#e2e2e2", bg = "#262626" } # tx, ui
+tbl_cell = { fg = "#e2e2e2", bg = "#232323" } # tx, ui
 
 [notify]
 # Notification title
@@ -125,24 +125,24 @@ inactive = { fg = "#9c9c9c" } # tx-2
 border = { fg = "#383838" } # ui-3
 title = { fg = "#6a6a6a", bold = true } # tx-3
 value = { fg = "#e2e2e2" } # tx
-selected = { bg = "#121212" } # bg-2
+selected = { bg = "#0a0a0a" } # bg-2
 
 [cmp]
 border = { fg = "#383838", bold = true } # ui-3
-active = { fg = "#e2e2e2", bg = "#262626" } # tx, ui
+active = { fg = "#e2e2e2", bg = "#232323" } # tx, ui
 inactive = { fg = "#9c9c9c" } # tx-2
 
 [tasks]
 border = { fg = "#383838" } # ui-3
 title = { fg = "#6a6a6a", bold = true } # tx-3
-hovered = { fg = "#e2e2e2", bg = "#262626" } # tx, ui
+hovered = { fg = "#e2e2e2", bg = "#232323" } # tx, ui
 
 [help]
 on = { fg = "#89b4fa" } # bl
 run = { fg = "#ef9cd8" } # cy
 desc = { fg = "#6a6a6a" } # tx-3
-hovered = { bg = "#262626" } # ui
-footer = { fg = "#0b0b0b", bg = "#ef9cd8", bold = true } # bg, cy
+hovered = { bg = "#232323" } # ui
+footer = { fg = "#060606", bg = "#ef9cd8", bold = true } # bg, cy
 
 [filetype]
 rules = [

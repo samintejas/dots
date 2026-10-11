@@ -17,3 +17,4 @@ PopoverPanel 1.0 PopoverPanel.qml
 PanelRow 1.0 PanelRow.qml
 NetworkPanel 1.0 NetworkPanel.qml
 BluetoothPanel 1.0 BluetoothPanel.qml
+PanelDismiss 1.0 PanelDismiss.qml

@@ -1,0 +1,3 @@
+module power
+singleton PowerState 1.0 PowerState.qml
+PowerMenu 1.0 PowerMenu.qml

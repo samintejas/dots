@@ -1,0 +1,52 @@
+@define-color accent_color        #ef9cd8;
+@define-color accent_bg_color     #ef9cd8;
+@define-color accent_fg_color     #060606;
+
+@define-color window_bg_color     #060606;
+@define-color window_fg_color     #e2e2e2;
+
+@define-color view_bg_color       #0a0a0a;
+@define-color view_fg_color       #e2e2e2;
+
+@define-color headerbar_bg_color  #0a0a0a;
+@define-color headerbar_fg_color  #e2e2e2;
+
+@define-color card_bg_color       #0a0a0a;
+@define-color card_fg_color       #e2e2e2;
+
+@define-color popover_bg_color    #0f0f0f;
+@define-color popover_fg_color    #e2e2e2;
+
+@define-color sidebar_bg_color    #060606;
+@define-color sidebar_fg_color    #e2e2e2;
+
+@define-color error_color         #f38ba8;
+@define-color error_bg_color      #f38ba8;
+@define-color error_fg_color      #060606;
+
+@define-color success_color       #a6e3a1;
+@define-color success_bg_color    #a6e3a1;
+@define-color success_fg_color    #060606;
+
+@define-color warning_color       #fab387;
+@define-color warning_bg_color    #fab387;
+@define-color warning_fg_color    #060606;
+
+@define-color destructive_color   #f38ba8;
+@define-color destructive_bg_color #f38ba8;
+@define-color destructive_fg_color #060606;
+
+* {
+  font-family: "GeistMono Nerd Font";
+  font-size: 11pt;
+}
+
+window {
+  border-radius: 0;
+  padding: 8px;
+}
+
+/* Dots: layout square, held things soft (3px controls, 4px rows, 6px floating) */
+button, entry, spinbutton, switch slider { border-radius: 3px; }
+menuitem, row, modelbutton { border-radius: 4px; }
+popover contents, menu, .menu, .popup { border-radius: 6px; }

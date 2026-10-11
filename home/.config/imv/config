@@ -5,10 +5,10 @@
 # Suppress built-in key bindings, and specify them explicitly in this
 # config file.
 suppress_default_binds = true
-background = 0b0b0b
+background = 060606
 overlay_font = GeistMono Nerd Font:12
 overlay_text_color = e2e2e2
-overlay_background_color = 171717
+overlay_background_color = 0f0f0f
 overlay_background_alpha = ff
 title_text = [$imv_current_index/$imv_file_count] $(basename "$imv_current_file")
 

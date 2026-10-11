@@ -1,0 +1,58 @@
+:root {
+  --accent-color:          #ef9cd8;
+  --accent-bg-color:       #ef9cd8;
+  --accent-fg-color:       #060606;
+
+  --window-bg-color:       #060606;
+  --window-fg-color:       #e2e2e2;
+
+  --view-bg-color:         #0a0a0a;
+  --view-fg-color:         #e2e2e2;
+
+  --headerbar-bg-color:    #0a0a0a;
+  --headerbar-fg-color:    #e2e2e2;
+  --headerbar-border-color:#232323;
+
+  --card-bg-color:         #0a0a0a;
+  --card-fg-color:         #e2e2e2;
+
+  --popover-bg-color:      #0f0f0f;
+  --popover-fg-color:      #e2e2e2;
+
+  --dialog-bg-color:       #060606;
+  --dialog-fg-color:       #e2e2e2;
+
+  --sidebar-bg-color:      #060606;
+  --sidebar-fg-color:      #e2e2e2;
+
+  --error-color:           #f38ba8;
+  --error-bg-color:        #f38ba8;
+  --error-fg-color:        #060606;
+
+  --success-color:         #a6e3a1;
+  --success-bg-color:      #a6e3a1;
+  --success-fg-color:      #060606;
+
+  --warning-color:         #fab387;
+  --warning-bg-color:      #fab387;
+  --warning-fg-color:      #060606;
+
+  --destructive-color:     #f38ba8;
+  --destructive-bg-color:  #f38ba8;
+  --destructive-fg-color:  #060606;
+}
+
+* {
+  font-family: "GeistMono Nerd Font";
+  font-size: 11pt;
+}
+
+window {
+  border-radius: 0;
+  padding: 8px;
+}
+
+/* Dots: layout square, held things soft (3px controls, 4px rows, 6px floating) */
+button, entry, spinbutton, switch slider { border-radius: 3px; }
+menuitem, row, modelbutton { border-radius: 4px; }
+popover contents, menu, .menu, .popup { border-radius: 6px; }

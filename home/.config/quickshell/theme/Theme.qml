@@ -4,7 +4,7 @@ import QtQuick
 
 // Single source of truth for shell colours and typography.
 //
-// Values follow the Dots design system (bg-base #0b0b0b … text-strong #e2e2e2,
+// Values follow the Dots design system (bg-base #060606 … text-strong #e2e2e2,
 // one accent-warning). Property names are kept; see Design.md.
 QtObject {
     // ---- Neutral ramp: structure, never state -------------------------
@@ -17,7 +17,7 @@ QtObject {
     readonly property color ghost: "#4a4a4a"      // disabled, low-urgency
     readonly property color line: "#4e4e4e"       // dividers
     readonly property color dim: "#4e4e4e"        // inactive glyph, dot hover
-    readonly property color muted: "#6a6a6a"      // paused media, menu 2nd text
+    readonly property color muted: "#808080"      // paused media, menu 2nd text
     readonly property color subtle: "#9c9c9c"     // timestamps, muted body
     readonly property color textDim: "#9c9c9c"    // window title, playing media
     readonly property color text: "#b4b4b4"       // clock

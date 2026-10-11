@@ -2,6 +2,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
+import Quickshell.Hyprland
 import Quickshell.Services.Notifications
 import Quickshell.Services.Pipewire
 import "./theme"
@@ -10,6 +11,9 @@ import "./notifications"
 import "./wallpaper"
 import "./clipboard"
 import "./launcher"
+import "./power"
+import "./quickchat"
+import "./notifier"
 import "./osd"
 
 ShellRoot {
@@ -19,6 +23,8 @@ ShellRoot {
         const a = Pipewire.defaultAudioSink ? Pipewire.defaultAudioSink.audio : null
         if (a) OsdState.show("volume", Math.round(a.volume * 100), a.muted)
     }
+
+    Notifier {}
 
     NotificationServer {
         id: notifServer
@@ -54,7 +60,10 @@ ShellRoot {
 
     IpcHandler {
         target: "panels"
-        function toggle(name: string): void { PanelState.toggle(name, Quickshell.screens[0], false) }
+        function toggle(name: string): void {
+            const m = Hyprland.focusedMonitor
+            PanelState.toggle(name, { name: m ? m.name : Quickshell.screens[0].name }, false)
+        }
         function close(): void { PanelState.close() }
     }
 
@@ -67,7 +76,19 @@ ShellRoot {
 
     IpcHandler {
         target: "launcher"
-        function toggle(): void { LauncherState.toggle() }
+        function toggle(): void { LauncherState.toggle("apps") }
+        function windows(): void { LauncherState.toggle("windows") }
+    }
+
+    IpcHandler {
+        target: "quickchat"
+        function toggle(): void { QuickChatState.toggle() }
+        function ask(question: string): void { QuickChatState.ask(question) }
+    }
+
+    IpcHandler {
+        target: "power"
+        function toggle(): void { PowerState.toggle() }
     }
 
     IpcHandler {
@@ -147,6 +168,21 @@ ShellRoot {
     Variants {
         model: Quickshell.screens
         LauncherPanel {}
+    }
+
+    Variants {
+        model: Quickshell.screens
+        PanelDismiss {}
+    }
+
+    Variants {
+        model: Quickshell.screens
+        PowerMenu {}
+    }
+
+    Variants {
+        model: Quickshell.screens
+        QuickChatPanel {}
     }
 
     Variants {

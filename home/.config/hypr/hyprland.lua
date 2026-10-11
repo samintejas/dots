@@ -14,15 +14,51 @@ end
 
 
 -- ==============================
+--  WINDOW RULES
+-- ==============================
+-- Ignore maximize requests from apps: you decide the size.
+hl.window_rule({
+    name = "suppress-maximize-events",
+    match = { class = ".*" },
+    suppress_event = "maximize",
+})
+
+-- Small utility windows and dialogs float, centred, instead of tiling.
+hl.window_rule({
+    name = "float-utilities",
+    match = { class = "^(pavucontrol|nm-connection-editor|blueman-manager|org\\.gnome\\.Calculator|xdg-desktop-portal-gtk|hyprpolkitagent|nwg-look|swappy)$" },
+    float = true,
+    center = true,
+    size = "720 480",
+})
+
+-- File pickers and confirmation dialogs from any app.
+hl.window_rule({
+    name = "float-file-dialogs",
+    match = { title = "^(Open File|Save File|Save As|Choose.*|Select.*|Open Folder|Upload.*|File Upload)$" },
+    float = true,
+    center = true,
+    size = "900 600",
+})
+
+-- Browser picture-in-picture: small, floating, pinned over every workspace.
+hl.window_rule({
+    name = "picture-in-picture",
+    match = { title = "^(Picture-in-Picture|Picture in picture)$" },
+    float = true,
+    pin = true,
+    size = "480 270",
+    move = "monitor_w-500 monitor_h-290",
+})
+
+
+-- ==============================
 --  STARTUP
 -- ==============================
 hl.on("hyprland.start", function()
     hl.exec_cmd("quickshell")
-    hl.exec_cmd("wl-paste --watch cliphist store")
+    hl.exec_cmd("wl-paste --watch ~/.config/hypr/scripts/clip-store.sh")
     hl.exec_cmd("hypridle")
-    hl.exec_cmd("~/.config/hypr/scripts/notify-spotify.sh")
-    hl.exec_cmd("~/.config/hypr/scripts/notify-battery.sh")
-    hl.exec_cmd("~/.config/hypr/scripts/notify-network.sh")
 end)
 
 hl.env("XCURSOR_SIZE", "24")
@@ -94,11 +130,15 @@ local mod = "SUPER"
 hl.bind(mod .. " + RETURN", hl.dsp.exec_cmd("ghostty"))
 hl.bind(mod .. " + E", hl.dsp.exec_cmd("ghostty -e yazi"))
 hl.bind(mod .. " + P", hl.dsp.exec_cmd("qs ipc call launcher toggle"))
+hl.bind(mod .. " + TAB", hl.dsp.exec_cmd("qs ipc call launcher windows"))
+hl.bind(mod .. " + A", hl.dsp.exec_cmd("qs ipc call quickchat toggle"))
 hl.bind(mod .. " + C", hl.dsp.exec_cmd("qs ipc call clipboard toggle"))
 hl.bind(mod .. " + N", hl.dsp.exec_cmd("qs ipc call notifications toggle"))
 hl.bind(mod .. " + SHIFT + N", hl.dsp.exec_cmd("qs ipc call notifications dnd"))
 hl.bind(mod .. " + CTRL + N", hl.dsp.exec_cmd("qs ipc call notifications clear"))
 hl.bind(mod .. " + W", hl.dsp.exec_cmd("qs ipc call wallpaper toggle"))
+hl.bind(mod .. " + ALT + W", hl.dsp.exec_cmd("qs ipc call panels toggle network"))
+hl.bind(mod .. " + ALT + B", hl.dsp.exec_cmd("qs ipc call panels toggle bluetooth"))
 hl.bind(mod .. " + Print", hl.dsp.exec_cmd("sshot"))
 hl.bind(mod .. " + SHIFT + Print", hl.dsp.exec_cmd("sshot-shift"))
 
@@ -108,7 +148,9 @@ hl.bind(mod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mod .. " + I", hl.dsp.layout("togglesplit"))
 hl.bind(mod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
 hl.bind(mod .. " + F11", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
-hl.bind(mod .. " + End", hl.dsp.exec_cmd("powerctl"))
+hl.bind(mod .. " + End", hl.dsp.exec_cmd("qs ipc call power toggle"))
+-- restart the shell (live reload sometimes misses new files)
+hl.bind(mod .. " + SHIFT + R", hl.dsp.exec_cmd("sh -c 'qs kill; sleep 0.5; qs -d'"))
 hl.bind(mod .. " + SHIFT + End", hl.dsp.exit())
 
 -- hjkl: focus, +SHIFT move, +CTRL resize

@@ -71,11 +71,24 @@ PanelWindow {
         if (NotificationDrawerState.visible) return
 
         notif.tracked = true
+
+        // a repeat (same app, summary and body) replaces the earlier one
+        // instead of stacking: the old popup and its drawer entry go away
+        for (var i = root.popups.length - 1; i >= 0; i--) {
+            var old = root.popups[i]
+            if (old !== notif && old.appName === notif.appName
+                && old.summary === notif.summary && old.body === notif.body) {
+                root.removePopup(old)
+                root.cancelDismiss(old)
+                old.dismiss()
+            }
+        }
         root.addPopup(notif)
 
+        // critical popups stay longer but still leave; they remain in the drawer
         var timeout = notif.expireTimeout > 0
             ? notif.expireTimeout
-            : (notif.urgency === NotificationUrgency.Critical ? 0 : 5000)
+            : (notif.urgency === NotificationUrgency.Critical ? 20000 : 5000)
         root.scheduleDismiss(notif, timeout)
     }
 

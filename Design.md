@@ -8,13 +8,15 @@ appears only to say something is selected, in progress or wrong.
 
 | token | value | where |
 | --- | --- | --- |
-| `bg-base` | `#0b0b0b` | bar, terminal, lock screen, wallpaper fallback, gtk window |
-| `bg-surface` | `#121212` | resting cards, gtk views |
-| `bg-hover` | `#1a1a1a` | hover fill |
-| `bg-inset` | `#212121` | input wells, empty workspace dot |
-| `bg-raised` | `#171717` | popups, tray menu, tooltips, osd |
-| `bg-overlay` | `#1c1c1c` | notification drawer, clipboard, rofi |
-| `border-default` / `-strong` / `-overlay` | `#262626` / `#383838` / `#4e4e4e` | hairlines; floating layers; sheets |
+| `bg-base` | `#060606` | bar, terminal, lock screen, wallpaper fallback, gtk window, notification drawer |
+| `bg-surface` | `#0a0a0a` | resting cards, gtk views |
+| `bg-hover` | white at 5% | hover fill (a tint over any layer) |
+| `bg-inset` | `#1c1c1c` | empty workspace dot |
+| `bg-well` | `#000000` | where you type: launcher, clipboard and password fields |
+| `bg-raised` | `#0f0f0f` | popups, tray menu, tooltips, osd, wifi and bluetooth panels, gtk popovers |
+| `bg-overlay` | `#060606` | launcher, clipboard, power menu (as deep as the ground, on an 80% scrim) |
+| `border-default` / `-raised` / `-overlay` | `#232323` | hairlines and the borders of floating layers; the shadow does the lifting |
+| `border-strong` / window border | `#383838` / `#4e4e4e` active | occupied marks; Hyprland active window and the drawer edge |
 | `text-secondary` / `primary` / `strong` / `max` | `#9c9c9c` / `#b4b4b4` / `#e2e2e2` / `#f5f5f5` | hints; body; values; current item only |
 | `accent-primary` | `#ef9cd8` | selection, current workspace, focus, dnd on |
 | `accent-danger` / `warning` / `success` / `info` | `#f38ba8` / `#fab387` / `#a6e3a1` / `#89b4fa` | state only |
@@ -28,8 +30,8 @@ text a person has to read. Terminal ANSI colours stay inside the terminal.
   Property names are historical (`textHi` = text-strong, `subtle` = text-secondary).
 - Type: Geist Mono Nerd Font everywhere, 13px bar, 12px lists and menus, 11px meta.
 - Shape: bars square; 3px controls, 4px rows/cards, 6px floating layers; pills only for indicators.
-- `hypr/hyprland.lua` — square layout, 2px border (`#4e4e4e` active, `#262626` inactive), no blur.
-- `hypr/hyprlock.conf`, `ghostty`, `rofi`, `gtk-3.0`/`gtk-4.0`, `nvim` highlight overrides,
+- `hypr/hyprland.lua` — square layout, 2px border (`#4e4e4e` active, `#232323` inactive), no blur.
+- `hypr/hyprlock.conf`, `ghostty`, `gtk-3.0`/`gtk-4.0`, `nvim` highlight overrides,
   `btop/themes/dots.theme`, `yazi/flavors/dots.yazi`, `imv`, fzf (`.zshrc`), tuigreet (`misc/config.toml`).
 
 ## Shell features
@@ -40,10 +42,15 @@ text a person has to read. Terminal ANSI colours stay inside the terminal.
 | hover hints | battery (with time left), network, bluetooth devices, volume, date |
 | volume | bar glyph (hollow = muted); scroll ±5%, click mute, right-click mixer |
 | osd | volume (any source, via PipeWire) and brightness (`qs ipc call osd brightness`) |
-| notifications | toast cards with severity bar + glyph shape; hover pauses; max 3 popups; `+n more`; clear all; dnd |
-| clipboard | `super+c`: filter, enter copies, del removes, clear all (cliphist) |
-| keys | `super+n` drawer, `super+shift+n` dnd, `super+ctrl+n` clear notifications |
-| bar | middle-click clock toggles dnd (`dnd` shown while on); click network = nmtui |
+| notifications | toast cards, borderless, full-height severity bar; hover pauses; max 3 popups, `+n more`; repeats collapse; critical popups leave after 20s (they stay in the drawer); clear all |
+| system notices | battery (charging, low, critical, full), wi-fi connect/disconnect and Spotify track changes, raised by `notifier/Notifier.qml` from state the shell already watches |
+| launcher | `super+p`: apps ranked by use, `= 2+2` calculator, `> cmd` shell command; `super+tab` switches windows |
+| quick chat | `super+a`: ask Claude without a session; follow-ups keep context; `^y` copy, `^l` new chat, `^m` haiku/sonnet/opus; `qs ipc call quickchat ask "…"` from scripts. Uses `claude -p` (your login); with `~/.config/anthropic/key` it calls the API directly, which is faster |
+| power menu | `super+end`: lock, sleep, log out, restart, shut down; `l s o r p` pick directly |
+| wi-fi / bluetooth | click the bar icon, or `super+alt+w` / `super+alt+b`, for a popover: switch, list, join or connect |
+| clipboard | `super+c`: filter, enter copies, del removes, clear all (cliphist); copies marked by password managers are not stored |
+| keys | `super+n` drawer, `super+shift+n` dnd, `super+ctrl+n` clear notifications, `super+shift+r` restart the shell |
+| bar | middle-click clock toggles dnd (`dnd` shown while on) |
 
 ## Deliberate deviations
 

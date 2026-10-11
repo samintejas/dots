@@ -9,12 +9,16 @@ home/.config/*
 # Ignore claude internals except commands and settings
 home/.claude/*
 
+# Backups and leftovers never belong in the repo
+*.bak
+*.pre-stow-backup
+
 # Keep specific configs
 !home/.config/hypr/
 !home/.config/nvim/
 !home/.config/quickshell/
-!home/.config/waybar/
-!home/.config/swaync/
+!home/.config/gtk-3.0/
+!home/.config/gtk-4.0/
 !home/.config/ghostty/
 !home/.config/yazi/
 !home/.config/imv/
