@@ -1,100 +1,82 @@
 import QtQuick
-import Quickshell.Io
+import Quickshell.Services.Mpris
+import "../theme"
 
+// Media via MPRIS over D-Bus. Replaces three long-lived `playerctl --follow`
+// processes, and is no longer hardcoded to Spotify.
+//
+// To go back to Spotify-only, filter on dbusName in activePlayer:
+//     if (ps[i].dbusName.endsWith(".spotify")) return ps[i]
 Item {
     id: root
 
-    property string status: ""   // "Playing" | "Paused" | ""
-    property string artist: ""
-    property string track:  ""
+    // Prefer whatever is actually playing; otherwise fall back to the first
+    // player present, so a paused track still shows.
+    readonly property MprisPlayer player: {
+        if (!Mpris.players)
+            return null;
 
-    readonly property bool isPlaying: status === "Playing"
-    readonly property bool isPaused:  status === "Paused"
+        const ps = Mpris.players.values;
+        for (let i = 0; i < ps.length; i++) {
+            if (ps[i].isPlaying)
+                return ps[i];
+
+        }
+        return ps.length > 0 ? ps[0] : null;
+    }
+
+    readonly property bool isPlaying: player !== null && player.isPlaying
+    readonly property string track: player ? player.trackTitle : ""
+    readonly property string artist: player ? player.trackArtist : ""
 
     readonly property string displayText: {
-        if (!track) return ""
-        const icon = isPlaying ? "▶" : (isPaused ? "⏸" : "")
-        let text = icon + "  " + (artist ? artist + " – " + track : track)
-        if (text.length > 48) text = text.substring(0, 48) + "…"
-        return text
-    }
+        if (!track)
+            return "";
 
-    // Follow playback status changes (event-driven, no polling)
-    Process {
-        id: statusFollow
-        command: ["playerctl", "-p", "spotify", "-F", "status"]
-        running: true
-        stdout: SplitParser {
-            onRead: data => root.status = data.trim()
-        }
-        onExited: (code) => {
-            if (code !== 0) root.status = ""
-            // Restart if playerctl exits (e.g. Spotify not running yet)
-            restartTimer.running = true
-        }
-    }
+        const glyph = isPlaying ? "▶" : "⏸";
+        let text = glyph + "  " + (artist ? artist + " – " + track : track);
+        if (text.length > 48)
+            text = text.substring(0, 48) + "…";
 
-    // Follow metadata changes
-    Process {
-        id: metaFollow
-        command: ["playerctl", "-p", "spotify", "-F", "metadata", "--format",
-                  "{{artist}}|||{{title}}"]
-        running: true
-        stdout: SplitParser {
-            onRead: data => {
-                const parts = data.trim().split("|||")
-                root.artist = parts[0] || ""
-                root.track  = parts[1] || ""
-            }
-        }
-        onExited: (code) => {
-            if (code !== 0) { root.artist = ""; root.track = "" }
-        }
-    }
-
-    // Retry if Spotify wasn't running when bar started
-    Timer {
-        id: restartTimer
-        interval: 5000
-        running: false
-        repeat: false
-        onTriggered: {
-            statusFollow.running = true
-            metaFollow.running = true
-        }
+        return text;
     }
 
     visible: displayText !== ""
-    implicitWidth:  visible ? label.implicitWidth + 12 : 0
-    implicitHeight: 32
+    implicitWidth: displayText !== "" ? label.implicitWidth + 12 : 0
+    implicitHeight: Theme.barHeight
 
     Text {
         id: label
+
         anchors.centerIn: parent
         text: root.displayText
-        font.family: "GeistMono Nerd Font"
-        font.pixelSize: 13
-        color: root.isPlaying ? "#9a9a9a" : "#606060"
+        font.family: Theme.font
+        font.pixelSize: Theme.fontSize
+        color: root.isPlaying ? Theme.textDim : Theme.muted
     }
 
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
         onClicked: mouse => {
+            if (!root.player)
+                return;
+
             if (mouse.button === Qt.LeftButton)
-                playPause.running = true
+                root.player.togglePlaying();
             else if (mouse.button === Qt.RightButton)
-                nextTrack.running = true
+                root.player.next();
             else if (mouse.button === Qt.MiddleButton)
-                prevTrack.running = true
+                root.player.previous();
         }
         onWheel: wheel => {
-            if (wheel.angleDelta.y > 0) nextTrack.running = true
-            else                        prevTrack.running = true
+            if (!root.player)
+                return;
+
+            if (wheel.angleDelta.y > 0)
+                root.player.next();
+            else
+                root.player.previous();
         }
     }
-
-    Process { id: playPause; command: ["playerctl", "-p", "spotify", "play-pause"] }
-    Process { id: nextTrack; command: ["playerctl", "-p", "spotify", "next"] }
-    Process { id: prevTrack; command: ["playerctl", "-p", "spotify", "previous"] }
 }

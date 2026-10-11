@@ -69,7 +69,21 @@ return {
             vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
             vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
             vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-            vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
+            vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none", fg = "#262626" })
+            -- Dots: grey for structure, pink for selection / current item
+            vim.api.nvim_set_hl(0, "CursorLine", { bg = "#121212" })
+            vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ef9cd8" })
+            vim.api.nvim_set_hl(0, "LineNr", { fg = "#6a6a6a" })
+            vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#262626" })
+            vim.api.nvim_set_hl(0, "Visual", { bg = "#383838" })
+            vim.api.nvim_set_hl(0, "Search", { bg = "#383838", fg = "#ef9cd8" })
+            vim.api.nvim_set_hl(0, "IncSearch", { bg = "#ef9cd8", fg = "#0b0b0b" })
+            vim.api.nvim_set_hl(0, "Pmenu", { bg = "#171717" })
+            vim.api.nvim_set_hl(0, "PmenuSel", { bg = "#262626", fg = "#f5f5f5" })
+            vim.api.nvim_set_hl(0, "DiagnosticError", { fg = "#f38ba8" })
+            vim.api.nvim_set_hl(0, "DiagnosticWarn", { fg = "#fab387" })
+            vim.api.nvim_set_hl(0, "DiagnosticInfo", { fg = "#89b4fa" })
+            vim.api.nvim_set_hl(0, "DiagnosticOk", { fg = "#a6e3a1" })
         end,
     },
 

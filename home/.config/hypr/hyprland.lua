@@ -39,13 +39,13 @@ hl.config({
         gaps_out = 0,
         border_size = 2,
         col = {
-            active_border = "rgb(505050)",
-            inactive_border = "rgb(24262A)",
+            active_border = "rgb(4e4e4e)",
+            inactive_border = "rgb(232323)",
         },
     },
     decoration = {
         rounding = 0,
-        blur = { size = 3, vibrancy = 0.2 },
+        blur = { enabled = false },
     },
     dwindle = { preserve_split = true },
     input = { touchpad = { natural_scroll = true } },
@@ -93,8 +93,11 @@ local mod = "SUPER"
 -- Apps
 hl.bind(mod .. " + RETURN", hl.dsp.exec_cmd("ghostty"))
 hl.bind(mod .. " + E", hl.dsp.exec_cmd("ghostty -e yazi"))
-hl.bind(mod .. " + P", hl.dsp.exec_cmd("rofi -show combi"))
-hl.bind(mod .. " + C", hl.dsp.exec_cmd("cliphist list | rofi -dmenu -p clipboard | cliphist decode | wl-copy"))
+hl.bind(mod .. " + P", hl.dsp.exec_cmd("qs ipc call launcher toggle"))
+hl.bind(mod .. " + C", hl.dsp.exec_cmd("qs ipc call clipboard toggle"))
+hl.bind(mod .. " + N", hl.dsp.exec_cmd("qs ipc call notifications toggle"))
+hl.bind(mod .. " + SHIFT + N", hl.dsp.exec_cmd("qs ipc call notifications dnd"))
+hl.bind(mod .. " + CTRL + N", hl.dsp.exec_cmd("qs ipc call notifications clear"))
 hl.bind(mod .. " + W", hl.dsp.exec_cmd("qs ipc call wallpaper toggle"))
 hl.bind(mod .. " + Print", hl.dsp.exec_cmd("sshot"))
 hl.bind(mod .. " + SHIFT + Print", hl.dsp.exec_cmd("sshot-shift"))
@@ -144,15 +147,15 @@ hl.bind(mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Media / brightness — fire while locked, repeat on hold
 for _, b in ipairs({
-    { "XF86AudioRaiseVolume",   "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+", true },
-    { "XF86AudioLowerVolume",   "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",        true },
-    { "XF86MonBrightnessUp",    "brightnessctl set 5%+",                            true },
-    { "XF86MonBrightnessDown",  "brightnessctl set 5%-",                            true },
-    { "XF86AudioMute",          "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",       false },
-    { "XF86AudioMicMute",       "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",     false },
-    { "XF86AudioPlay",          "playerctl play-pause",                             false },
-    { "XF86AudioNext",          "playerctl next",                                   false },
-    { "XF86AudioPrev",          "playerctl previous",                               false },
+    { "XF86AudioRaiseVolume",  "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+", true },
+    { "XF86AudioLowerVolume",  "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",        true },
+    { "XF86MonBrightnessUp",   "brightnessctl set 5%+ && qs ipc call osd brightness", true },
+    { "XF86MonBrightnessDown", "brightnessctl set 5%- && qs ipc call osd brightness", true },
+    { "XF86AudioMute",         "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",       false },
+    { "XF86AudioMicMute",      "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",     false },
+    { "XF86AudioPlay",         "playerctl play-pause",                             false },
+    { "XF86AudioNext",         "playerctl next",                                   false },
+    { "XF86AudioPrev",         "playerctl previous",                               false },
 }) do
     hl.bind(b[1], hl.dsp.exec_cmd(b[2]), { locked = true, repeating = b[3] })
 end

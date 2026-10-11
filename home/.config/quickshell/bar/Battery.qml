@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell.Services.UPower
+import "../theme"
 
 // Battery state via UPower over D-Bus — event-driven, no polling and no
 // subprocesses. Replaces the previous 5s timer that spawned two `cat`
@@ -20,17 +21,31 @@ Item {
 
     readonly property string icon: "󰪥"
 
+    // " · 2h 10m left" / " · 40m to full"; empty when UPower has no estimate
+    readonly property string eta: {
+        if (!present)
+            return "";
+
+        const secs = charging ? device.timeToFull : (full ? 0 : device.timeToEmpty);
+        if (!secs || secs <= 0)
+            return "";
+
+        const h = Math.floor(secs / 3600);
+        const m = Math.round((secs % 3600) / 60);
+        return " · " + (h > 0 ? h + "h " : "") + m + "m " + (charging ? "to full" : "left");
+    }
+
     readonly property color textColor: {
         if (charging)
-            return "#a6e3a1";
+            return Theme.green;
 
         if (capacity <= 20)
-            return "#f38ba8";
+            return Theme.red;
 
         if (capacity <= 50)
-            return "#fab387";
+            return Theme.peach;
 
-        return "#ffffff";
+        return Theme.textMax;
     }
 
     // Keyed off `present`, not `visible` — `visible` reads back as effective
@@ -60,6 +75,11 @@ Item {
         }
 
         onRunningChanged: if (!running) label.opacity = 1
+    }
+
+    Hint {
+        target: root
+        text: root.capacity + "% " + (root.charging ? "charging" : root.full ? "full" : "on battery") + root.eta
     }
 
     Text {

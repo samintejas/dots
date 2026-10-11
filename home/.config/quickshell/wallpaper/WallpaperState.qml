@@ -1,4 +1,5 @@
 pragma Singleton
+
 import QtQuick
 import Quickshell
 import Quickshell.Io
@@ -15,91 +16,122 @@ QtObject {
     property bool fetching: false
     property bool hasMore: false
 
-    // current wallpaper (URL — Wallhaven full-size path)
+    // Remote Wallhaven URL of the current pick — persisted for reference.
     property string currentUrl: ""
+    // Local file:// the Wallpaper Image actually loads. The image is cached to
+    // disk so the wallpaper survives a restart with no network; previously the
+    // Image pulled straight from the remote URL and came up blank offline.
+    property string currentPath: ""
+    property bool downloading: false
 
-    // load persisted wallpaper URL on startup
+    // Restore the cached image on startup, if one was downloaded before.
     property Process _loader: Process {
         running: true
-        command: ["sh", "-c", "cat \"$HOME/.cache/quickshell/wallpaper_url\" 2>/dev/null"]
+        command: ["sh", "-c", "d=\"${XDG_CACHE_HOME:-$HOME/.cache}/quickshell\"; [ -f \"$d/wallpaper.img\" ] && printf 'file://%s' \"$d/wallpaper.img\""]
         stdout: StdioCollector {
             onStreamFinished: {
-                var content = text.trim()
-                if (content.length > 0) root.currentUrl = content
+                const p = text.trim();
+                if (p.length > 0)
+                    root.currentPath = p + "?v=0";
+
             }
+        }
+    }
+
+    // Downloads to a temp file and renames into place, so a half-finished or
+    // failed download can never replace a working wallpaper.
+    property Process _downloader: Process {
+        stdout: StdioCollector {
+            onStreamFinished: {
+                const p = text.trim();
+                if (p.length > 0)
+                    root.currentPath = p + "?v=" + Date.now();
+
+            }
+        }
+        onExited: (code) => {
+            root.downloading = false;
+            if (code !== 0)
+                console.warn("wallpaper: download failed, keeping previous image");
+
         }
     }
 
     function toggle() {
-        visible = !visible
-        if (visible && results.length === 0) fetchPage(1)
+        visible = !visible;
+        if (visible && results.length === 0)
+            fetchPage(1);
+
     }
 
     function search(q) {
-        query = q
-        results = []
-        currentPage = 0
-        hasMore = false
-        fetchPage(1)
+        query = q;
+        results = [];
+        currentPage = 0;
+        hasMore = false;
+        fetchPage(1);
     }
 
     function loadMore() {
-        if (!hasMore || fetching) return
-        fetchPage(currentPage + 1)
+        if (!hasMore || fetching)
+            return;
+
+        fetchPage(currentPage + 1);
     }
 
     function fetchPage(pageNum) {
-        if (fetching) return
-        fetching = true
+        if (fetching)
+            return;
 
-        var params = [
-            "atleast=1920x1080",
-            "ratios=16x9",
-            "sorting=" + (query === "" ? "toplist" : "relevance"),
-            "page=" + pageNum
-        ]
-        if (query !== "") params.push("q=" + encodeURIComponent(query))
-        var url = "https://wallhaven.cc/api/v1/search?" + params.join("&")
+        fetching = true;
 
-        var xhr = new XMLHttpRequest()
-        xhr.open("GET", url)
+        var params = ["atleast=1920x1080", "ratios=16x9", "sorting=" + (query === "" ? "toplist" : "relevance"), "page=" + pageNum];
+        if (query !== "")
+            params.push("q=" + encodeURIComponent(query));
+
+        var url = "https://wallhaven.cc/api/v1/search?" + params.join("&");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
         xhr.onreadystatechange = function() {
-            if (xhr.readyState !== XMLHttpRequest.DONE) return
-            fetching = false
+            if (xhr.readyState !== XMLHttpRequest.DONE)
+                return;
+
+            fetching = false;
             if (xhr.status !== 200) {
-                console.warn("wallhaven:", xhr.status, xhr.statusText)
-                return
+                console.warn("wallhaven:", xhr.status, xhr.statusText);
+                return;
             }
             try {
-                var json = JSON.parse(xhr.responseText)
-                var data = json.data || []
+                var json = JSON.parse(xhr.responseText);
+                var data = json.data || [];
                 if (pageNum === 1) {
-                    results = data
+                    results = data;
                 } else {
-                    var copy = results.slice()
-                    for (var i = 0; i < data.length; i++) copy.push(data[i])
-                    results = copy
+                    var copy = results.slice();
+                    for (var i = 0; i < data.length; i++) copy.push(data[i]);
+                    results = copy;
                 }
-                currentPage = pageNum
+                currentPage = pageNum;
                 if (json.meta) {
-                    lastPage = json.meta.last_page || 1
-                    hasMore = currentPage < lastPage
+                    lastPage = json.meta.last_page || 1;
+                    hasMore = currentPage < lastPage;
                 }
             } catch (e) {
-                console.warn("wallhaven parse error:", e)
+                console.warn("wallhaven parse error:", e);
             }
-        }
-        xhr.send()
+        };
+        xhr.send();
     }
 
     function setWallpaper(url) {
-        currentUrl = url
-        // persist — URL is passed as $1 so no shell-escaping needed
-        Quickshell.execDetached([
-            "sh", "-c",
-            "mkdir -p \"$HOME/.cache/quickshell\" && printf '%s' \"$1\" > \"$HOME/.cache/quickshell/wallpaper_url\"",
-            "sh",
-            url
-        ])
+        if (downloading)
+            return;
+
+        currentUrl = url;
+        downloading = true;
+        // URL arrives as $1, so nothing needs shell-escaping.
+        _downloader.command = ["sh", "-c", "set -e; d=\"${XDG_CACHE_HOME:-$HOME/.cache}/quickshell\"; mkdir -p \"$d\"; printf '%s' \"$1\" > \"$d/wallpaper_url\"; curl -sfL --max-time 60 \"$1\" -o \"$d/wallpaper.img.tmp\"; mv -f \"$d/wallpaper.img.tmp\" \"$d/wallpaper.img\"; printf 'file://%s' \"$d/wallpaper.img\"", "sh", url];
+        _downloader.running = true;
     }
 }

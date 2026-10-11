@@ -1,61 +1,95 @@
 import QtQuick
-import Quickshell.Io
+import Quickshell
+import Quickshell.Networking
+import "../theme"
 
+// Connectivity via NetworkManager over D-Bus — event-driven. Replaces a 10s
+// timer that spawned a bash subshell plus two nmcli processes per tick.
 Item {
     id: root
 
-    property string connType:      "none"
-    property int    signalStrength: 0
+    readonly property var wifiDevice: {
+        const ds = Networking.devices.values;
+        for (let i = 0; i < ds.length; i++) {
+            if (ds[i].type === DeviceType.Wifi)
+                return ds[i];
 
-    readonly property string icon: connType !== "none" ? "󰪥" : "○"
+        }
+        return null;
+    }
+
+    readonly property var wiredDevice: {
+        const ds = Networking.devices.values;
+        for (let i = 0; i < ds.length; i++) {
+            if (ds[i].type === DeviceType.Wired)
+                return ds[i];
+
+        }
+        return null;
+    }
+
+    readonly property var activeWifi: {
+        if (!wifiDevice || !wifiDevice.networks)
+            return null;
+
+        const ns = wifiDevice.networks.values;
+        for (let i = 0; i < ns.length; i++) {
+            if (ns[i].connected)
+                return ns[i];
+
+        }
+        return null;
+    }
+
+    // Wired wins over wireless, matching the previous nmcli ordering.
+    readonly property bool wiredUp: wiredDevice !== null && wiredDevice.connected
+    readonly property bool wifiUp: activeWifi !== null
+
+    // signalStrength is a 0-1 ratio (verified: 0.61 where nmcli reported 74).
+    readonly property int signalStrength: activeWifi ? Math.round(activeWifi.signalStrength * 100) : 0
+
+    readonly property string icon: (wiredUp || wifiUp) ? "󰪥" : "○"
 
     readonly property color textColor: {
-        if (connType === "none")     return "#555555"
-        if (connType === "ethernet") return "#ffffff"
-        if (signalStrength >= 70)    return "#ffffff"
-        if (signalStrength >= 40)    return "#fab387"
-        return "#f38ba8"
+        if (wiredUp)
+            return Theme.textMax;
+
+        if (!wifiUp)
+            return Theme.dim;
+
+        if (signalStrength >= 70)
+            return Theme.textMax;
+
+        if (signalStrength >= 40)
+            return Theme.peach;
+
+        return Theme.red;
     }
 
-    function refresh() { netProc.running = true }
+    implicitWidth: 24
+    implicitHeight: Theme.barHeight
 
-    Process {
-        id: netProc
-        command: ["bash", "-c",
-            "if nmcli -t -f TYPE,STATE dev 2>/dev/null | grep -q 'ethernet:connected'; then " +
-            "  echo 'ethernet 100'; " +
-            "elif nmcli -t -f TYPE,STATE dev 2>/dev/null | grep -q 'wifi:connected'; then " +
-            "  sig=$(nmcli -t -f SIGNAL,ACTIVE dev wifi 2>/dev/null | awk -F: '/yes$/{print $1}' | head -1); " +
-            "  echo \"wifi ${sig:-0}\"; " +
-            "else echo 'none 0'; fi"
-        ]
-        stdout: SplitParser {
-            onRead: data => {
-                const parts = data.trim().split(" ")
-                root.connType       = parts[0] || "none"
-                root.signalStrength = parseInt(parts[1]) || 0
-            }
-        }
+    Hint {
+        target: root
+        text: wiredUp ? "wired" : wifiUp ? activeWifi.name.toLowerCase() + " " + signalStrength + "%" : "offline"
     }
 
-    Timer {
-        interval: 10000
-        running: true
-        repeat: true
-        onTriggered: root.refresh()
+    MouseArea {
+        anchors.fill: parent
+        onClicked: PanelState.toggle("network", root.QsWindow.window ? root.QsWindow.window.screen : null)
     }
 
-    Component.onCompleted: root.refresh()
-
-    implicitWidth:  24
-    implicitHeight: 32
+    NetworkPanel {
+        target: root
+        wifiDevice: root.wifiDevice
+        wiredDevice: root.wiredDevice
+    }
 
     Text {
-        id: label
         anchors.centerIn: parent
         text: root.icon
-        font.family: "GeistMono Nerd Font"
-        font.pixelSize: 16
+        font.family: Theme.font
+        font.pixelSize: Theme.iconSize
         color: root.textColor
     }
 }

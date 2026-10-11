@@ -14,7 +14,6 @@ home/.claude/*
 !home/.config/nvim/
 !home/.config/quickshell/
 !home/.config/waybar/
-!home/.config/rofi/
 !home/.config/swaync/
 !home/.config/ghostty/
 !home/.config/yazi/

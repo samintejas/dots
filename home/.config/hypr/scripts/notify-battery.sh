@@ -11,7 +11,7 @@ BAT=$(upower -e | grep -m1 -E 'BAT|battery_' || true)
 [ -z "$BAT" ] && exit 0
 
 notify() {
-    notify-send --app-name="Battery" "$@"
+    notify-send --app-name="battery" "$@"
 }
 
 # Parses upower output. Trims whitespace properly (unlike ${v## } which only
@@ -37,15 +37,15 @@ handle() {
     if [ -n "$last_state" ] && [ "$state" != "$last_state" ]; then
         case "$last_state->$state" in
             *"->charging")
-                notify --urgency=low "Charging" "Battery at ${pct}%"
+                notify --urgency=low "charging" "battery at ${pct}%"
                 warned=""
                 ;;
             "charging->discharging")
                 notify --urgency=normal \
-                    "Charging stopped" "Unplugged at ${pct}% — not full"
+                    "charging stopped" "unplugged at ${pct}% — not full"
                 ;;
             *"->fully-charged")
-                notify --urgency=low "Fully charged" "Battery at 100%"
+                notify --urgency=low "fully charged" "battery at 100%"
                 ;;
         esac
     fi
@@ -54,10 +54,10 @@ handle() {
     if [ "$state" = "discharging" ]; then
         if [ "$pct" -le 5 ] && [ "$warned" != "crit" ]; then
             notify --urgency=critical --expire-time=0 \
-                "Battery critical" "${pct}% — plug in now"
+                "battery critical" "${pct}% — plug in now"
             warned=crit
         elif [ "$pct" -le 15 ] && [ -z "$warned" ]; then
-            notify --urgency=normal "Battery low" "${pct}% remaining"
+            notify --urgency=normal "battery low" "${pct}% remaining"
             warned=low
         fi
     else

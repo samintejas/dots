@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell.Hyprland
+import "../theme"
 
 Item {
     id: root
@@ -49,7 +50,7 @@ Item {
         text: root.displayTitle
         font.family: "GeistMono Nerd Font"
         font.pixelSize: 13
-        color: "#9a9a9a"
+        color: Theme.textDim
         elide: Text.ElideRight
         maximumLineCount: 1
     }

@@ -1,3 +1,4 @@
+module bar
 Bar 1.0 Bar.qml
 Workspaces 1.0 Workspaces.qml
 WindowTitle 1.0 WindowTitle.qml
@@ -8,3 +9,11 @@ Bluetooth 1.0 Bluetooth.qml
 Mpris 1.0 Mpris.qml
 Tray 1.0 Tray.qml
 TrayMenu 1.0 TrayMenu.qml
+Volume 1.0 Volume.qml
+Hint 1.0 Hint.qml
+Dnd 1.0 Dnd.qml
+singleton PanelState 1.0 PanelState.qml
+PopoverPanel 1.0 PopoverPanel.qml
+PanelRow 1.0 PanelRow.qml
+NetworkPanel 1.0 NetworkPanel.qml
+BluetoothPanel 1.0 BluetoothPanel.qml

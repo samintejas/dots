@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import "../theme"
 
 PanelWindow {
     id: root
@@ -9,7 +10,7 @@ PanelWindow {
     required property var modelData
 
     screen: modelData
-    color: "#0a0a0a"
+    color: Theme.base
     implicitHeight: 32
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.exclusiveZone: implicitHeight
@@ -61,6 +62,9 @@ PanelWindow {
             implicitWidth: 8
         }
 
+        Volume {
+        }
+
         Bluetooth {
         }
 
@@ -72,6 +76,9 @@ PanelWindow {
 
         Item {
             implicitWidth: 8
+        }
+
+        Dnd {
         }
 
         Clock {

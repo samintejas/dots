@@ -1,65 +1,66 @@
 import QtQuick
-import Quickshell.Io
+import Quickshell
+import Quickshell.Bluetooth
+import "../theme"
 
+// Bluetooth via BlueZ over D-Bus — event-driven. Replaces a 15s timer that
+// spawned two bash subshells plus two bluetoothctl processes per tick.
 Item {
     id: root
 
-    property bool powered:   false
-    property bool connected: false
+    readonly property bool powered: Bluetooth.defaultAdapter !== null && Bluetooth.defaultAdapter.enabled
+
+    readonly property bool connected: {
+        if (!Bluetooth.devices)
+            return false;
+
+        const ds = Bluetooth.devices.values;
+        for (let i = 0; i < ds.length; i++) {
+            if (ds[i].connected)
+                return true;
+
+        }
+        return false;
+    }
 
     readonly property string icon: connected ? "󰪥" : "○"
+    readonly property color textColor: connected ? Theme.blue : Theme.dim
 
-    readonly property color textColor: connected ? "#89b4fa" : "#555555"
+    implicitWidth: 24
+    implicitHeight: Theme.barHeight
 
-    function refresh() {
-        poweredProc.running   = true
-        connectedProc.running = true
-    }
+    readonly property string names: {
+        if (!Bluetooth.devices)
+            return "";
 
-    Process {
-        id: poweredProc
-        command: ["bash", "-c", "bluetoothctl show 2>/dev/null | grep -c 'Powered: yes'"]
-        stdout: SplitParser {
-            onRead: data => root.powered = parseInt(data.trim()) > 0
+        const out = [];
+        const ds = Bluetooth.devices.values;
+        for (let i = 0; i < ds.length; i++) {
+            if (ds[i].connected)
+                out.push(ds[i].name.toLowerCase());
         }
+        return out.join(", ");
     }
 
-    Process {
-        id: connectedProc
-        command: ["bash", "-c", "bluetoothctl devices Connected 2>/dev/null | wc -l"]
-        stdout: SplitParser {
-            onRead: data => root.connected = parseInt(data.trim()) > 0
-        }
+    Hint {
+        target: root
+        text: !powered ? "bluetooth off" : names !== "" ? names : "no device"
     }
-
-    Process {
-        id: btLaunch
-        command: ["ghostty", "-e", "bluetoothctl"]
-    }
-
-    Timer {
-        interval: 15000
-        running: true
-        repeat: true
-        onTriggered: root.refresh()
-    }
-
-    Component.onCompleted: root.refresh()
-
-    implicitWidth:  24
-    implicitHeight: 32
 
     Text {
-        id: label
         anchors.centerIn: parent
         text: root.icon
-        font.family: "GeistMono Nerd Font"
-        font.pixelSize: 16
+        font.family: Theme.font
+        font.pixelSize: Theme.iconSize
         color: root.textColor
     }
 
     MouseArea {
         anchors.fill: parent
-        onClicked: btLaunch.running = true
+        onClicked: PanelState.toggle("bluetooth", root.QsWindow.window ? root.QsWindow.window.screen : null)
+    }
+
+    BluetoothPanel {
+        target: root
     }
 }

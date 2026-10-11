@@ -24,8 +24,8 @@ window {
     text-color:        @fg;
     border:            1px;
     border-color:      @border;
-    border-radius:     4px;
-    width:             480;
+    border-radius:     6px;
+    width:             520;
     location:          center;
     anchor:            center;
     x-offset:          0;
@@ -35,16 +35,23 @@ window {
 mainbox {
     background-color:  @al;
     children:          [ inputbar, listview ];
-    spacing:           12px;
-    padding:           16px;
+    spacing:           8px;
+    padding:           12px;
 }
 
 inputbar {
     children:          [ prompt, entry ];
-    background-color:  @al;
+    background-color:  @inset;
+    border:            1px;
+    border-color:      @control;
+    border-radius:     3px;
     text-color:        @fg;
     spacing:           10px;
     padding:           6px 10px;
+}
+
+inputbar:focus {
+    border-color:      @ring;
 }
 
 prompt {
@@ -85,8 +92,8 @@ element {
     background-color:  @al;
     text-color:        @fg;
     orientation:       horizontal;
-    border-radius:     3px;
-    padding:           8px 10px;
+    border-radius:     4px;
+    padding:           6px 10px;
     spacing:           10px;
 }
 
@@ -113,11 +120,11 @@ element normal.active   { text-color: @accent;  background-color: @al; }
 
 element selected {
     background-color:  @selected;
-    text-color:        @base;
-    border-radius:     3px;
+    text-color:        @strong;
+    border-radius:     4px;
 }
 
 element selected.urgent {
-    background-color:  @red;
-    text-color:        @base;
+    background-color:  @selected;
+    text-color:        @red;
 }

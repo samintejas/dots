@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell.Io
 import "../notifications"
+import "../theme"
 
 Item {
     id: root
@@ -8,8 +9,8 @@ Item {
     property bool showFull: false
     property var  now: new Date()
 
-    // Match waybar: "%I:%M %p" / "%a %b %d  %I:%M %p"
-    readonly property string timeStr: Qt.formatDateTime(now, showFull ? "ddd MMM dd  hh:mm AP" : "hh:mm AP")
+    // lowercase, no uppercase meridiem (Dots: no uppercase)
+    readonly property string timeStr: Qt.formatDateTime(now, showFull ? "ddd MMM dd  hh:mm ap" : "hh:mm ap")
 
     Timer {
         interval: 1000
@@ -27,12 +28,23 @@ Item {
         text: root.timeStr
         font.family: "GeistMono Nerd Font"
         font.pixelSize: 13
-        color: "#b0b0b0"
+        color: Theme.text
+    }
+
+    Hint {
+        target: root
+        text: Qt.formatDateTime(root.now, "dddd, d MMMM yyyy").toLowerCase()
     }
 
     MouseArea {
         anchors.fill: parent
-        onClicked: root.showFull = !root.showFull
+        acceptedButtons: Qt.LeftButton | Qt.MiddleButton
+        onClicked: mouse => {
+            if (mouse.button === Qt.MiddleButton)
+                NotificationDrawerState.dnd = !NotificationDrawerState.dnd
+            else
+                root.showFull = !root.showFull
+        }
         onDoubleClicked: NotificationDrawerState.toggle()
     }
 }

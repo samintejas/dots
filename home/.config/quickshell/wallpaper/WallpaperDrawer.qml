@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import "../theme"
 
 PanelWindow {
     id: root
@@ -44,7 +45,7 @@ PanelWindow {
             width: overlay.drawerW
             anchors { top: parent.top; bottom: parent.bottom; right: parent.right }
 
-            color: "#0a0a0a"
+            color: Theme.base
             border.width: 0
 
             x: WallpaperState.visible ? 0 : overlay.drawerW
@@ -57,7 +58,7 @@ PanelWindow {
                 id: leftBorder
                 anchors { top: parent.top; bottom: parent.bottom; left: parent.left }
                 width: 2
-                color: "#505050"
+                color: Theme.line
                 z: 1
             }
 
@@ -66,22 +67,21 @@ PanelWindow {
                 id: header
                 anchors { top: parent.top; left: leftBorder.right; right: parent.right }
                 height: 44
-                color: "#111111"
+                color: Theme.surface
 
                 Rectangle {
                     anchors.bottom: parent.bottom
                     width: parent.width
                     height: 1
-                    color: "#252525"
+                    color: Theme.border
                 }
 
                 Text {
                     anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 14 }
-                    text: "WALLPAPERS"
+                    text: "wallpapers"
                     font.family: "GeistMono Nerd Font"
-                    font.pixelSize: 10
-                    font.letterSpacing: 0.5
-                    color: "#484848"
+                    font.pixelSize: 11
+                                        color: Theme.subtle
                 }
 
                 Text {
@@ -89,7 +89,7 @@ PanelWindow {
                     text: WallpaperState.results.length > 0 ? WallpaperState.results.length : ""
                     font.family: "GeistMono Nerd Font"
                     font.pixelSize: 11
-                    color: "#484848"
+                    color: Theme.subtle
                 }
             }
 
@@ -98,13 +98,13 @@ PanelWindow {
                 id: searchBar
                 anchors { top: header.bottom; left: leftBorder.right; right: parent.right }
                 height: 44
-                color: "#0a0a0a"
+                color: Theme.base
 
                 Rectangle {
                     anchors.bottom: parent.bottom
                     width: parent.width
                     height: 1
-                    color: "#252525"
+                    color: Theme.border
                 }
 
                 RowLayout {
@@ -115,7 +115,7 @@ PanelWindow {
                         text: "󰍉"
                         font.family: "GeistMono Nerd Font"
                         font.pixelSize: 14
-                        color: "#484848"
+                        color: Theme.subtle
                     }
 
                     TextInput {
@@ -123,9 +123,9 @@ PanelWindow {
                         Layout.fillWidth: true
                         font.family: "GeistMono Nerd Font"
                         font.pixelSize: 12
-                        color: "#cdd6f4"
-                        selectionColor: "#ef9cd8"
-                        selectedTextColor: "#0a0a0a"
+                        color: Theme.fg
+                        selectionColor: Theme.pink
+                        selectedTextColor: Theme.base
                         verticalAlignment: TextInput.AlignVCenter
                         clip: true
                         focus: WallpaperState.visible
@@ -136,7 +136,7 @@ PanelWindow {
                             verticalAlignment: Text.AlignVCenter
                             text: "search wallhaven"
                             font: parent.font
-                            color: "#484848"
+                            color: Theme.subtle
                             visible: parent.text === "" && !parent.activeFocus
                         }
 
@@ -154,7 +154,7 @@ PanelWindow {
                         text: WallpaperState.fetching ? "…" : ""
                         font.family: "GeistMono Nerd Font"
                         font.pixelSize: 12
-                        color: "#585b70"
+                        color: Theme.overlay1
                     }
                 }
             }
@@ -199,9 +199,9 @@ PanelWindow {
 
                     width: ListView.view.width
                     implicitHeight: width * 9 / 16
-                    color: "#111111"
+                    color: Theme.surface
                     radius: 4
-                    border.color: hover.containsMouse ? "#89b4fa" : "#252525"
+                    border.color: hover.containsMouse ? Theme.line : Theme.border
                     border.width: 1
                     clip: true
 
@@ -229,7 +229,7 @@ PanelWindow {
                             text: tile.modelData.resolution || ""
                             font.family: "GeistMono Nerd Font"
                             font.pixelSize: 10
-                            color: "#cdd6f4"
+                            color: Theme.fg
                         }
                     }
 
@@ -258,7 +258,7 @@ PanelWindow {
                         }
                         font.family: "GeistMono Nerd Font"
                         font.pixelSize: 11
-                        color: "#484848"
+                        color: Theme.subtle
                     }
                 }
 

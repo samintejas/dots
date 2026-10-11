@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import "../theme"
 
 // Custom styled tray context menu.
 // Sits as an overlay PanelWindow anchored top+left so
@@ -48,10 +49,10 @@ PanelWindow {
     Rectangle {
         id: popup
 
-        color:        "#111111"
-        border.color: "#252525"
+        color:        Theme.raised
+        border.color: Theme.borderRaised
         border.width: 1
-        radius:       4
+        radius:       Theme.radiusLg
 
         implicitWidth:  Math.max(180, col.implicitWidth + 16)
         implicitHeight: col.implicitHeight + 8
@@ -83,22 +84,22 @@ PanelWindow {
                         anchors.centerIn: parent
                         width:  parent.width
                         height: 1
-                        color:  "#252525"
+                        color:  Theme.border
                     }
 
                     Rectangle {
                         visible: !modelData.isSeparator
                         anchors.fill: parent
                         color:  itemHover.containsMouse && modelData.enabled
-                                ? "#1a1a1a" : "transparent"
-                        radius: 3
+                                ? Theme.hover : "transparent"
+                        radius: Theme.radiusMd
 
                         Text {
                             anchors { left: parent.left; leftMargin: 4; verticalCenter: parent.verticalCenter }
                             text:           modelData.text
-                            font.family:    "GeistMono Nerd Font"
+                            font.family:    Theme.font
                             font.pixelSize: 12
-                            color:          modelData.enabled ? "#e0e0e0" : "#484848"
+                            color:          modelData.enabled ? Theme.textHi : Theme.subtle
                         }
 
                         Text {
@@ -106,7 +107,7 @@ PanelWindow {
                             anchors { right: parent.right; rightMargin: 4; verticalCenter: parent.verticalCenter }
                             text:           "›"
                             font.pixelSize: 13
-                            color:          "#606060"
+                            color:          Theme.muted
                         }
                     }
 

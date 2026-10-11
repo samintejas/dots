@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Services.Notifications
+import "../theme"
 
 // Floating popup notifications — top-right, stacked vertically.
 PanelWindow {
@@ -18,6 +19,12 @@ PanelWindow {
     // active dismissal timers, one per notification: [{ notif, timer }]
     property var dismissTimers: []
 
+    // the card under the pointer keeps its timer paused
+    property var hoveredNotif: null
+    readonly property int maxVisible: 3
+    readonly property var visiblePopups: popups.slice(-maxVisible)
+    readonly property int hiddenCount: Math.max(0, popups.length - maxVisible)
+
     WlrLayershell.layer:         WlrLayer.Overlay
     WlrLayershell.exclusiveZone: 0
     WlrLayershell.namespace:     "notifications-popup"
@@ -28,8 +35,20 @@ PanelWindow {
 
     color:          "transparent"
     implicitWidth:  360
-    implicitHeight: popupCol.implicitHeight
+    implicitHeight: popupCol.implicitHeight + (hiddenCount > 0 ? 22 : 0)
     visible:        popups.length > 0
+
+    // "clear all" in the drawer also drops every popup
+    Connections {
+        target: NotificationDrawerState
+        function onCleared() {
+            for (var i = 0; i < root.dismissTimers.length; i++)
+                root.dismissTimers[i].timer.destroy()
+            root.dismissTimers = []
+            root.popups = []
+            root.hoveredNotif = null
+        }
+    }
 
     function addPopup(notif) {
         if (root.popups.indexOf(notif) >= 0) return
@@ -143,7 +162,7 @@ PanelWindow {
         id: dismissTimerComp
         Timer {
             property var notif
-            running: true
+            running: root.hoveredNotif !== notif
             repeat: false
             onTriggered: {
                 root.removePopup(notif)
@@ -160,11 +179,21 @@ PanelWindow {
 
     Column {
         id: popupCol
-        anchors { left: parent.left; right: parent.right }
+        anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
         spacing: 6
 
+        Text {
+            visible: root.hiddenCount > 0
+            width: parent.width
+            horizontalAlignment: Text.AlignRight
+            text: "+" + root.hiddenCount + " more"
+            font.family: Theme.font
+            font.pixelSize: 11
+            color: Theme.subtle
+        }
+
         Repeater {
-            model: root.popups
+            model: root.visiblePopups
 
             delegate: Item {
                 id: popupDelegate
@@ -184,10 +213,31 @@ PanelWindow {
                     notification: popupDelegate.notif
                     isPopup: true
 
-                    onClosed: {
-                        if (popupDelegate.notif) popupDelegate.notif.dismiss()
+                    onHoveredChanged: {
+                        if (hovered) root.hoveredNotif = popupDelegate.notif
+                        else if (root.hoveredNotif === popupDelegate.notif) root.hoveredNotif = null
+                    }
+
+                    onActivated: {
+                        if (popupDelegate.notif) {
+                            var actions = popupDelegate.notif.actions
+                            for (var i = 0; i < actions.length; i++) {
+                                if (actions[i].identifier === "default") {
+                                    actions[i].invoke()
+                                    break
+                                }
+                            }
+                        }
                         root.removePopup(popupDelegate.notif)
                         root.cancelDismiss(popupDelegate.notif)
+                    }
+
+                    onClosed: {
+                        // drop the popup first: dismiss() tears this delegate down
+                        var n = popupDelegate.notif
+                        root.removePopup(n)
+                        root.cancelDismiss(n)
+                        if (n) n.dismiss()
                     }
                     onActionInvoked: identifier => {
                         if (popupDelegate.notif) {
@@ -208,8 +258,8 @@ PanelWindow {
 
                 ParallelAnimation {
                     id: slideIn
-                    NumberAnimation { target: popupDelegate; property: "opacity"; to: 1; duration: 200; easing.type: Easing.OutCubic }
-                    NumberAnimation { target: popupDelegate; property: "x"; to: 0; duration: 200; easing.type: Easing.OutCubic }
+                    NumberAnimation { target: popupDelegate; property: "opacity"; to: 1; duration: Theme.dur; easing.type: Easing.OutQuint }
+                    NumberAnimation { target: popupDelegate; property: "x"; to: 0; duration: Theme.dur; easing.type: Easing.OutQuint }
                 }
             }
         }

@@ -24,7 +24,7 @@ export PATH="$PATH:/home/samin/.local/bin"
 export GOPATH="$HOME/lib/go"
 export PATH="$PATH:$GOPATH/bin"
 
-export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
+export FZF_DEFAULT_OPTS="--height 40% --reverse --border --color=bg:#0b0b0b,bg+:#1a1a1a,fg:#b4b4b4,fg+:#f5f5f5,hl:#ef9cd8,hl+:#ef9cd8,info:#9c9c9c,prompt:#ef9cd8,pointer:#ef9cd8,marker:#a6e3a1,spinner:#9c9c9c,header:#9c9c9c,border:#383838,gutter:#0b0b0b"
 export FZF_CTRL_R_OPTS="--height 40%"
 export FZF_CTRL_T_OPTS="--height 60%"
 export FZF_ALT_C_OPTS="--height 60% --preview 'exa --tree --icons --level=1 --color=always {}'"
@@ -86,3 +86,19 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH=/home/samin/.opencode/bin:$PATH
 
 
+
+# -------------------------
+# GitLab (Vonnue)
+# -------------------------
+export GITLAB_URL="https://gitlab.vonnue.dev"
+export GITLAB_HOST="gitlab.vonnue.dev"
+export GITLAB_API_URL="$GITLAB_URL/api/v4"
+export GL_HOST="$GITLAB_HOST"
+export CI_SERVER_URL="$GITLAB_URL"
+export DESIGN_SYSTEM_URL="https://vonnue.pages.gitlab.vonnue.dev/engineering/design-system/"
+# Personal access token: put it (only the token) in ~/.config/gitlab/token, chmod 600
+[[ -r ~/.config/gitlab/token ]] && export GITLAB_TOKEN="$(<~/.config/gitlab/token)" && export GITLAB_PRIVATE_TOKEN="$GITLAB_TOKEN"
+
+# v-orch modernisation control repo (pauzible). env/.env is the single source of truth; secrets.env is NOT exported.
+export MC_CONTROL_ROOT="$HOME/repo/vonnue/vonnue-modernization-toolkit/v-orch-cp"
+[[ -r "$MC_CONTROL_ROOT/env/.env" ]] && { set -a; source "$MC_CONTROL_ROOT/env/.env"; set +a; }

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 notify() {
-    notify-send --app-name="Network" "$@"
+    notify-send --app-name="network" "$@"
 }
 
 wifi_ssid() {
@@ -18,9 +18,9 @@ handle() {
     cur=$(wifi_ssid)
     [ "$cur" = "$prev" ] && return
     if [ -n "$cur" ]; then
-        notify --urgency=low "Wi-Fi connected" "$cur"
+        notify --urgency=low "wi-fi connected" "$cur"
     elif [ -n "$prev" ]; then
-        notify --urgency=normal "Wi-Fi disconnected" "Was: $prev"
+        notify --urgency=normal "wi-fi disconnected" "was: $prev"
     fi
     prev="$cur"
 }

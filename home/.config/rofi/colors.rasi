@@ -1,21 +1,23 @@
+/* Dots tokens (dark). Keep in sync with quickshell/theme/Theme.qml */
 * {
   al:       #00000000;
-  base:     #0a0a0a;
-  surface0: #1e1e2e;
-  surface1: #313244;
-  overlay0: #45475a;
-  overlay1: #585b70;
-  subtext:  #a6adc8;
-  text:     #cdd6f4;
+  well:     #000000;    /* bg-well: where you type */
+  overlay:  #1a1a1a;    /* bg-overlay: palette */
+  hover:    #ffffff0d;  /* bg-hover: 5% white tint */
+  text:     #e2e2e2;    /* text-strong: menu rows */
+  strong:   #f5f5f5;    /* text-max: current item */
+  secondary:#9c9c9c;    /* text-secondary: hints */
+  border:   #4e4e4e;    /* border-overlay */
+  control:  #383838;    /* border-raised / input */
+  ring:     #ef9cd88c;  /* focus-ring: accent-primary 55% */
 
-  blue:     #649cf8;
   pink:     #ef9cd8;
-  red:      #ef688e;
+  red:      #f38ba8;
 
-  bg:       @base;
+  bg:       @overlay;
   fg:       @text;
-  muted:    @overlay0;
-  border:   @surface1;
-  accent:   @blue;
-  selected: @pink;
+  muted:    @secondary;
+  accent:   @pink;
+  selected: @hover;
+  inset:    @well;
 }

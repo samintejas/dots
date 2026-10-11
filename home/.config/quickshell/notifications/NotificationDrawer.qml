@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
+import "../theme"
 
 // Full-height drawer sliding in from the right edge.
 PanelWindow {
@@ -11,11 +12,12 @@ PanelWindow {
     screen: modelData
 
     readonly property var tracked: NotificationDrawerState.trackedNotifications
-    readonly property var trackedCount: tracked ? tracked.count : 0
+    readonly property int trackedCount: (tracked && tracked.values) ? tracked.values.length : 0
 
     WlrLayershell.layer:         WlrLayer.Overlay
     WlrLayershell.exclusiveZone: 0
     WlrLayershell.namespace:     "notifications-drawer"
+    WlrLayershell.keyboardFocus: NotificationDrawerState.visible ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
 
     anchors { top: true; bottom: true; right: true }
 
@@ -36,134 +38,91 @@ PanelWindow {
         width: root.screen ? root.screen.width : 1920
         height: root.screen ? root.screen.height : 1080
 
-        // dimmed backdrop
+        focus: NotificationDrawerState.visible
+        Keys.onEscapePressed: NotificationDrawerState.visible = false
+
+        // scrim: click outside to close
         Rectangle {
             anchors.fill: parent
-            color: Qt.rgba(0, 0, 0, 0.3)
+            color: Theme.scrim
             opacity: drawer.x < overlay.drawerW ? 1 - (drawer.x / overlay.drawerW) : 0
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: NotificationDrawerState.toggle()
+                onClicked: NotificationDrawerState.visible = false
             }
         }
 
-        readonly property int drawerW: 380
+        readonly property int drawerW: 360   // sheet-w
 
+        // Sheet: same ground as the bar; the left hairline is the only edge
         Rectangle {
             id: drawer
             width: overlay.drawerW
             anchors { top: parent.top; bottom: parent.bottom; right: parent.right }
 
-            color: "#0a0a0a"
-            border.width: 0
+            color: Theme.base
 
-            // left border matching hyprland active window border
             Rectangle {
                 id: leftBorder
                 anchors { top: parent.top; bottom: parent.bottom; left: parent.left }
-                width: 2
-                color: "#505050"
+                width: 2                      // same as the Hyprland window border
+                color: Theme.line             // = Hyprland active_border #4e4e4e
                 z: 1
             }
 
             x: NotificationDrawerState.visible ? 0 : overlay.drawerW
 
             Behavior on x {
-                NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+                NumberAnimation { duration: Theme.dur; easing.type: Easing.OutQuint }
             }
 
-            // header
-            Rectangle {
+            MouseArea { anchors.fill: parent }   // absorb clicks
+
+            // header: title + count, dnd switch, clear all
+            Item {
                 id: header
                 anchors { top: parent.top; left: leftBorder.right; right: parent.right }
-                height: 44
-                color: "#111111"
+                height: 40
 
-                Rectangle {
-                    anchors.bottom: parent.bottom
-                    width: parent.width
-                    height: 1
-                    color: "#252525"
+                Text {
+                    anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 14 }
+                    text: "notifications" + (root.trackedCount > 0 ? "  " + root.trackedCount : "")
+                    font.family: Theme.font
+                    font.pixelSize: 13
+                    font.weight: Font.Medium
+                    color: Theme.textHi
                 }
 
                 RowLayout {
-                    anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 14 }
-                    spacing: 8
+                    anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 10 }
+                    spacing: 10
 
-                    Text {
-                        text: "DND"
-                        font.family: "GeistMono Nerd Font"
-                        font.pixelSize: 10
-                        font.letterSpacing: 0.5
-                        color: "#484848"
-                    }
+                    // clear all: ghost button, verb + object
+                    Rectangle {
+                        enabled: root.trackedCount > 0
+                        opacity: enabled ? 1 : 0.4
+                        Layout.preferredHeight: 24
+                        Layout.preferredWidth: clearLabel.implicitWidth + 20
+                        radius: Theme.radiusSm
+                        color: clearArea.containsMouse ? Theme.hover : "transparent"
+                        border.width: 1
+                        border.color: Theme.borderRaised
 
-                    Item {
-                        width: 34; height: 18
-
-                        Rectangle {
-                            anchors.fill: parent
-                            radius: 9
-                            color: NotificationDrawerState.dnd ? "#89b4fa" : "#252525"
-                            Behavior on color { ColorAnimation { duration: 150 } }
-
-                            Rectangle {
-                                width: 12; height: 12; radius: 6
-                                anchors.verticalCenter: parent.verticalCenter
-                                x: NotificationDrawerState.dnd ? parent.width - width - 3 : 3
-                                color: NotificationDrawerState.dnd ? "#0a0a0a" : "#686868"
-                                Behavior on x { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
-                                Behavior on color { ColorAnimation { duration: 150 } }
-                            }
+                        Text {
+                            id: clearLabel
+                            anchors.centerIn: parent
+                            text: "clear all"
+                            font.family: Theme.font
+                            font.pixelSize: 11
+                            color: clearArea.containsMouse ? Theme.textHi : Theme.text
                         }
 
                         MouseArea {
+                            id: clearArea
                             anchors.fill: parent
-                            onClicked: NotificationDrawerState.dnd = !NotificationDrawerState.dnd
-                        }
-                    }
-                }
-
-                // notification count
-                Text {
-                    anchors.centerIn: parent
-                    text: root.trackedCount
-                    font.family: "GeistMono Nerd Font"
-                    font.pixelSize: 11
-                    color: "#484848"
-                    visible: root.trackedCount > 0
-                }
-
-                // clear all
-                Item {
-                    anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 14 }
-                    width: 24; height: 24
-                    visible: root.trackedCount > 0
-
-                    Rectangle {
-                        anchors.fill: parent
-                        radius: 4
-                        color: clearHover.containsMouse ? Qt.rgba(0.85, 0.44, 0.44, 0.12) : "transparent"
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: "󰎟"
-                            font.family: "GeistMono Nerd Font"
-                            font.pixelSize: 14
-                            color: clearHover.containsMouse ? "#f38ba8" : "#484848"
-                        }
-                    }
-
-                    MouseArea {
-                        id: clearHover
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: {
-                            if (!root.tracked) return
-                            for (var i = root.tracked.count - 1; i >= 0; i--) {
-                                root.tracked.get(i).dismiss()
-                            }
+                            hoverEnabled: true
+                            onClicked: NotificationDrawerState.clearAll()
                         }
                     }
                 }
@@ -173,7 +132,7 @@ PanelWindow {
             Flickable {
                 anchors {
                     top: header.bottom
-                    left: parent.left
+    left: parent.left
                     right: parent.right
                     bottom: parent.bottom
                 }
@@ -195,9 +154,9 @@ PanelWindow {
                         Text {
                             anchors.centerIn: parent
                             text: "no notifications"
-                            font.family: "GeistMono Nerd Font"
-                            font.pixelSize: 11
-                            color: "#484848"
+                            font.family: Theme.font
+                            font.pixelSize: 12
+                            color: Theme.subtle
                         }
                     }
 
@@ -222,6 +181,15 @@ PanelWindow {
                                 isPopup: false
 
                                 onClosed: drawerDelegate.modelData.dismiss()
+                                onActivated: {
+                                    var actions = drawerDelegate.modelData.actions
+                                    for (var i = 0; i < actions.length; i++) {
+                                        if (actions[i].identifier === "default") {
+                                            actions[i].invoke()
+                                            break
+                                        }
+                                    }
+                                }
                                 onActionInvoked: identifier => {
                                     var actions = drawerDelegate.modelData.actions
                                     for (var i = 0; i < actions.length; i++) {

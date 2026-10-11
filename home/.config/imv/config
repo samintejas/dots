@@ -5,7 +5,12 @@
 # Suppress built-in key bindings, and specify them explicitly in this
 # config file.
 suppress_default_binds = true
-title_text = $(basename $imv_current_file)
+background = 0b0b0b
+overlay_font = GeistMono Nerd Font:12
+overlay_text_color = e2e2e2
+overlay_background_color = 171717
+overlay_background_alpha = ff
+title_text = [$imv_current_index/$imv_file_count] $(basename "$imv_current_file")
 
 [aliases]
 # Define aliases here. Any arguments passed to an alias are appended to the
@@ -15,7 +20,6 @@ title_text = $(basename $imv_current_file)
 [binds]
 # Define some key bindings
 q = quit
-y = exec echo working!
 
 # Image navigation
 <Left> = prev
@@ -44,8 +48,9 @@ o = zoom -1
 
 # Other commands
 x = close
-f = fullscreen
-d = overlay
+<Return> = fullscreen
+<F11> = fullscreen
+<Tab> = overlay
 p = exec echo $imv_current_file
 c = center
 s = scaling next
@@ -61,9 +66,13 @@ r = reset
 t = slideshow +1
 <Shift+T> = slideshow -1
 
-#samin
-#
-<Shift+X> = exec rm -i "$imv_current_file"; close
-<Shift+W> = exec awww img $imv_current_file
-<Shift+M> = exec cp $imv_current_file $HOME/repo/zen/wallpapers
-
+# File actions (see ~/.local/bin/imv-act)
+# Trash and favourite move the file under ~/tmp/images and show the next image
+<Delete> = exec imv-act trash; close
+d = exec imv-act trash; close
+f = exec imv-act fav; close
+u = exec imv-act undo
+y = exec imv-act path
+<Shift+Y> = exec imv-act copy
+w = exec imv-act wall
+<Shift+W> = exec imv-act keepwall
