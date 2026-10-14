@@ -6,8 +6,17 @@ home/.config/*
 # Keep specific home dotfiles
 !home/.zshrc
 
-# Ignore claude internals except commands and settings
+# Claude Code: track only hand-written config (settings, skills, agents, commands).
+# Sessions, history, credentials, plugins and synced skills stay in ~/.claude, unlinked.
+!home/.claude/
 home/.claude/*
+!home/.claude/settings.json
+!home/.claude/CLAUDE.md
+!home/.claude/keybindings.json
+!home/.claude/skills/
+!home/.claude/agents/
+!home/.claude/commands/
+home/.claude/skills/synced/
 
 # Backups and leftovers never belong in the repo
 *.bak

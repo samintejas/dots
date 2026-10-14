@@ -137,9 +137,9 @@ PanelWindow {
             anchors { top: parent.top; left: parent.left; right: parent.right; margins: 8 }
             height: 32
             radius: Theme.radiusSm
-            color: "#000000"
+            color: Theme.well
             border.width: input.activeFocus ? 2 : 1
-            border.color: input.activeFocus ? Qt.rgba(239 / 255, 156 / 255, 216 / 255, 0.55) : Theme.borderRaised
+            border.color: input.activeFocus ? Theme.focusRing : Theme.borderRaised
 
             TextInput {
                 id: input

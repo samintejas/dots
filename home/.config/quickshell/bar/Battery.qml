@@ -45,7 +45,7 @@ Item {
         if (capacity <= 50)
             return Theme.peach;
 
-        return Theme.textMax;
+        return Theme.textHi;
     }
 
     // Keyed off `present`, not `visible` — `visible` reads back as effective
@@ -87,7 +87,7 @@ Item {
 
         anchors.centerIn: parent
         text: root.icon
-        font.family: "GeistMono Nerd Font"
+        font.family: Theme.font
         font.pixelSize: 16
         color: root.textColor
     }

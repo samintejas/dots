@@ -9,7 +9,7 @@ import QtQuick
 QtObject {
     // ---- Neutral ramp: structure, never state -------------------------
     readonly property color base: "#060606"       // root background
-    readonly property color surface: "#0a0a0a"    // raised cards
+    readonly property color surface: "#111111"    // resting cards (bg-surface)
     readonly property color hover: Qt.rgba(1, 1, 1, 0.05)      // hover fill
     readonly property color empty: "#1c1c1c"      // empty workspace dot
     readonly property color border: "#232323"     // card / menu borders
@@ -21,15 +21,17 @@ QtObject {
     readonly property color subtle: "#9c9c9c"     // timestamps, muted body
     readonly property color textDim: "#9c9c9c"    // window title, playing media
     readonly property color text: "#b4b4b4"       // clock
-    readonly property color textHi: "#e2e2e2"     // notification body, menu text
-    readonly property color textMax: "#e2e2e2"    // nominal battery / network
+    readonly property color textHi: "#e2e2e2"     // values, menu text, nominal status
+    readonly property color textMax: "#f5f5f5"    // current item only (text-max)
 
     readonly property color raised: "#0f0f0f"     // menus, toasts, tooltips (bg-raised)
     readonly property color overlay: "#060606"    // dialogs, sheets, palette (bg-overlay)
     readonly property color borderRaised: "#232323"   // border-raised, border-strong
     readonly property color borderOverlay: "#232323"  // border-overlay
     readonly property color scrim: Qt.rgba(0, 0, 0, 0.8)
-    readonly property color overlay1: "#585b70"   // placeholder text
+    readonly property color well: "#000000"       // where you type (bg-well)
+    readonly property color borderControl: "#6a6a6a"  // switch, checkbox edge
+    readonly property color overlay1: "#9c9c9c"   // placeholder text (text-secondary)
     readonly property color fg: "#e2e2e2"         // drawer body text
 
     // ---- Semantic accents: state, never structure ---------------------
@@ -39,6 +41,8 @@ QtObject {
     readonly property color green: "#a6e3a1"      // success / charging
     readonly property color blue: "#89b4fa"       // info / active (external)
     readonly property color pink: "#ef9cd8"       // active (laptop panel)
+    readonly property color pinkSubtle: Qt.rgba(239 / 255, 156 / 255, 216 / 255, 0.12)  // accent-primary-subtle
+    readonly property color focusRing: Qt.rgba(239 / 255, 156 / 255, 216 / 255, 0.55)   // focus-ring, mark
 
     // ---- Typography ---------------------------------------------------
     readonly property string font: "GeistMono Nerd Font"

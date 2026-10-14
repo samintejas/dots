@@ -79,7 +79,7 @@ PanelWindow {
                 Text {
                     anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 14 }
                     text: "wallpapers"
-                    font.family: "GeistMono Nerd Font"
+                    font.family: Theme.font
                     font.pixelSize: 11
                                         color: Theme.subtle
                 }
@@ -87,7 +87,7 @@ PanelWindow {
                 Text {
                     anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 14 }
                     text: WallpaperState.results.length > 0 ? WallpaperState.results.length : ""
-                    font.family: "GeistMono Nerd Font"
+                    font.family: Theme.font
                     font.pixelSize: 11
                     color: Theme.subtle
                 }
@@ -113,7 +113,7 @@ PanelWindow {
 
                     Text {
                         text: "󰍉"
-                        font.family: "GeistMono Nerd Font"
+                        font.family: Theme.font
                         font.pixelSize: 14
                         color: Theme.subtle
                     }
@@ -121,7 +121,7 @@ PanelWindow {
                     TextInput {
                         id: searchInput
                         Layout.fillWidth: true
-                        font.family: "GeistMono Nerd Font"
+                        font.family: Theme.font
                         font.pixelSize: 12
                         color: Theme.fg
                         selectionColor: Theme.pink
@@ -152,7 +152,7 @@ PanelWindow {
 
                     Text {
                         text: WallpaperState.fetching ? "…" : ""
-                        font.family: "GeistMono Nerd Font"
+                        font.family: Theme.font
                         font.pixelSize: 12
                         color: Theme.overlay1
                     }
@@ -227,7 +227,7 @@ PanelWindow {
                             id: resTag
                             anchors.centerIn: parent
                             text: tile.modelData.resolution || ""
-                            font.family: "GeistMono Nerd Font"
+                            font.family: Theme.font
                             font.pixelSize: 10
                             color: Theme.fg
                         }
@@ -256,7 +256,7 @@ PanelWindow {
                             if (!WallpaperState.hasMore) return "— end —"
                             return ""
                         }
-                        font.family: "GeistMono Nerd Font"
+                        font.family: Theme.font
                         font.pixelSize: 11
                         color: Theme.subtle
                     }

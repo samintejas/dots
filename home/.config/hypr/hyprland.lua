@@ -59,6 +59,18 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("quickshell")
     hl.exec_cmd("wl-paste --watch ~/.config/hypr/scripts/clip-store.sh")
     hl.exec_cmd("hypridle")
+    -- GTK reads these from gsettings on Wayland, not settings.ini; the Dots
+    -- colours themselves live in gtk-3.0/gtk.css and gtk-4.0/gtk.css.
+    for key, value in pairs({
+        ["gtk-theme"] = "adw-gtk3-dark",
+        ["color-scheme"] = "prefer-dark",
+        ["accent-color"] = "pink",
+        ["font-name"] = "GeistMono Nerd Font 10",
+        ["document-font-name"] = "GeistMono Nerd Font 10",
+        ["monospace-font-name"] = "GeistMono Nerd Font 10",
+    }) do
+        hl.exec_cmd("gsettings set org.gnome.desktop.interface " .. key .. " '" .. value .. "'")
+    end
 end)
 
 hl.env("XCURSOR_SIZE", "24")

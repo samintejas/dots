@@ -79,16 +79,16 @@ PopupWindow {
                     Rectangle {
                         anchors.fill: parent
                         radius: 9
-                        color: panel.checked ? Theme.pink : Theme.empty
+                        color: panel.checked ? Theme.pinkSubtle : Theme.well
                         border.width: 1
-                        border.color: panel.checked ? Theme.pink : Theme.muted
+                        border.color: panel.checked ? Theme.pink : Theme.borderControl
                         Behavior on color { ColorAnimation { duration: Theme.dur } }
 
                         Rectangle {
                             width: 12; height: 12; radius: 6
                             anchors.verticalCenter: parent.verticalCenter
                             x: panel.checked ? parent.width - width - 3 : 3
-                            color: panel.checked ? Theme.base : Theme.textDim
+                            color: panel.checked ? Theme.pink : Theme.subtle
                             Behavior on x { NumberAnimation { duration: Theme.dur; easing.type: Easing.OutQuint } }
                             Behavior on color { ColorAnimation { duration: Theme.dur } }
                         }

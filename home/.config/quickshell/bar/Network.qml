@@ -52,13 +52,13 @@ Item {
 
     readonly property color textColor: {
         if (wiredUp)
-            return Theme.textMax;
+            return Theme.textHi;
 
         if (!wifiUp)
             return Theme.dim;
 
         if (signalStrength >= 70)
-            return Theme.textMax;
+            return Theme.textHi;
 
         if (signalStrength >= 40)
             return Theme.peach;

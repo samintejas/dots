@@ -26,7 +26,7 @@ Item {
         id: label
         anchors.centerIn: parent
         text: root.timeStr
-        font.family: "GeistMono Nerd Font"
+        font.family: Theme.font
         font.pixelSize: 13
         color: Theme.text
     }

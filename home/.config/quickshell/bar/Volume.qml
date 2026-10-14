@@ -32,7 +32,7 @@ Item {
         text: root.muted ? "○" : "󰪥"
         font.family: Theme.font
         font.pixelSize: Theme.iconSize
-        color: root.muted ? Theme.dim : (root.percent > 100 ? Theme.peach : Theme.textMax)
+        color: root.muted ? Theme.dim : (root.percent > 100 ? Theme.peach : Theme.textHi)
     }
 
     MouseArea {

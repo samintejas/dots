@@ -71,7 +71,7 @@ PopoverPanel {
     PanelRow {
         visible: panel.wiredDevice !== null
         icon: panel.glyph(0xF0200)
-        iconColor: panel.wiredDevice && panel.wiredDevice.connected ? Theme.textMax : Theme.dim
+        iconColor: panel.wiredDevice && panel.wiredDevice.connected ? Theme.textHi : Theme.dim
         title: "ethernet"
         active: panel.wiredDevice !== null && panel.wiredDevice.connected
         trailing: panel.wiredDevice && panel.wiredDevice.connected ? "connected" : "not connected"
@@ -151,7 +151,7 @@ PopoverPanel {
 
                     PanelRow {
                         icon: panel.wifiIcon(item.modelData.signalStrength)
-                        iconColor: item.modelData.connected ? Theme.textMax : Theme.subtle
+                        iconColor: item.modelData.connected ? Theme.textHi : Theme.subtle
                         title: item.modelData.name
                         active: item.modelData.connected
                         trailing: item.connecting ? "connecting…"
@@ -176,9 +176,9 @@ PopoverPanel {
                         Layout.bottomMargin: 4
                         Layout.preferredHeight: 28
                         radius: Theme.radiusSm
-                        color: "#000000"
+                        color: Theme.well
                         border.width: pass.activeFocus ? 2 : 1
-                        border.color: pass.activeFocus ? Qt.rgba(239 / 255, 156 / 255, 216 / 255, 0.55) : Theme.borderRaised
+                        border.color: pass.activeFocus ? Theme.focusRing : Theme.borderRaised
 
                         TextInput {
                             id: pass

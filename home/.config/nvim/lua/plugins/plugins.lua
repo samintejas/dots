@@ -71,9 +71,9 @@ return {
             vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
             vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none", fg = "#232323" })
             -- Dots: grey for structure, pink for selection / current item
-            vim.api.nvim_set_hl(0, "CursorLine", { bg = "#0a0a0a" })
+            vim.api.nvim_set_hl(0, "CursorLine", { bg = "#111111" })
             vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#ef9cd8" })
-            vim.api.nvim_set_hl(0, "LineNr", { fg = "#6a6a6a" })
+            vim.api.nvim_set_hl(0, "LineNr", { fg = "#808080" })
             vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#232323" })
             vim.api.nvim_set_hl(0, "Visual", { bg = "#383838" })
             vim.api.nvim_set_hl(0, "Search", { bg = "#383838", fg = "#ef9cd8" })

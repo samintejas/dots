@@ -105,14 +105,29 @@ Scope {
         return null;
     }
 
-    Connections {
-        target: root.spotify
-        function onTrackTitleChanged() {
+    // The title lands before the cover does, so reading the art in
+    // onTrackTitleChanged shows the previous track's. Wait for the whole
+    // track to settle, then read everything at once.
+    property string lastTrack: ""
+
+    Timer {
+        id: trackSettle
+        interval: 300
+        onTriggered: {
             const p = root.spotify;
             if (!root.primed || !p || !p.trackTitle) return;
+            const key = p.trackTitle + "\n" + p.trackArtist + "\n" + p.trackAlbum;
+            if (key === root.lastTrack) return;
+            root.lastTrack = key;
             const extra = ["--expire-time=4000", "--category=x-gnome.music"];
             if (p.trackArtUrl) extra.push("--icon=" + p.trackArtUrl);
             root.notify("Spotify", "low", "♪ " + p.trackTitle, p.trackArtist + " — " + p.trackAlbum, extra);
         }
+    }
+
+    Connections {
+        target: root.spotify
+        function onPostTrackChanged() { trackSettle.restart() }
+        function onTrackArtUrlChanged() { trackSettle.restart() }
     }
 }

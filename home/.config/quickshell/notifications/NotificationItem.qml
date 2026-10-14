@@ -42,7 +42,12 @@ Item {
 
     readonly property string iconSource: {
         if (!notification) return ""
-        if (notification.image && notification.image !== "") return notification.image
+        // a URL image (album art) comes back from Quickshell wrapped as a
+        // theme icon lookup, which cannot load it: unwrap it to the URL itself
+        var img = notification.image || ""
+        var wrapped = img.match(/^image:\/\/icon\/((?:https?|file):.*)$/)
+        if (wrapped) return wrapped[1]
+        if (img !== "") return img
         var ai = notification.appIcon || ""
         if (ai === "") return ""
         if (ai.startsWith("file://") || ai.startsWith("http://") || ai.startsWith("https://") || ai.startsWith("qrc:") || ai.startsWith("image://")) return ai

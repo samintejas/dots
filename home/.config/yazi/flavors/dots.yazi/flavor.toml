@@ -2,11 +2,11 @@
 # Сolor palette: https://stephango.com/flexoki
 # ---
 # black       "#060606" bg
-# base-950    "#0a0a0a" bg-2
+# base-950    "#111111" bg-2
 # base-900    "#232323" ui
 # base-850    "#232323" ui-2
 # base-800    "#383838" ui-3
-# base-700    "#6a6a6a" tx-3
+# base-700    "#808080" tx-3
 # base-500    "#9c9c9c" tx-2
 # base-200    "#e2e2e2" tx
 # red-400     "#f38ba8" re
@@ -89,16 +89,16 @@ progress_error = { bg = "#f38ba8" } # re
 
 [which]
 cols = 3
-mask = { bg = "#0a0a0a" } # bg-2
+mask = { bg = "#111111" } # bg-2
 cand = { fg = "#ef9cd8", bold = true } # cy
 rest = { fg = "#ef9cd8" } # cy
-desc = { fg = "#6a6a6a" } # tx-3
+desc = { fg = "#808080" } # tx-3
 separator = " "
 separator_style = { }
 
 [confirm]
 border = { fg = "#383838" } # ui-3
-title = { fg = "#6a6a6a", bold = true } # tx-3
+title = { fg = "#808080", bold = true } # tx-3
 body = { fg = "#e2e2e2", bold = true } # tx
 list = { fg = "#e2e2e2" } # tx
 btn_yes = { fg = "#e2e2e2", bg = "#383838", bold = true } # tx, ui-3
@@ -106,7 +106,7 @@ btn_no = { fg = "#9c9c9c", bg = "#232323" } # tx-2, ui
 
 [spot]
 border = { fg = "#383838" } # ui-3
-title = { fg = "#6a6a6a", bold = true } # tx-3
+title = { fg = "#808080", bold = true } # tx-3
 tbl_col = { fg = "#9c9c9c" } # tx-2
 tbl_cell = { fg = "#e2e2e2", bg = "#232323" } # tx, ui
 
@@ -123,9 +123,9 @@ inactive = { fg = "#9c9c9c" } # tx-2
 
 [input]
 border = { fg = "#383838" } # ui-3
-title = { fg = "#6a6a6a", bold = true } # tx-3
+title = { fg = "#808080", bold = true } # tx-3
 value = { fg = "#e2e2e2" } # tx
-selected = { bg = "#0a0a0a" } # bg-2
+selected = { bg = "#111111" } # bg-2
 
 [cmp]
 border = { fg = "#383838", bold = true } # ui-3
@@ -134,24 +134,24 @@ inactive = { fg = "#9c9c9c" } # tx-2
 
 [tasks]
 border = { fg = "#383838" } # ui-3
-title = { fg = "#6a6a6a", bold = true } # tx-3
+title = { fg = "#808080", bold = true } # tx-3
 hovered = { fg = "#e2e2e2", bg = "#232323" } # tx, ui
 
 [help]
 on = { fg = "#89b4fa" } # bl
 run = { fg = "#ef9cd8" } # cy
-desc = { fg = "#6a6a6a" } # tx-3
+desc = { fg = "#808080" } # tx-3
 hovered = { bg = "#232323" } # ui
 footer = { fg = "#060606", bg = "#ef9cd8", bold = true } # bg, cy
 
 [filetype]
 rules = [
   # Empty files
-  { mime = "inode/empty", fg = "#6a6a6a" }, # tx-3
+  { mime = "inode/empty", fg = "#808080" }, # tx-3
 
   # Special files
-  { url = "*", is = "orphan", fg = "#6a6a6a" }, # tx-3
-  { url = "*/", is = "orphan", fg = "#6a6a6a" }, # tx-3
+  { url = "*", is = "orphan", fg = "#808080" }, # tx-3
+  { url = "*/", is = "orphan", fg = "#808080" }, # tx-3
   { url = "*", is = "link", fg = "#ef9cd8" }, # cy
   { url = "*/", is = "link", fg = "#ef9cd8" }, # cy
   { url = "*", is = "block", fg = "#e2e2e2" }, # tx
@@ -159,7 +159,7 @@ rules = [
   { url = "*", is = "fifo", fg = "#ef9cd8" }, # ma
   { url = "*", is = "sock", fg = "#ef9cd8" }, # ma
   { url = "*", is = "sticky", fg = "#e2e2e2" }, # tx
-  { url = "*", is = "dummy", fg = "#6a6a6a" }, # tx-3
+  { url = "*", is = "dummy", fg = "#808080" }, # tx-3
 
   # Fallback
   { url = "*/", fg = "#e2e2e2" }, # tx
@@ -186,14 +186,14 @@ dirs = [
 ]
 conds = [
   # Special files
-  { if = "orphan", text = "", fg = "#6a6a6a" }, # tx-3
+  { if = "orphan", text = "", fg = "#808080" }, # tx-3
   { if = "link", text = "", fg = "#ef9cd8" }, # cy
   { if = "block", text = "", fg = "#e2e2e2" }, # tx
   { if = "char", text = "", fg = "#e2e2e2" }, # tx
   { if = "fifo", text = "", fg = "#ef9cd8" }, # ma
   { if = "sock", text = "", fg = "#ef9cd8" }, # ma
   { if = "sticky", text = "", fg = "#e2e2e2" }, # tx
-  { if = "dummy", text = "", fg = "#6a6a6a" }, # tx-3
+  { if = "dummy", text = "", fg = "#808080" }, # tx-3
 
   # Fallback
   { if = "dir", text = "", fg = "#ef9cd8" }, # cy

@@ -48,7 +48,7 @@ Item {
             verticalCenter: parent.verticalCenter
         }
         text: root.displayTitle
-        font.family: "GeistMono Nerd Font"
+        font.family: Theme.font
         font.pixelSize: 13
         color: Theme.textDim
         elide: Text.ElideRight

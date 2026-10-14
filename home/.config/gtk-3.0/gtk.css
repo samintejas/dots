@@ -1,52 +1,583 @@
-@define-color accent_color        #ef9cd8;
-@define-color accent_bg_color     #ef9cd8;
-@define-color accent_fg_color     #060606;
+/* Dots for GTK 3, layered over adw-gtk3-dark.
+   Values come from the Dots design system (tokens.json, dark theme).
+   Grey carries structure; colour only says selected, in progress or wrong. */
 
-@define-color window_bg_color     #060606;
-@define-color window_fg_color     #e2e2e2;
+/* ---- tokens ---------------------------------------------------------- */
+@define-color bg_base        #060606;
+@define-color bg_surface     #111111;
+@define-color bg_well        #000000;
+@define-color bg_raised      #0f0f0f;
+@define-color bg_hover       rgba(255, 255, 255, 0.05);
+@define-color bg_hover_float rgba(245, 245, 245, 0.07);
+@define-color bg_press       rgba(255, 255, 255, 0.085);
+@define-color bg_fill        rgba(255, 255, 255, 0.08);
+@define-color border_default rgba(255, 255, 255, 0.045);
+@define-color border_soft    rgba(255, 255, 255, 0.09);
+@define-color border_field   rgba(255, 255, 255, 0.12);
+@define-color border_raised  #232323;
+@define-color border_strong  #383838;
+@define-color border_quiet   #4e4e4e;
+@define-color border_control #6a6a6a;
+@define-color text_disabled  #4a4a4a;
+@define-color text_subtle    #808080;
+@define-color text_secondary #9c9c9c;
+@define-color text_primary   #b4b4b4;
+@define-color text_strong    #e2e2e2;
+@define-color text_max       #f5f5f5;
+@define-color accent_subtle  rgba(239, 156, 216, 0.12);
+@define-color mark           rgba(239, 156, 216, 0.55);
+@define-color danger_subtle  rgba(243, 139, 168, 0.12);
+@define-color danger_border  rgba(243, 139, 168, 0.4);
 
-@define-color view_bg_color       #0a0a0a;
-@define-color view_fg_color       #e2e2e2;
+/* ---- adw-gtk3 named colours ------------------------------------------ */
+@define-color accent_color         #ef9cd8;
+@define-color accent_bg_color      #ef9cd8;
+@define-color accent_fg_color      #050505;
 
-@define-color headerbar_bg_color  #0a0a0a;
-@define-color headerbar_fg_color  #e2e2e2;
+@define-color window_bg_color      #060606;
+@define-color window_fg_color      #e2e2e2;
+@define-color view_bg_color        #111111;
+@define-color view_fg_color        #e2e2e2;
 
-@define-color card_bg_color       #0a0a0a;
-@define-color card_fg_color       #e2e2e2;
+@define-color headerbar_bg_color           #060606;
+@define-color headerbar_fg_color           #e2e2e2;
+@define-color headerbar_backdrop_color     #060606;
+@define-color headerbar_border_color       #e2e2e2;
+@define-color headerbar_shade_color        rgba(255, 255, 255, 0.045);
+@define-color headerbar_darker_shade_color rgba(255, 255, 255, 0.045);
 
-@define-color popover_bg_color    #0f0f0f;
-@define-color popover_fg_color    #e2e2e2;
+@define-color sidebar_bg_color       #060606;
+@define-color sidebar_fg_color       #e2e2e2;
+@define-color sidebar_backdrop_color #060606;
+@define-color sidebar_border_color   rgba(255, 255, 255, 0.045);
+@define-color sidebar_shade_color    rgba(255, 255, 255, 0.045);
 
-@define-color sidebar_bg_color    #060606;
-@define-color sidebar_fg_color    #e2e2e2;
+@define-color card_bg_color        #111111;
+@define-color card_fg_color        #e2e2e2;
+@define-color card_shade_color     rgba(255, 255, 255, 0.045);
+@define-color dialog_bg_color      #060606;
+@define-color dialog_fg_color      #e2e2e2;
+@define-color popover_bg_color     #0f0f0f;
+@define-color popover_fg_color     #e2e2e2;
+@define-color popover_shade_color  rgba(255, 255, 255, 0.045);
+@define-color panel_bg_color       #060606;
+@define-color panel_fg_color       #e2e2e2;
+@define-color shade_color          rgba(255, 255, 255, 0.045);
+@define-color scrollbar_outline_color rgba(0, 0, 0, 0);
+@define-color borders              rgba(255, 255, 255, 0.045);
 
-@define-color error_color         #f38ba8;
-@define-color error_bg_color      #f38ba8;
-@define-color error_fg_color      #060606;
-
-@define-color success_color       #a6e3a1;
-@define-color success_bg_color    #a6e3a1;
-@define-color success_fg_color    #060606;
-
-@define-color warning_color       #fab387;
-@define-color warning_bg_color    #fab387;
-@define-color warning_fg_color    #060606;
-
-@define-color destructive_color   #f38ba8;
+@define-color error_color          #f38ba8;
+@define-color error_bg_color       #f38ba8;
+@define-color error_fg_color       #050505;
+@define-color destructive_color    #f38ba8;
 @define-color destructive_bg_color #f38ba8;
-@define-color destructive_fg_color #060606;
+@define-color destructive_fg_color #050505;
+@define-color success_color        #a6e3a1;
+@define-color success_bg_color     #a6e3a1;
+@define-color success_fg_color     #050505;
+@define-color warning_color        #fab387;
+@define-color warning_bg_color     #fab387;
+@define-color warning_fg_color     #050505;
 
+/* ---- type and ground ------------------------------------------------- */
 * {
   font-family: "GeistMono Nerd Font";
-  font-size: 11pt;
+  outline-color: @mark;
 }
 
-window {
+/* Layout tiles meet square; only held things are rounded. */
+window, decoration, headerbar, .titlebar { border-radius: 0; }
+
+selection,
+*:selected,
+textview text selection,
+entry selection,
+label selection {
+  background-color: @border_strong;
+  color: @text_max;
+}
+
+link, *:link, button.link { color: #89b4fa; }
+.dim-label, label.subtitle, .subtitle { color: @text_secondary; opacity: 1; }
+
+separator { background-color: @border_default; min-width: 1px; min-height: 1px; }
+
+/* ---- header bar: a layout tile on the ground ------------------------- */
+headerbar,
+.titlebar {
+  background-color: @bg_base;
+  background-image: none;
+  border-bottom: 1px solid @border_default;
+  box-shadow: none;
+  color: @text_strong;
+}
+headerbar .title { font-weight: 500; color: @text_strong; }
+headerbar .subtitle { color: @text_secondary; }
+
+/* ---- buttons: 3px, secondary by default ------------------------------ */
+button {
+  min-height: 26px;
+  padding: 0 12px;
+  border: 1px solid @border_soft;
+  border-radius: 3px;
+  background-color: @bg_hover;
+  background-image: none;
+  box-shadow: none;
+  text-shadow: none;
+  -gtk-icon-shadow: none;
+  color: @text_strong;
+  font-weight: 500;
+  transition: background-color 100ms, border-color 100ms, color 100ms;
+}
+button:hover { background-color: @bg_hover; border-color: @border_quiet; }
+button:active,
+button:checked { background-color: @bg_press; border-color: @border_quiet; }
+button:checked { color: @text_max; }
+button:disabled {
+  background-color: transparent;
+  border-color: @border_default;
+  color: @text_disabled;
+}
+button.image-button { padding: 0 6px; }
+
+/* ghost: no fill, no edge until hovered */
+button.flat,
+headerbar button:not(.suggested-action):not(.destructive-action),
+toolbar button,
+actionbar button.flat,
+notebook > header button,
+spinbutton button,
+entry button,
+calendar button,
+scrollbar button,
+infobar button.close,
+popover.menu button.flat,
+modelbutton {
+  background-color: transparent;
+  border-color: transparent;
+  color: @text_primary;
+}
+button.flat:hover,
+headerbar button:not(.suggested-action):not(.destructive-action):hover,
+toolbar button:hover,
+notebook > header button:hover,
+spinbutton button:hover,
+entry button:hover,
+calendar button:hover {
+  background-color: @bg_hover;
+  border-color: transparent;
+  color: @text_strong;
+}
+button.flat:active, button.flat:checked,
+headerbar button:not(.suggested-action):not(.destructive-action):active,
+headerbar button:not(.suggested-action):not(.destructive-action):checked,
+toolbar button:active, toolbar button:checked,
+spinbutton button:active {
+  background-color: @bg_press;
+  border-color: transparent;
+  color: @text_max;
+}
+button.flat:disabled,
+headerbar button:disabled,
+toolbar button:disabled,
+spinbutton button:disabled { border-color: transparent; color: @text_disabled; }
+
+/* primary */
+button.suggested-action,
+button.default {
+  background-color: @accent_bg_color;
+  border-color: transparent;
+  color: @accent_fg_color;
+}
+button.suggested-action:hover,
+button.default:hover { background-color: mix(@accent_bg_color, @text_max, 0.16); border-color: transparent; }
+button.suggested-action:active,
+button.default:active { background-color: mix(@accent_bg_color, @bg_base, 0.2); border-color: transparent; }
+
+/* danger: tinted at rest, solid on hover */
+button.destructive-action {
+  background-color: @danger_subtle;
+  border-color: @danger_border;
+  color: @destructive_color;
+}
+button.destructive-action:hover {
+  background-color: @destructive_bg_color;
+  border-color: @destructive_bg_color;
+  color: @destructive_fg_color;
+}
+button.destructive-action:active {
+  background-color: mix(@destructive_bg_color, @bg_base, 0.2);
+  color: @destructive_fg_color;
+}
+button.suggested-action:disabled,
+button.default:disabled,
+button.destructive-action:disabled {
+  background-color: @bg_fill;
+  border-color: transparent;
+  color: @text_disabled;
+}
+
+/* linked groups keep one soft outline */
+.linked:not(.vertical) > button:not(:first-child),
+.linked:not(.vertical) > entry:not(:first-child) { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.linked:not(.vertical) > button:not(:last-child),
+.linked:not(.vertical) > entry:not(:last-child) { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+/* ---- fields: a well you type into ------------------------------------ */
+entry,
+spinbutton:not(.vertical),
+combobox button.combo,
+textview.view.entry {
+  min-height: 26px;
+  padding: 0 12px;
+  border: 1px solid @border_field;
+  border-radius: 3px;
+  background-color: @bg_well;
+  background-image: none;
+  box-shadow: none;
+  color: @text_strong;
+  caret-color: @accent_color;
+  transition: border-color 100ms, box-shadow 100ms;
+}
+spinbutton:not(.vertical) { padding: 0; }
+spinbutton:not(.vertical) entry {
+  min-height: 0;
+  border: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+entry:hover,
+combobox button.combo:hover { border-color: @border_control; background-color: @bg_well; }
+combobox button.combo { padding: 0 8px 0 12px; font-weight: 400; }
+combobox arrow { color: @text_secondary; }
+entry:focus,
+spinbutton:not(.vertical):focus {
+  border-color: @border_control;
+  box-shadow: inset 0 -1px 0 @mark;
+}
+entry.error { box-shadow: inset 0 -2px 0 @error_color; }
+entry.warning { box-shadow: inset 0 -2px 0 @warning_color; }
+entry:disabled,
+spinbutton:disabled {
+  background-color: transparent;
+  border-color: @border_default;
+  color: @text_disabled;
+}
+entry placeholder, entry image { color: @text_secondary; }
+entry progress { border: 0; border-bottom: 2px solid @accent_color; background: none; }
+
+/* ---- check, radio ---------------------------------------------------- */
+check,
+radio {
+  min-width: 14px;
+  min-height: 14px;
+  margin: 0 4px;
+  padding: 0;
+  border: 1px solid @border_control;
+  border-radius: 2px;
+  background-color: @bg_well;
+  background-image: none;
+  box-shadow: none;
+  color: transparent;
+  -gtk-icon-shadow: none;
+  transition: background-color 100ms, border-color 100ms;
+}
+radio { border-radius: 9999px; }
+check:hover, radio:hover { border-color: @text_secondary; }
+check:active, radio:active { border-color: @text_strong; }
+check:checked,
+check:indeterminate {
+  background-color: @accent_bg_color;
+  border-color: @accent_bg_color;
+  color: @accent_fg_color;
+}
+radio:checked {
+  background-color: @bg_well;
+  border-color: @accent_color;
+  color: @accent_color;
+}
+check:disabled,
+radio:disabled { background-color: transparent; border-color: @border_strong; }
+check:disabled:checked,
+check:disabled:indeterminate {
+  background-color: @text_disabled;
+  border-color: @text_disabled;
+  color: @bg_base;
+}
+radio:disabled:checked { color: @text_disabled; }
+
+/* ---- switch: a pill indicator --------------------------------------- */
+switch {
+  min-width: 30px;
+  min-height: 16px;
+  padding: 0;
+  border: 1px solid @border_control;
+  border-radius: 9999px;
+  background-color: @bg_well;
+  background-image: none;
+  box-shadow: none;
+  color: transparent;
+  font-size: 0;
+  transition: background-color 150ms, border-color 150ms;
+}
+switch image { color: transparent; }
+switch:hover { border-color: @text_secondary; }
+switch:checked { background-color: @accent_subtle; border-color: @accent_color; }
+switch slider {
+  min-width: 10px;
+  min-height: 10px;
+  margin: 3px;
+  border: 0;
+  border-radius: 9999px;
+  background-color: @text_secondary;
+  background-image: none;
+  box-shadow: none;
+  transition: background-color 150ms;
+}
+switch:active slider { background-color: @text_strong; }
+switch:checked slider { background-color: @accent_color; }
+switch:disabled { background-color: transparent; border-color: @border_strong; }
+switch:disabled slider { background-color: @text_disabled; }
+
+/* ---- slider: 2px track, square thumb -------------------------------- */
+scale { min-height: 16px; min-width: 16px; padding: 8px; }
+scale trough {
+  min-height: 2px;
+  min-width: 2px;
+  border: 0;
   border-radius: 0;
-  padding: 8px;
+  background-color: @border_control;
+  box-shadow: none;
+}
+scale highlight { border: 0; border-radius: 0; background-color: @accent_color; }
+scale slider {
+  min-width: 8px;
+  min-height: 16px;
+  margin: -7px 0;
+  border: 0;
+  border-radius: 0;
+  background-color: @text_strong;
+  background-image: none;
+  box-shadow: none;
+}
+scale.vertical slider { min-width: 16px; min-height: 8px; margin: 0 -7px; }
+scale slider:hover { background-color: @text_max; }
+scale slider:active { background-color: @accent_color; }
+scale:disabled trough { background-color: @border_strong; }
+scale:disabled highlight, scale:disabled slider { background-color: @text_disabled; }
+
+/* ---- progress, level ------------------------------------------------- */
+progressbar trough,
+levelbar trough {
+  min-height: 4px;
+  border: 0;
+  border-radius: 0;
+  background-color: @bg_fill;
+  box-shadow: none;
+}
+progressbar.vertical trough { min-width: 4px; }
+progressbar progress,
+levelbar block.filled {
+  min-height: 4px;
+  border: 0;
+  border-radius: 0;
+  background-color: @accent_color;
+  background-image: none;
+  box-shadow: none;
+}
+levelbar block.empty { border: 0; background-color: transparent; }
+levelbar block.low { background-color: @warning_color; }
+levelbar block.full, levelbar block.high { background-color: @success_color; }
+progressbar text { color: @text_secondary; font-size: 11px; }
+
+/* ---- floats: menus, popovers, tooltips ------------------------------ */
+menu,
+.menu,
+.context-menu,
+popover,
+popover.background {
+  padding: 4px 0;
+  border: 1px solid @border_raised;
+  border-radius: 6px;
+  background-color: @bg_raised;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  color: @text_strong;
+}
+.csd menu, .csd .menu, .csd .context-menu { border-radius: 6px; }
+menuitem,
+modelbutton {
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: 0;
+  color: @text_strong;
+  font-size: 12px;
+  font-weight: 400;
+}
+menuitem:hover,
+modelbutton:hover { background-color: @bg_hover_float; color: @text_strong; }
+menuitem:active,
+modelbutton:active { background-color: @bg_press; }
+menuitem:disabled,
+modelbutton:disabled { background-color: transparent; color: @text_disabled; }
+menuitem accelerator { color: @text_secondary; }
+menu separator,
+popover separator { margin: 4px 0; background-color: @border_default; }
+menubar { background-color: @bg_base; box-shadow: none; }
+menubar > menuitem { min-height: 24px; padding: 0 8px; color: @text_primary; }
+menubar > menuitem:hover { background-color: @bg_hover; color: @text_strong; }
+
+tooltip,
+tooltip.background {
+  padding: 4px 8px;
+  border: 1px solid @border_raised;
+  border-radius: 3px;
+  background-color: @bg_raised;
+  box-shadow: none;
+  color: @text_strong;
+}
+tooltip label { color: @text_strong; font-size: 11px; }
+tooltip decoration { background-color: transparent; }
+
+/* ---- lists: 28px rows, a 2px mark on the current one ----------------- */
+list,
+treeview.view,
+iconview,
+textview text,
+.view { background-color: @bg_surface; color: @text_primary; }
+list row,
+row.activatable { min-height: 28px; border-radius: 0; color: @text_primary; transition: background-color 100ms; }
+list row:hover,
+row.activatable:hover,
+treeview.view:hover { background-color: @bg_hover; }
+row.activatable:active { background-color: @bg_press; }
+list row:selected,
+row:selected,
+treeview.view:selected,
+iconview:selected,
+.sidebar row:selected,
+placessidebar row:selected {
+  background-color: @bg_hover;
+  box-shadow: inset 2px 0 0 @mark;
+  color: @text_max;
+}
+list row:selected label, row:selected label, row:selected image { color: @text_max; }
+treeview.view header button {
+  min-height: 26px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 1px solid @border_default;
+  border-radius: 0;
+  background-color: @bg_surface;
+  color: @text_secondary;
+  font-size: 11px;
+  font-weight: 500;
+}
+treeview.view header button:hover { background-color: @bg_hover; color: @text_strong; }
+
+.sidebar,
+placessidebar,
+placessidebar list,
+stacksidebar list { background-color: @bg_base; }
+
+frame > border,
+.frame { border: 1px solid @border_default; border-radius: 4px; }
+scrolledwindow.frame, scrolledwindow > border { border-radius: 0; }
+
+/* ---- tabs: underline says which ------------------------------------- */
+notebook,
+notebook > stack { background-color: @bg_base; }
+notebook > header {
+  border: 0;
+  border-bottom: 1px solid @border_default;
+  background-color: @bg_base;
+  box-shadow: none;
+}
+notebook > header.bottom { border-bottom: 0; border-top: 1px solid @border_default; }
+notebook > header tab {
+  min-height: 24px;
+  padding: 0 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  color: @text_secondary;
+}
+notebook > header tab:hover { background-color: @bg_hover; color: @text_strong; }
+notebook > header tab:checked {
+  background-color: transparent;
+  border-bottom-color: @mark;
+  box-shadow: none;
+  color: @text_max;
+}
+notebook > header tab:checked label { color: @text_max; }
+
+stackswitcher button,
+.stack-switcher button {
+  border-color: transparent;
+  border-radius: 0;
+  background-color: @bg_fill;
+  color: @text_secondary;
+}
+stackswitcher button:first-child { border-top-left-radius: 3px; border-bottom-left-radius: 3px; }
+stackswitcher button:last-child { border-top-right-radius: 3px; border-bottom-right-radius: 3px; }
+stackswitcher button:hover { background-color: @bg_hover; color: @text_strong; }
+stackswitcher button:checked {
+  background-color: @accent_subtle;
+  box-shadow: inset 0 -2px 0 @accent_color;
+  color: @text_max;
 }
 
-/* Dots: layout square, held things soft (3px controls, 4px rows, 6px floating) */
-button, entry, spinbutton, switch slider { border-radius: 3px; }
-menuitem, row, modelbutton { border-radius: 4px; }
-popover contents, menu, .menu, .popup { border-radius: 6px; }
+/* ---- scrollbars, bars ------------------------------------------------ */
+scrollbar { border: 0; background-color: transparent; }
+scrollbar slider {
+  min-width: 4px;
+  min-height: 4px;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background-color: @border_strong;
+}
+scrollbar slider:hover { background-color: @border_quiet; }
+scrollbar slider:active { background-color: @border_control; }
+
+infobar,
+actionbar > revealer > box,
+searchbar > revealer > box,
+toolbar,
+statusbar {
+  border-color: @border_default;
+  background-color: @bg_base;
+  background-image: none;
+  box-shadow: none;
+}
+infobar.warning { box-shadow: inset 3px 0 0 @warning_color; }
+infobar.error { box-shadow: inset 3px 0 0 @error_color; }
+infobar.info, infobar.question { box-shadow: inset 3px 0 0 #89b4fa; }
+infobar.warning label, infobar.error label, infobar.info label, infobar.question label { color: @text_strong; }
+
+/* ---- dialogs, calendar ----------------------------------------------- */
+dialog,
+messagedialog,
+.dialog-action-area { background-color: @bg_base; }
+messagedialog .titlebar { border-bottom: 0; }
+.dialog-action-area { padding: 8px 12px; border-top: 1px solid @border_default; }
+
+/* gcr-prompter (keyring, ssh, gpg passwords): a bare grid with no margin of its own.
+   Children in order: icon, message, description, then the fields. */
+dialog > .dialog-vbox > grid { margin: 14px 20px 16px 14px; }
+dialog > .dialog-vbox > grid > image { color: @text_subtle; -gtk-icon-transform: scale(0.67); }
+dialog > .dialog-vbox > grid > label { color: @text_secondary; }
+dialog > .dialog-vbox > grid > label:nth-child(2) { color: @text_strong; }
+dialog > .dialog-vbox > grid > label:nth-child(3) { margin-bottom: 6px; font-size: 11px; }
+dialog > .dialog-vbox > grid > progressbar { margin-top: 2px; }
+
+calendar {
+  padding: 4px;
+  border: 1px solid @border_default;
+  border-radius: 4px;
+  background-color: @bg_surface;
+  color: @text_primary;
+}
+calendar.header { border-bottom: 1px solid @border_default; color: @text_strong; }
+calendar:selected { border-radius: 3px; background-color: @accent_subtle; box-shadow: none; color: @text_max; }
+calendar:indeterminate { color: @text_disabled; }

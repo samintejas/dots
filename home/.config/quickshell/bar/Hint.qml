@@ -36,9 +36,9 @@ Item {
             implicitWidth: label.implicitWidth + 16
             implicitHeight: 24
             color: Theme.raised
-            border.color: Theme.line
+            border.color: Theme.borderRaised
             border.width: 1
-            radius: Theme.radiusLg
+            radius: Theme.radiusSm
 
             Text {
                 id: label
