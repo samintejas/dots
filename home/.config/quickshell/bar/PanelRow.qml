@@ -58,7 +58,7 @@ Rectangle {
                 text: row.subtitle
                 elide: Text.ElideRight
                 font.family: Theme.font
-                font.pixelSize: 11
+                font.pixelSize: 12
                 color: Theme.subtle
             }
         }
@@ -67,7 +67,7 @@ Rectangle {
             visible: text !== ""
             text: row.hovered && row.hoverText !== "" ? row.hoverText : row.trailing
             font.family: Theme.font
-            font.pixelSize: 11
+            font.pixelSize: 12
             color: row.hovered && row.hoverText !== "" ? Theme.textHi : row.trailingColor
         }
     }

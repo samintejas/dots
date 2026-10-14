@@ -148,7 +148,7 @@ PanelWindow {
                     anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 14 }
                     text: row.modelData.key
                     font.family: Theme.font
-                    font.pixelSize: 11
+                    font.pixelSize: 12
                     color: Theme.subtle
                 }
 
@@ -178,7 +178,7 @@ PanelWindow {
                 anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 12 }
                 text: "↵ run   ↑↓ move   esc close"
                 font.family: Theme.font
-                font.pixelSize: 11
+                font.pixelSize: 12
                 color: Theme.subtle
             }
         }

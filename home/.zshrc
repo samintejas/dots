@@ -24,7 +24,7 @@ export PATH="$PATH:/home/samin/.local/bin"
 export GOPATH="$HOME/lib/go"
 export PATH="$PATH:$GOPATH/bin"
 
-export FZF_DEFAULT_OPTS="--height 40% --reverse --border --color=bg:#060606,bg+:#0f0f0f,fg:#b4b4b4,fg+:#f5f5f5,hl:#ef9cd8,hl+:#ef9cd8,info:#9c9c9c,prompt:#ef9cd8,pointer:#ef9cd8,marker:#a6e3a1,spinner:#9c9c9c,header:#9c9c9c,border:#383838,gutter:#060606"
+export FZF_DEFAULT_OPTS="--height 40% --reverse --border --color=bg:#080808,bg+:#181818,fg:#b8b8b8,fg+:#ececec,hl:#f0a0dc,hl+:#f0a0dc,info:#9e9e9e,prompt:#f0a0dc,pointer:#f0a0dc,marker:#5fcf7f,spinner:#9e9e9e,header:#9e9e9e,border:#4d4d4d,gutter:#080808"
 export FZF_CTRL_R_OPTS="--height 40%"
 export FZF_CTRL_T_OPTS="--height 60%"
 export FZF_ALT_C_OPTS="--height 60% --preview 'exa --tree --icons --level=1 --color=always {}'"

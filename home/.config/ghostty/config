@@ -16,7 +16,7 @@ window-padding-balance = true
 
 # Colors
 foreground = "#cdd6f4"
-background = "#060606"
+background = "#080808"
 
 # Normal colors
 palette = 0=#45475a

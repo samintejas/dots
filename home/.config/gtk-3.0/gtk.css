@@ -1,88 +1,97 @@
 /* Dots for GTK 3, layered over adw-gtk3-dark.
-   Values come from the Dots design system (tokens.json, dark theme).
+   Values come from the Dots design system v9 (tokens.css), dark theme. GTK 3 has no
+   colour-scheme media query, so GTK 3 apps stay dark.
    Grey carries structure; colour only says selected, in progress or wrong. */
 
 /* ---- tokens ---------------------------------------------------------- */
-@define-color bg_base        #060606;
+@define-color bg_base        #080808;
 @define-color bg_surface     #111111;
-@define-color bg_well        #000000;
-@define-color bg_raised      #0f0f0f;
-@define-color bg_hover       rgba(255, 255, 255, 0.05);
-@define-color bg_hover_float rgba(245, 245, 245, 0.07);
-@define-color bg_press       rgba(255, 255, 255, 0.085);
+@define-color bg_raised      #181818;
+@define-color bg_overlay     #1f1f1f;
+@define-color bg_field       rgba(255, 255, 255, 0.035);
+@define-color bg_hover       rgba(255, 255, 255, 0.06);
+@define-color bg_press       rgba(255, 255, 255, 0.1);
 @define-color bg_fill        rgba(255, 255, 255, 0.08);
-@define-color border_default rgba(255, 255, 255, 0.045);
-@define-color border_soft    rgba(255, 255, 255, 0.09);
-@define-color border_field   rgba(255, 255, 255, 0.12);
-@define-color border_raised  #232323;
-@define-color border_strong  #383838;
-@define-color border_quiet   #4e4e4e;
-@define-color border_control #6a6a6a;
-@define-color text_disabled  #4a4a4a;
-@define-color text_subtle    #808080;
-@define-color text_secondary #9c9c9c;
-@define-color text_primary   #b4b4b4;
-@define-color text_strong    #e2e2e2;
-@define-color text_max       #f5f5f5;
-@define-color accent_subtle  rgba(239, 156, 216, 0.12);
-@define-color mark           rgba(239, 156, 216, 0.55);
-@define-color danger_subtle  rgba(243, 139, 168, 0.12);
-@define-color danger_border  rgba(243, 139, 168, 0.4);
+@define-color border_subtle  rgba(255, 255, 255, 0.07);
+@define-color border_default rgba(255, 255, 255, 0.13);
+@define-color border_strong  #707070;
+@define-color focus          #ececec;
+@define-color neutral_5      #383838;
+@define-color neutral_6      #4d4d4d;
+@define-color selection      rgba(255, 255, 255, 0.2);
+@define-color text_disabled  #5c5c5c;
+@define-color text_subtle    #8a8a8a;
+@define-color text_secondary #9e9e9e;
+@define-color text_primary   #b8b8b8;
+@define-color text_strong    #dcdcdc;
+@define-color text_max       #ececec;
+@define-color accent         #f0a0dc;
+@define-color accent_subtle  rgba(240, 160, 220, 0.14);
+@define-color on_accent      #0a0a0a;
+@define-color danger         #f2553f;
+@define-color danger_subtle  rgba(242, 85, 63, 0.14);
+@define-color danger_border  rgba(242, 85, 63, 0.45);
+@define-color warning        #f0b14a;
+@define-color success        #5fcf7f;
+@define-color info           #6aa8ff;
+@define-color scrim          rgba(0, 0, 0, 0.72);
+@define-color shadow_raised  rgba(0, 0, 0, 0.5);
+@define-color shadow_overlay rgba(0, 0, 0, 0.6);
 
 /* ---- adw-gtk3 named colours ------------------------------------------ */
-@define-color accent_color         #ef9cd8;
-@define-color accent_bg_color      #ef9cd8;
-@define-color accent_fg_color      #050505;
+@define-color accent_color         #f0a0dc;
+@define-color accent_bg_color      #f0a0dc;
+@define-color accent_fg_color      #0a0a0a;
 
-@define-color window_bg_color      #060606;
-@define-color window_fg_color      #e2e2e2;
+@define-color window_bg_color      #080808;
+@define-color window_fg_color      #dcdcdc;
 @define-color view_bg_color        #111111;
-@define-color view_fg_color        #e2e2e2;
+@define-color view_fg_color        #dcdcdc;
 
-@define-color headerbar_bg_color           #060606;
-@define-color headerbar_fg_color           #e2e2e2;
-@define-color headerbar_backdrop_color     #060606;
-@define-color headerbar_border_color       #e2e2e2;
-@define-color headerbar_shade_color        rgba(255, 255, 255, 0.045);
-@define-color headerbar_darker_shade_color rgba(255, 255, 255, 0.045);
+@define-color headerbar_bg_color           #080808;
+@define-color headerbar_fg_color           #dcdcdc;
+@define-color headerbar_backdrop_color     #080808;
+@define-color headerbar_border_color       #dcdcdc;
+@define-color headerbar_shade_color        rgba(255, 255, 255, 0.07);
+@define-color headerbar_darker_shade_color rgba(255, 255, 255, 0.07);
 
-@define-color sidebar_bg_color       #060606;
-@define-color sidebar_fg_color       #e2e2e2;
-@define-color sidebar_backdrop_color #060606;
-@define-color sidebar_border_color   rgba(255, 255, 255, 0.045);
-@define-color sidebar_shade_color    rgba(255, 255, 255, 0.045);
+@define-color sidebar_bg_color       #080808;
+@define-color sidebar_fg_color       #dcdcdc;
+@define-color sidebar_backdrop_color #080808;
+@define-color sidebar_border_color   rgba(255, 255, 255, 0.07);
+@define-color sidebar_shade_color    rgba(255, 255, 255, 0.07);
 
 @define-color card_bg_color        #111111;
-@define-color card_fg_color        #e2e2e2;
-@define-color card_shade_color     rgba(255, 255, 255, 0.045);
-@define-color dialog_bg_color      #060606;
-@define-color dialog_fg_color      #e2e2e2;
-@define-color popover_bg_color     #0f0f0f;
-@define-color popover_fg_color     #e2e2e2;
-@define-color popover_shade_color  rgba(255, 255, 255, 0.045);
-@define-color panel_bg_color       #060606;
-@define-color panel_fg_color       #e2e2e2;
-@define-color shade_color          rgba(255, 255, 255, 0.045);
+@define-color card_fg_color        #dcdcdc;
+@define-color card_shade_color     rgba(255, 255, 255, 0.07);
+@define-color dialog_bg_color      #1f1f1f;
+@define-color dialog_fg_color      #dcdcdc;
+@define-color popover_bg_color     #181818;
+@define-color popover_fg_color     #dcdcdc;
+@define-color popover_shade_color  rgba(255, 255, 255, 0.07);
+@define-color panel_bg_color       #080808;
+@define-color panel_fg_color       #dcdcdc;
+@define-color shade_color          rgba(255, 255, 255, 0.07);
 @define-color scrollbar_outline_color rgba(0, 0, 0, 0);
-@define-color borders              rgba(255, 255, 255, 0.045);
+@define-color borders              rgba(255, 255, 255, 0.07);
 
-@define-color error_color          #f38ba8;
-@define-color error_bg_color       #f38ba8;
-@define-color error_fg_color       #050505;
-@define-color destructive_color    #f38ba8;
-@define-color destructive_bg_color #f38ba8;
-@define-color destructive_fg_color #050505;
-@define-color success_color        #a6e3a1;
-@define-color success_bg_color     #a6e3a1;
-@define-color success_fg_color     #050505;
-@define-color warning_color        #fab387;
-@define-color warning_bg_color     #fab387;
-@define-color warning_fg_color     #050505;
+@define-color error_color          #f2553f;
+@define-color error_bg_color       #f2553f;
+@define-color error_fg_color       #0a0a0a;
+@define-color destructive_color    #f2553f;
+@define-color destructive_bg_color #f2553f;
+@define-color destructive_fg_color #0a0a0a;
+@define-color success_color        #5fcf7f;
+@define-color success_bg_color     #5fcf7f;
+@define-color success_fg_color     #0a0a0a;
+@define-color warning_color        #f0b14a;
+@define-color warning_bg_color     #f0b14a;
+@define-color warning_fg_color     #0a0a0a;
 
 /* ---- type and ground ------------------------------------------------- */
 * {
   font-family: "GeistMono Nerd Font";
-  outline-color: @mark;
+  outline-color: @accent;
 }
 
 /* Layout tiles meet square; only held things are rounded. */
@@ -93,32 +102,32 @@ selection,
 textview text selection,
 entry selection,
 label selection {
-  background-color: @border_strong;
+  background-color: @neutral_5;
   color: @text_max;
 }
 
-link, *:link, button.link { color: #89b4fa; }
+link, *:link, button.link { color: @info; }
 .dim-label, label.subtitle, .subtitle { color: @text_secondary; opacity: 1; }
 
-separator { background-color: @border_default; min-width: 1px; min-height: 1px; }
+separator { background-color: @border_subtle; min-width: 1px; min-height: 1px; }
 
 /* ---- header bar: a layout tile on the ground ------------------------- */
 headerbar,
 .titlebar {
   background-color: @bg_base;
   background-image: none;
-  border-bottom: 1px solid @border_default;
+  border-bottom: 1px solid @border_subtle;
   box-shadow: none;
   color: @text_strong;
 }
 headerbar .title { font-weight: 500; color: @text_strong; }
 headerbar .subtitle { color: @text_secondary; }
 
-/* ---- buttons: 3px, secondary by default ------------------------------ */
+/* ---- buttons: radius-sm, secondary by default ------------------------------ */
 button {
   min-height: 26px;
   padding: 0 12px;
-  border: 1px solid @border_soft;
+  border: 1px solid @border_default;
   border-radius: 3px;
   background-color: @bg_hover;
   background-image: none;
@@ -129,13 +138,13 @@ button {
   font-weight: 500;
   transition: background-color 100ms, border-color 100ms, color 100ms;
 }
-button:hover { background-color: @bg_hover; border-color: @border_quiet; }
+button:hover { background-color: @bg_hover; border-color: @neutral_6; }
 button:active,
-button:checked { background-color: @bg_press; border-color: @border_quiet; }
+button:checked { background-color: @bg_press; border-color: @neutral_6; }
 button:checked { color: @text_max; }
 button:disabled {
   background-color: transparent;
-  border-color: @border_default;
+  border-color: @border_subtle;
   color: @text_disabled;
 }
 button.image-button { padding: 0 6px; }
@@ -185,29 +194,29 @@ spinbutton button:disabled { border-color: transparent; color: @text_disabled; }
 /* primary */
 button.suggested-action,
 button.default {
-  background-color: @accent_bg_color;
+  background-color: @accent;
   border-color: transparent;
-  color: @accent_fg_color;
+  color: @on_accent;
 }
 button.suggested-action:hover,
-button.default:hover { background-color: mix(@accent_bg_color, @text_max, 0.16); border-color: transparent; }
+button.default:hover { background-color: mix(@accent, @text_max, 0.16); border-color: transparent; }
 button.suggested-action:active,
-button.default:active { background-color: mix(@accent_bg_color, @bg_base, 0.2); border-color: transparent; }
+button.default:active { background-color: mix(@accent, @bg_base, 0.2); border-color: transparent; }
 
 /* danger: tinted at rest, solid on hover */
 button.destructive-action {
   background-color: @danger_subtle;
   border-color: @danger_border;
-  color: @destructive_color;
+  color: @danger;
 }
 button.destructive-action:hover {
-  background-color: @destructive_bg_color;
-  border-color: @destructive_bg_color;
-  color: @destructive_fg_color;
+  background-color: @danger;
+  border-color: @danger;
+  color: @on_accent;
 }
 button.destructive-action:active {
-  background-color: mix(@destructive_bg_color, @bg_base, 0.2);
-  color: @destructive_fg_color;
+  background-color: mix(@danger, @bg_base, 0.2);
+  color: @on_accent;
 }
 button.suggested-action:disabled,
 button.default:disabled,
@@ -230,13 +239,13 @@ combobox button.combo,
 textview.view.entry {
   min-height: 26px;
   padding: 0 12px;
-  border: 1px solid @border_field;
+  border: 1px solid @border_strong;
   border-radius: 3px;
-  background-color: @bg_well;
+  background-color: @bg_field;
   background-image: none;
   box-shadow: none;
   color: @text_strong;
-  caret-color: @accent_color;
+  caret-color: @accent;
   transition: border-color 100ms, box-shadow 100ms;
 }
 spinbutton:not(.vertical) { padding: 0; }
@@ -247,24 +256,24 @@ spinbutton:not(.vertical) entry {
   box-shadow: none;
 }
 entry:hover,
-combobox button.combo:hover { border-color: @border_control; background-color: @bg_well; }
+combobox button.combo:hover { border-color: @border_strong; background-color: @bg_field; }
 combobox button.combo { padding: 0 8px 0 12px; font-weight: 400; }
 combobox arrow { color: @text_secondary; }
 entry:focus,
 spinbutton:not(.vertical):focus {
-  border-color: @border_control;
-  box-shadow: inset 0 -1px 0 @mark;
+  border-color: @border_strong;
+  box-shadow: inset 0 0 0 1px @focus;
 }
-entry.error { box-shadow: inset 0 -2px 0 @error_color; }
-entry.warning { box-shadow: inset 0 -2px 0 @warning_color; }
+entry.error { box-shadow: inset 0 -2px 0 @danger; }
+entry.warning { box-shadow: inset 0 -2px 0 @warning; }
 entry:disabled,
 spinbutton:disabled {
   background-color: transparent;
-  border-color: @border_default;
+  border-color: @border_subtle;
   color: @text_disabled;
 }
 entry placeholder, entry image { color: @text_secondary; }
-entry progress { border: 0; border-bottom: 2px solid @accent_color; background: none; }
+entry progress { border: 0; border-bottom: 2px solid @accent; background: none; }
 
 /* ---- check, radio ---------------------------------------------------- */
 check,
@@ -273,9 +282,9 @@ radio {
   min-height: 14px;
   margin: 0 4px;
   padding: 0;
-  border: 1px solid @border_control;
-  border-radius: 2px;
-  background-color: @bg_well;
+  border: 1px solid @border_strong;
+  border-radius: 3px;
+  background-color: @bg_field;
   background-image: none;
   box-shadow: none;
   color: transparent;
@@ -287,17 +296,17 @@ check:hover, radio:hover { border-color: @text_secondary; }
 check:active, radio:active { border-color: @text_strong; }
 check:checked,
 check:indeterminate {
-  background-color: @accent_bg_color;
-  border-color: @accent_bg_color;
-  color: @accent_fg_color;
+  background-color: @accent;
+  border-color: @accent;
+  color: @on_accent;
 }
 radio:checked {
-  background-color: @bg_well;
-  border-color: @accent_color;
-  color: @accent_color;
+  background-color: @bg_field;
+  border-color: @accent;
+  color: @accent;
 }
 check:disabled,
-radio:disabled { background-color: transparent; border-color: @border_strong; }
+radio:disabled { background-color: transparent; border-color: @neutral_5; }
 check:disabled:checked,
 check:disabled:indeterminate {
   background-color: @text_disabled;
@@ -311,9 +320,9 @@ switch {
   min-width: 30px;
   min-height: 16px;
   padding: 0;
-  border: 1px solid @border_control;
+  border: 1px solid @border_strong;
   border-radius: 9999px;
-  background-color: @bg_well;
+  background-color: @bg_field;
   background-image: none;
   box-shadow: none;
   color: transparent;
@@ -322,7 +331,7 @@ switch {
 }
 switch image { color: transparent; }
 switch:hover { border-color: @text_secondary; }
-switch:checked { background-color: @accent_subtle; border-color: @accent_color; }
+switch:checked { background-color: @accent_subtle; border-color: @accent; }
 switch slider {
   min-width: 10px;
   min-height: 10px;
@@ -335,8 +344,8 @@ switch slider {
   transition: background-color 150ms;
 }
 switch:active slider { background-color: @text_strong; }
-switch:checked slider { background-color: @accent_color; }
-switch:disabled { background-color: transparent; border-color: @border_strong; }
+switch:checked slider { background-color: @accent; }
+switch:disabled { background-color: transparent; border-color: @neutral_5; }
 switch:disabled slider { background-color: @text_disabled; }
 
 /* ---- slider: 2px track, square thumb -------------------------------- */
@@ -346,10 +355,10 @@ scale trough {
   min-width: 2px;
   border: 0;
   border-radius: 0;
-  background-color: @border_control;
+  background-color: @border_strong;
   box-shadow: none;
 }
-scale highlight { border: 0; border-radius: 0; background-color: @accent_color; }
+scale highlight { border: 0; border-radius: 0; background-color: @accent; }
 scale slider {
   min-width: 8px;
   min-height: 16px;
@@ -362,8 +371,8 @@ scale slider {
 }
 scale.vertical slider { min-width: 16px; min-height: 8px; margin: 0 -7px; }
 scale slider:hover { background-color: @text_max; }
-scale slider:active { background-color: @accent_color; }
-scale:disabled trough { background-color: @border_strong; }
+scale slider:active { background-color: @accent; }
+scale:disabled trough { background-color: @neutral_5; }
 scale:disabled highlight, scale:disabled slider { background-color: @text_disabled; }
 
 /* ---- progress, level ------------------------------------------------- */
@@ -381,14 +390,14 @@ levelbar block.filled {
   min-height: 4px;
   border: 0;
   border-radius: 0;
-  background-color: @accent_color;
+  background-color: @accent;
   background-image: none;
   box-shadow: none;
 }
 levelbar block.empty { border: 0; background-color: transparent; }
-levelbar block.low { background-color: @warning_color; }
-levelbar block.full, levelbar block.high { background-color: @success_color; }
-progressbar text { color: @text_secondary; font-size: 11px; }
+levelbar block.low { background-color: @warning; }
+levelbar block.full, levelbar block.high { background-color: @success; }
+progressbar text { color: @text_secondary; font-size: 12px; }
 
 /* ---- floats: menus, popovers, tooltips ------------------------------ */
 menu,
@@ -397,13 +406,13 @@ menu,
 popover,
 popover.background {
   padding: 4px 0;
-  border: 1px solid @border_raised;
-  border-radius: 6px;
+  border: 1px solid @border_default;
+  border-radius: 8px;
   background-color: @bg_raised;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px @shadow_raised;
   color: @text_strong;
 }
-.csd menu, .csd .menu, .csd .context-menu { border-radius: 6px; }
+.csd menu, .csd .menu, .csd .context-menu { border-radius: 8px; }
 menuitem,
 modelbutton {
   min-height: 28px;
@@ -414,14 +423,14 @@ modelbutton {
   font-weight: 400;
 }
 menuitem:hover,
-modelbutton:hover { background-color: @bg_hover_float; color: @text_strong; }
+modelbutton:hover { background-color: @bg_hover; color: @text_strong; }
 menuitem:active,
 modelbutton:active { background-color: @bg_press; }
 menuitem:disabled,
 modelbutton:disabled { background-color: transparent; color: @text_disabled; }
 menuitem accelerator { color: @text_secondary; }
 menu separator,
-popover separator { margin: 4px 0; background-color: @border_default; }
+popover separator { margin: 4px 0; background-color: @border_subtle; }
 menubar { background-color: @bg_base; box-shadow: none; }
 menubar > menuitem { min-height: 24px; padding: 0 8px; color: @text_primary; }
 menubar > menuitem:hover { background-color: @bg_hover; color: @text_strong; }
@@ -429,13 +438,13 @@ menubar > menuitem:hover { background-color: @bg_hover; color: @text_strong; }
 tooltip,
 tooltip.background {
   padding: 4px 8px;
-  border: 1px solid @border_raised;
+  border: 1px solid @border_default;
   border-radius: 3px;
   background-color: @bg_raised;
   box-shadow: none;
   color: @text_strong;
 }
-tooltip label { color: @text_strong; font-size: 11px; }
+tooltip label { color: @text_strong; font-size: 12px; }
 tooltip decoration { background-color: transparent; }
 
 /* ---- lists: 28px rows, a 2px mark on the current one ----------------- */
@@ -457,7 +466,7 @@ iconview:selected,
 .sidebar row:selected,
 placessidebar row:selected {
   background-color: @bg_hover;
-  box-shadow: inset 2px 0 0 @mark;
+  box-shadow: inset 2px 0 0 @accent;
   color: @text_max;
 }
 list row:selected label, row:selected label, row:selected image { color: @text_max; }
@@ -465,11 +474,11 @@ treeview.view header button {
   min-height: 26px;
   padding: 0 12px;
   border: 0;
-  border-bottom: 1px solid @border_default;
+  border-bottom: 1px solid @border_subtle;
   border-radius: 0;
   background-color: @bg_surface;
   color: @text_secondary;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
 }
 treeview.view header button:hover { background-color: @bg_hover; color: @text_strong; }
@@ -480,7 +489,7 @@ placessidebar list,
 stacksidebar list { background-color: @bg_base; }
 
 frame > border,
-.frame { border: 1px solid @border_default; border-radius: 4px; }
+.frame { border: 1px solid @border_subtle; border-radius: 5px; }
 scrolledwindow.frame, scrolledwindow > border { border-radius: 0; }
 
 /* ---- tabs: underline says which ------------------------------------- */
@@ -488,11 +497,11 @@ notebook,
 notebook > stack { background-color: @bg_base; }
 notebook > header {
   border: 0;
-  border-bottom: 1px solid @border_default;
+  border-bottom: 1px solid @border_subtle;
   background-color: @bg_base;
   box-shadow: none;
 }
-notebook > header.bottom { border-bottom: 0; border-top: 1px solid @border_default; }
+notebook > header.bottom { border-bottom: 0; border-top: 1px solid @border_subtle; }
 notebook > header tab {
   min-height: 24px;
   padding: 0 12px;
@@ -506,7 +515,7 @@ notebook > header tab {
 notebook > header tab:hover { background-color: @bg_hover; color: @text_strong; }
 notebook > header tab:checked {
   background-color: transparent;
-  border-bottom-color: @mark;
+  border-bottom-color: @accent;
   box-shadow: none;
   color: @text_max;
 }
@@ -524,7 +533,7 @@ stackswitcher button:last-child { border-top-right-radius: 3px; border-bottom-ri
 stackswitcher button:hover { background-color: @bg_hover; color: @text_strong; }
 stackswitcher button:checked {
   background-color: @accent_subtle;
-  box-shadow: inset 0 -2px 0 @accent_color;
+  box-shadow: inset 0 -2px 0 @accent;
   color: @text_max;
 }
 
@@ -535,24 +544,24 @@ scrollbar slider {
   min-height: 4px;
   border: 2px solid transparent;
   border-radius: 9999px;
-  background-color: @border_strong;
+  background-color: @neutral_5;
 }
-scrollbar slider:hover { background-color: @border_quiet; }
-scrollbar slider:active { background-color: @border_control; }
+scrollbar slider:hover { background-color: @neutral_6; }
+scrollbar slider:active { background-color: @border_strong; }
 
 infobar,
 actionbar > revealer > box,
 searchbar > revealer > box,
 toolbar,
 statusbar {
-  border-color: @border_default;
+  border-color: @border_subtle;
   background-color: @bg_base;
   background-image: none;
   box-shadow: none;
 }
-infobar.warning { box-shadow: inset 3px 0 0 @warning_color; }
-infobar.error { box-shadow: inset 3px 0 0 @error_color; }
-infobar.info, infobar.question { box-shadow: inset 3px 0 0 #89b4fa; }
+infobar.warning { box-shadow: inset 3px 0 0 @warning; }
+infobar.error { box-shadow: inset 3px 0 0 @danger; }
+infobar.info, infobar.question { box-shadow: inset 3px 0 0 @info; }
 infobar.warning label, infobar.error label, infobar.info label, infobar.question label { color: @text_strong; }
 
 /* ---- dialogs, calendar ----------------------------------------------- */
@@ -560,7 +569,7 @@ dialog,
 messagedialog,
 .dialog-action-area { background-color: @bg_base; }
 messagedialog .titlebar { border-bottom: 0; }
-.dialog-action-area { padding: 8px 12px; border-top: 1px solid @border_default; }
+.dialog-action-area { padding: 8px 12px; border-top: 1px solid @border_subtle; }
 
 /* gcr-prompter (keyring, ssh, gpg passwords): a bare grid with no margin of its own.
    Children in order: icon, message, description, then the fields. */
@@ -568,16 +577,16 @@ dialog > .dialog-vbox > grid { margin: 14px 20px 16px 14px; }
 dialog > .dialog-vbox > grid > image { color: @text_subtle; -gtk-icon-transform: scale(0.67); }
 dialog > .dialog-vbox > grid > label { color: @text_secondary; }
 dialog > .dialog-vbox > grid > label:nth-child(2) { color: @text_strong; }
-dialog > .dialog-vbox > grid > label:nth-child(3) { margin-bottom: 6px; font-size: 11px; }
+dialog > .dialog-vbox > grid > label:nth-child(3) { margin-bottom: 6px; font-size: 12px; }
 dialog > .dialog-vbox > grid > progressbar { margin-top: 2px; }
 
 calendar {
   padding: 4px;
-  border: 1px solid @border_default;
-  border-radius: 4px;
+  border: 1px solid @border_subtle;
+  border-radius: 5px;
   background-color: @bg_surface;
   color: @text_primary;
 }
-calendar.header { border-bottom: 1px solid @border_default; color: @text_strong; }
+calendar.header { border-bottom: 1px solid @border_subtle; color: @text_strong; }
 calendar:selected { border-radius: 3px; background-color: @accent_subtle; box-shadow: none; color: @text_max; }
 calendar:indeterminate { color: @text_disabled; }

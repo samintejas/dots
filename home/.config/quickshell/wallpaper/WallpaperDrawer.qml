@@ -80,7 +80,7 @@ PanelWindow {
                     anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 14 }
                     text: "wallpapers"
                     font.family: Theme.font
-                    font.pixelSize: 11
+                    font.pixelSize: 12
                                         color: Theme.subtle
                 }
 
@@ -88,7 +88,7 @@ PanelWindow {
                     anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 14 }
                     text: WallpaperState.results.length > 0 ? WallpaperState.results.length : ""
                     font.family: Theme.font
-                    font.pixelSize: 11
+                    font.pixelSize: 12
                     color: Theme.subtle
                 }
             }
@@ -124,8 +124,8 @@ PanelWindow {
                         font.family: Theme.font
                         font.pixelSize: 12
                         color: Theme.fg
-                        selectionColor: Theme.pink
-                        selectedTextColor: Theme.base
+                        selectionColor: Theme.selection
+                        selectedTextColor: Theme.textMax
                         verticalAlignment: TextInput.AlignVCenter
                         clip: true
                         focus: WallpaperState.visible
@@ -228,7 +228,7 @@ PanelWindow {
                             anchors.centerIn: parent
                             text: tile.modelData.resolution || ""
                             font.family: Theme.font
-                            font.pixelSize: 10
+                            font.pixelSize: 12
                             color: Theme.fg
                         }
                     }
@@ -257,7 +257,7 @@ PanelWindow {
                             return ""
                         }
                         font.family: Theme.font
-                        font.pixelSize: 11
+                        font.pixelSize: 12
                         color: Theme.subtle
                     }
                 }
