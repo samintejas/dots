@@ -1,34 +1,44 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Wayland
 import "../theme"
 
-// Custom styled tray context menu.
-// Sits as an overlay PanelWindow anchored top+left so
-// marginLeft / marginTop can position it anywhere on screen.
-PanelWindow {
+// Custom styled tray context menu: a popup anchored under the tray icon.
+// The compositor's focus grab dismisses it on a click anywhere else, like
+// the bar popovers.
+PopupWindow {
     id: root
 
     property var menuHandle: null
+    property Item anchorItem: null
+    property var lastHandle: null
+    property double closedAt: 0    // ms; swallows the right-click that dismissed it
 
-    function open(handle, gx, gy) {
+    function open(handle, item) {
+        // that right-click already closed this menu through the grab; don't reopen it
+        if (handle === lastHandle && Date.now() - closedAt < 200)
+            return
         menuHandle = handle
-        margins.left = gx
-        margins.top  = gy
-        visible      = true
+        anchorItem = item
+        visible    = true
     }
 
     function close() {
-        visible    = false
-        menuHandle = null
+        visible = false
     }
 
-    WlrLayershell.layer:         WlrLayer.Overlay
-    WlrLayershell.exclusiveZone: 0
-    WlrLayershell.namespace:     "tray-menu"
+    onVisibleChanged: {
+        if (!visible) {
+            lastHandle = menuHandle
+            closedAt   = Date.now()
+            menuHandle = null
+        }
+    }
 
-    anchors { top: true; left: true }
+    anchor.item:   anchorItem
+    // the icon is centred in the 32px bar: drop to the bar's bottom edge, plus a 2px gap
+    anchor.rect.y: anchorItem ? anchorItem.height + 10 : 0
+    grabFocus:     true
 
     color:         "transparent"
     visible:       false
@@ -38,12 +48,6 @@ PanelWindow {
     QsMenuOpener {
         id: opener
         menu: root.menuHandle
-    }
-
-    // Click outside to dismiss
-    MouseArea {
-        anchors.fill: parent
-        onClicked:    root.close()
     }
 
     Rectangle {

@@ -62,9 +62,7 @@ Item {
                             }
                             trayItem.modelData.activate()
                         } else if (mouse.button === Qt.RightButton && root.contextMenu) {
-                            // Map bottom-left of icon to global screen coordinates
-                            var pt = mapToGlobal(0, trayItem.implicitHeight)
-                            root.contextMenu.open(trayItem.modelData.menu, pt.x, pt.y)
+                            root.contextMenu.open(trayItem.modelData.menu, trayItem)
                         }
                     }
                 }

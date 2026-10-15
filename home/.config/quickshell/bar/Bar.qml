@@ -22,11 +22,9 @@ PanelWindow {
         right: true
     }
 
-    // Per-screen tray context menu overlay
+    // Tray context menu, anchored under the clicked icon
     TrayMenu {
         id: trayMenu
-
-        screen: root.screen
     }
 
     RowLayout {
