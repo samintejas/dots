@@ -88,7 +88,9 @@ hl.config({
         border_size = 2,
         col = {
             active_border = "rgb(4d4d4d)",
-            inactive_border = "rgba(ffffff21)",
+            -- solid, not translucent white: a window that loses focus for a moment
+            -- (a Chrome hover card, a dialog closing) flashed a white edge
+            inactive_border = "rgb(1f1f1f)",
         },
     },
     decoration = {

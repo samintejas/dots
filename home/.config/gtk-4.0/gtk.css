@@ -185,7 +185,17 @@ window.csd,
 headerbar,
 toolbarview { border-radius: 0; }
 
-*:focus-visible { outline: 2px solid var(--dots-focus); outline-offset: 2px; }
+/* The focus ring belongs to controls. A bare `*:focus-visible` also rings
+   whichever container holds focus: an alert dialog's sheet, a terminal. */
+button:focus-visible,
+checkbutton:focus-visible,
+switch:focus-visible,
+scale:focus-visible,
+link:focus-visible,
+colorswatch:focus-visible { outline: 2px solid var(--dots-focus); outline-offset: 2px; }
+row:focus-visible,
+tab:focus-visible,
+expander-widget:focus-visible > box > title { outline: 2px solid var(--dots-focus); outline-offset: -2px; }
 
 selection { background-color: var(--dots-selection); color: var(--dots-text-max); }
 
