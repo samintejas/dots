@@ -66,7 +66,7 @@ hl.on("hyprland.start", function()
         ["color-scheme"] = "prefer-dark",
         ["accent-color"] = "pink",
         ["font-name"] = "GeistMono Nerd Font 10",
-        ["document-font-name"] = "GeistMono Nerd Font 10",
+        ["document-font-name"] = "Geist 11",
         ["monospace-font-name"] = "GeistMono Nerd Font 10",
     }) do
         hl.exec_cmd("gsettings set org.gnome.desktop.interface " .. key .. " '" .. value .. "'")
@@ -87,8 +87,8 @@ hl.config({
         gaps_out = 0,
         border_size = 2,
         col = {
-            active_border = "rgb(4e4e4e)",
-            inactive_border = "rgb(232323)",
+            active_border = "rgb(4d4d4d)",
+            inactive_border = "rgba(ffffff21)",
         },
     },
     decoration = {
@@ -161,6 +161,7 @@ hl.bind(mod .. " + I", hl.dsp.layout("togglesplit"))
 hl.bind(mod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
 hl.bind(mod .. " + F11", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind(mod .. " + End", hl.dsp.exec_cmd("qs ipc call power toggle"))
+hl.bind(mod .. " + SHIFT + T", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle-theme.sh"))
 -- restart the shell (live reload sometimes misses new files)
 hl.bind(mod .. " + SHIFT + R", hl.dsp.exec_cmd("sh -c 'qs kill; sleep 0.5; qs -d'"))
 hl.bind(mod .. " + SHIFT + End", hl.dsp.exit())

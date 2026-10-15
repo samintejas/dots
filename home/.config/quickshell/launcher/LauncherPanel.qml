@@ -199,7 +199,7 @@ PanelWindow {
             radius: Theme.radiusSm
             color: Theme.well
             border.width: input.activeFocus ? 2 : 1
-            border.color: input.activeFocus ? Theme.focusRing : Theme.borderRaised
+            border.color: input.activeFocus ? Theme.focusRing : Theme.borderControl
 
             TextInput {
                 id: input
@@ -207,8 +207,8 @@ PanelWindow {
                 font.family: Theme.font
                 font.pixelSize: 13
                 color: Theme.textHi
-                selectionColor: Theme.pink
-                selectedTextColor: Theme.base
+                selectionColor: Theme.selection
+                selectedTextColor: Theme.textMax
                 clip: true
                 focus: true
                 onTextChanged: {
@@ -247,7 +247,7 @@ PanelWindow {
                 anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 12 }
                 text: root.shown.length
                 font.family: Theme.font
-                font.pixelSize: 11
+                font.pixelSize: 12
                 color: Theme.subtle
             }
         }
@@ -310,7 +310,7 @@ PanelWindow {
                             anchors.centerIn: parent
                             text: row.modelData.name.charAt(0).toLowerCase()
                             font.family: Theme.font
-                            font.pixelSize: 11
+                            font.pixelSize: 12
                             color: Theme.subtle
                         }
                     }
@@ -322,7 +322,7 @@ PanelWindow {
                     width: Math.min(implicitWidth, 180)
                     text: row.modelData.sub
                     font.family: Theme.font
-                    font.pixelSize: 11
+                    font.pixelSize: 12
                     color: Theme.subtle
                     elide: Text.ElideRight
                     horizontalAlignment: Text.AlignRight
@@ -376,7 +376,7 @@ PanelWindow {
                 anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 12 }
                 text: root.windowsMode ? "↵ focus   ↑↓ move   esc close" : "↵ launch   ↑↓ move   esc close"
                 font.family: Theme.font
-                font.pixelSize: 11
+                font.pixelSize: 12
                 color: Theme.subtle
             }
         }

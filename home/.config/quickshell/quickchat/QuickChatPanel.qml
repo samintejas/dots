@@ -242,7 +242,7 @@ PanelWindow {
             radius: Theme.radiusSm
             color: Theme.well
             border.width: input.activeFocus ? 2 : 1
-            border.color: input.activeFocus ? Theme.focusRing : Theme.borderRaised
+            border.color: input.activeFocus ? Theme.focusRing : Theme.borderControl
 
             Text {
                 id: mark
@@ -259,8 +259,8 @@ PanelWindow {
                 font.family: Theme.font
                 font.pixelSize: 13
                 color: Theme.textHi
-                selectionColor: Theme.pink
-                selectedTextColor: Theme.base
+                selectionColor: Theme.selection
+                selectedTextColor: Theme.textMax
                 clip: true
                 focus: true
 
@@ -300,7 +300,7 @@ PanelWindow {
                 anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 12 }
                 text: root.model.label + (root.keyText.trim() !== "" ? " · api" : "")
                 font.family: Theme.font
-                font.pixelSize: 11
+                font.pixelSize: 12
                 color: Theme.subtle
             }
         }
@@ -339,8 +339,10 @@ PanelWindow {
                             text: msg.modelData.text
                             textFormat: msg.modelData.role === "assistant" ? Text.MarkdownText : Text.PlainText
                             wrapMode: Text.Wrap
-                            font.family: Theme.font
-                            font.pixelSize: msg.modelData.role === "user" ? 12 : 13
+                            // the answer is prose, so it sets in the sans; the question stays mono
+                            font.family: msg.modelData.role === "user" ? Theme.font : Theme.fontSans
+                            font.pixelSize: msg.modelData.role === "user" ? 12 : 14
+                            lineHeight: msg.modelData.role === "user" ? 1 : 1.2
                             color: msg.modelData.role === "user" ? Theme.subtle : Theme.textHi
                             linkColor: Theme.blue
                             onLinkActivated: link => Qt.openUrlExternally(link)
@@ -377,7 +379,7 @@ PanelWindow {
                 anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 12 }
                 text: "↵ ask   ^y copy   ^l new   ^m model   esc close"
                 font.family: Theme.font
-                font.pixelSize: 11
+                font.pixelSize: 12
                 color: Theme.subtle
             }
         }

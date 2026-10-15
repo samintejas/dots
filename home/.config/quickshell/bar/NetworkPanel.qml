@@ -178,7 +178,7 @@ PopoverPanel {
                         radius: Theme.radiusSm
                         color: Theme.well
                         border.width: pass.activeFocus ? 2 : 1
-                        border.color: pass.activeFocus ? Theme.focusRing : Theme.borderRaised
+                        border.color: pass.activeFocus ? Theme.focusRing : Theme.borderControl
 
                         TextInput {
                             id: pass
@@ -188,8 +188,8 @@ PopoverPanel {
                             font.family: Theme.font
                             font.pixelSize: 12
                             color: Theme.textHi
-                            selectionColor: Theme.pink
-                            selectedTextColor: Theme.base
+                            selectionColor: Theme.selection
+                            selectedTextColor: Theme.textMax
                             clip: true
                             onVisibleChanged: if (visible) { text = ""; forceActiveFocus() }
                             Keys.onReturnPressed: submit()
@@ -219,7 +219,7 @@ PopoverPanel {
                         Layout.bottomMargin: 4
                         text: panel.error
                         font.family: Theme.font
-                        font.pixelSize: 11
+                        font.pixelSize: 12
                         color: Theme.red
                     }
                 }

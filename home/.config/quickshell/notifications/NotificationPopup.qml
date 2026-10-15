@@ -201,7 +201,7 @@ PanelWindow {
             horizontalAlignment: Text.AlignRight
             text: "+" + root.hiddenCount + " more"
             font.family: Theme.font
-            font.pixelSize: 11
+            font.pixelSize: 12
             color: Theme.subtle
         }
 

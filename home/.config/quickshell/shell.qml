@@ -96,6 +96,15 @@ ShellRoot {
         function toggle(): void { ClipboardState.toggle() }
     }
 
+    // system follows the OS colour scheme; dark and light pin the shell.
+    IpcHandler {
+        target: "theme"
+        function set(mode: string): void {
+            if (mode === "system" || mode === "dark" || mode === "light") Theme.mode = mode
+        }
+        function get(): string { return Theme.mode + (Theme.light ? " (light)" : " (dark)") }
+    }
+
     // Volume: observe PipeWire so keys, the bar and the mixer all show the OSD.
     PwObjectTracker {
         objects: [Pipewire.defaultAudioSink]

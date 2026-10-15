@@ -67,7 +67,7 @@ PanelWindow {
                 id: leftBorder
                 anchors { top: parent.top; bottom: parent.bottom; left: parent.left }
                 width: 2                      // same as the Hyprland window border
-                color: Theme.line             // = Hyprland active_border #4e4e4e
+                color: Theme.line             // = Hyprland active_border (neutral-6)
                 z: 1
             }
 
@@ -114,7 +114,7 @@ PanelWindow {
                             anchors.centerIn: parent
                             text: "clear all"
                             font.family: Theme.font
-                            font.pixelSize: 11
+                            font.pixelSize: 12
                             color: clearArea.containsMouse ? Theme.textHi : Theme.text
                         }
 

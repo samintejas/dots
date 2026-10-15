@@ -74,7 +74,7 @@ Item {
         implicitHeight: content.implicitHeight + 20 + (root.hasActions ? 32 : 0)
         radius: root.isPopup ? Theme.radiusLg : Theme.radiusMd
         color: root.isPopup
-            ? (cardHover.hovered ? Qt.lighter(Theme.raised, 1.15) : Theme.raised)
+            ? (cardHover.hovered ? Theme.raisedHover : Theme.raised)
             : (cardHover.hovered ? Theme.hover : Theme.surface)
         border.width: 0
 
@@ -169,7 +169,7 @@ Item {
                     Text {
                         text: Qt.formatDateTime(root.created, "hh:mm")
                         font.family: Theme.font
-                        font.pixelSize: 11
+                        font.pixelSize: 12
                         color: Theme.subtle
                     }
 
@@ -187,7 +187,7 @@ Item {
                             anchors.centerIn: parent
                             text: "󰅖"
                             font.family: Theme.font
-                            font.pixelSize: 11
+                            font.pixelSize: 12
                             color: closeArea.containsMouse ? Theme.textHi : Theme.subtle
                         }
 
@@ -204,8 +204,8 @@ Item {
                     visible: text !== ""
                     text: notification ? notification.body : ""
                     width: parent.width
-                    font.family: Theme.font
-                    font.pixelSize: 12
+                    font.family: Theme.fontSans   // the body is a sentence: Geist
+                    font.pixelSize: 13
                     color: Theme.textHi
                     wrapMode: Text.WordWrap
                     maximumLineCount: root.isPopup ? 3 : 6
@@ -217,7 +217,7 @@ Item {
                     visible: notification && notification.appName !== ""
                     text: notification ? notification.appName.toLowerCase() : ""
                     font.family: Theme.font
-                    font.pixelSize: 11
+                    font.pixelSize: 12
                     color: Theme.subtle
                 }
             }
@@ -247,7 +247,7 @@ Item {
                         anchors.centerIn: parent
                         text: btn.modelData.text.toLowerCase()
                         font.family: Theme.font
-                        font.pixelSize: 11
+                        font.pixelSize: 12
                         color: Theme.textHi
                     }
 

@@ -102,7 +102,7 @@ PopoverPanel {
                 Layout.topMargin: 2
                 text: "my devices"
                 font.family: Theme.font
-                font.pixelSize: 11
+                font.pixelSize: 12
                 color: Theme.subtle
             }
 
@@ -130,7 +130,7 @@ PopoverPanel {
                 Layout.topMargin: 6
                 text: "nearby"
                 font.family: Theme.font
-                font.pixelSize: 11
+                font.pixelSize: 12
                 color: Theme.subtle
             }
 
